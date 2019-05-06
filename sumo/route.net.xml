@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Sun 02 Dec 2018 11:21:53 PM EST by Netedit Version 0.32.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <output>
+        <output-file value="/home/nicolas/Writing/cours/civ8740/route.net.xml"/>
+    </output>
+
+    <processing>
+        <no-turnarounds value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+</configuration>
+-->
+
+<net version="0.27" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-364.01,68.01,193.48,68.09" origBoundary="10000000000.00,10000000000.00,-10000000000.00,-10000000000.00" projParameter="!"/>
+
+    <edge id="-gneE0" from="gneJ1" to="gneJ0" priority="1">
+        <lane id="-gneE0_0" index="0" speed="13.89" length="557.49" shape="-364.01,63.06 193.48,63.14"/>
+        <lane id="-gneE0_1" index="1" speed="13.89" length="557.49" shape="-364.01,66.36 193.48,66.44"/>
+    </edge>
+
+    <junction id="gneJ0" type="dead_end" x="193.48" y="68.09" incLanes="-gneE0_0 -gneE0_1" intLanes="" shape="193.48,61.54 193.48,68.04"/>
+    <junction id="gneJ1" type="dead_end" x="-364.01" y="68.01" incLanes="" intLanes="" shape="-364.01,67.96 -364.01,61.46"/>
+
+</net>

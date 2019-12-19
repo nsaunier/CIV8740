@@ -49,6 +49,11 @@ Compétences informatiques: fichiers texte, XML, ligne de commande https://sumo.
 Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des réseaux d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
 La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
+
+Un réseau SUMO est constitué de liens ("egde"), voies ("lane") et carrefours ("junction"). TODO définir
+
+et connection
+
 ## Importer un réseau d'OpenStreetMap
 ### Téléchargement d'OpenStreetMap et importation simple
 
@@ -64,7 +69,7 @@ explication dans l'exemple hello Exemple le plus simple https://sumo.dlr.de/docs
 
 Graphes: noeuds et arrêtes 
 
-Réseau SUMO: egde et lane, junction et connection
+
 
 TODO gérer les limites de vitesse, comprendre les dead-end, functional edge
 
@@ -75,10 +80,14 @@ Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
 TODO: comprendre choix des vitesses, tirages aléatoires
+## Types de demandes et données
+Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. 
+
+A route is an expanded trip, that means, that a route definition contains not only the first and the last edge, but all edges the vehicle will pass. 
 
 types de véhicules
 variation des debits dans le temps
-référence https://sumo.dlr.de/wiki/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
+référence https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
 
 flow sur route
 <flow id="flow_0" type="DEFAULT_VEHTYPE" begin="0.00" end="3600.00" vehsPerHour="360.00">
@@ -92,6 +101,11 @@ flow sur route
 vehsPerHour float(#/h) number of vehicles per hour, equally spaced (not together with period or probability) period float(s) insert equally spaced vehicles at that period (not together with vehsPerHour or probability) probability float([0,1]) probability for emitting a vehicle each second (not together with vehsPerHour or period), see also Simulation/Randomness number int(#) total number of vehicles, equally spaced 
 
 incomplete routes with TAZ
+
+## Outils
+script python
+
+interface netedit (voir tuto-netedit)
 
 
 # Simulation

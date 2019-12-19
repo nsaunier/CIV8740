@@ -45,7 +45,7 @@ Compétences informatiques: fichiers texte, XML, ligne de commande https://sumo.
 # Réseaux de transport
 Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des réseaux d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
-La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre section. 
+La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
 ## Importer un réseau d'OpenStreetMap
 
 ## Créer et modifier un réseau

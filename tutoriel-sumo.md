@@ -1,20 +1,4 @@
-Table des matières
-- [Introduction](#introduction)
-- [Liste des outils](#liste-des-outils)
-- [Réseaux de transport](#r-seaux-de-transport)
-  * [Importer un réseau d'OpenStreetMap](#importer-un-r-seau-d-openstreetmap)
-    + [Téléchargement d'OpenStreetMap et importation simple](#t-l-chargement-d-openstreetmap-et-importation-simple)
-    + [Script intégré d'importation](#script-int-gr--d-importation)
-  * [Créer et modifier un réseau](#cr-er-et-modifier-un-r-seau)
-  * [Créer un réseau géométrique](#cr-er-un-r-seau-g-om-trique)
-- [Demande de déplacements](#demande-de-d-placements)
-- [Simulation](#simulation)
-- [Configuration des carrefours](#configuration-des-carrefours)
-- [Collecte de données](#collecte-de-donn-es)
-  * [Réseau](#r-seau)
-  * [Capteurs](#capteurs)
-- [Annexes](#annexes)
-  * [Classification routière d'OpenStreetMap](#classification-routi-re-d-openstreetmap)
+Table des matières TODO
 
 # Introduction
 Le logiciel SUMO, pour "Simulation of Urban MObility", est un logiciel de simulation de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'agence aérospatiale allemande DLR.
@@ -25,7 +9,6 @@ Fichiers indispensables:
 * configuration de SUMO: fichier avec extension `.sumocfg`
 * réseau routier: fichier avec extension `.net.xml`
 * demande de déplacement (itinéraires): fichier avec extension `.rou.xml`
-Exemple le plus simple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html 
 
 Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
@@ -77,17 +60,25 @@ Cette sous-section expliquer comment créer un réseau à partir de rien et comm
 
 Revenons tout d'abord sur la structure de données décrivant un réseau de transport et la façon dont il 
 
+explication dans l'exemple hello Exemple le plus simple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html 
+
+Graphes: noeuds et arrêtes 
+
+Réseau SUMO: egde et lane, junction et connection
+
+TODO gérer les limites de vitesse, comprendre les dead-end, functional edge
+
 ## Créer un réseau géométrique
 netgenerate
 
 Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
-choix des vitesses? types de véhicules
+TODO: comprendre choix des vitesses, tirages aléatoires
+
+types de véhicules
 variation des debits dans le temps
 référence https://sumo.dlr.de/wiki/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
-
-difficile de créer routes par netedit
 
 flow sur route
 <flow id="flow_0" type="DEFAULT_VEHTYPE" begin="0.00" end="3600.00" vehsPerHour="360.00">

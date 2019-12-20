@@ -86,6 +86,32 @@ Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit 
 A route is an expanded trip, that means, that a route definition contains not only the first and the last edge, but all edges the vehicle will pass. 
 
 types de véhicules
+
+Les types de véhicules sont définis par des éléments `vType`. Ils ont de nombreux attributs, les plus importants étant: 
+* longueur
+* accélération et décélération
+* laneChangeModel
+* carFollowModel, avec paramètres sigma et tau
+* maxSpeed (m/s)
+* speedFactor: multiplicateur de la limite de vitesse d'une voie, peut suivre une distribution avec la syntaxe "norm(mean, dev)" ou "normc(mean, dev, min, max)"
+* speedDev: écart-type du speedFactor (speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1)
+
+vitesse toujours inférieure à maxSpeed
+
+https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_and_vehicle_type_distributions
+Vehicle Type Distributions
+
+exemple de distributions de type et flow associé
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vTypeDistribution id="typedist1">
+        <vType id="type1" accel="0.8" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="27" color="red" probability="0.9"/>
+        <vType id="type2" accel="1.8" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="20" color="blue" probability="0.1"/>
+    </vTypeDistribution>
+    <flow id="flow_0" begin="0.00" from="gneE0" to="gneE0" end="3600.00" vehsPerHour="8000" type="typedist1" departSpeed="desired" departLane="random"/>
+</routes>
+
+
+
 variation des debits dans le temps
 référence https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
 

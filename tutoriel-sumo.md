@@ -108,8 +108,7 @@ vitesse toujours inférieure à maxSpeed
 
 https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_and_vehicle_type_distributions
 Vehicle Type Distributions
-
-exemple de distributions de type et flow associé
+```xml
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <vTypeDistribution id="typedist1">
         <vType id="type1" accel="0.8" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="27" color="red" probability="0.9"/>
@@ -117,7 +116,7 @@ exemple de distributions de type et flow associé
     </vTypeDistribution>
     <flow id="flow_0" begin="0.00" from="gneE0" to="gneE0" end="3600.00" vehsPerHour="8000" type="typedist1" departSpeed="desired" departLane="random"/>
 </routes>
-
+```
 
 
 variation des debits dans le temps
@@ -146,6 +145,28 @@ interface netedit (voir tuto-netedit)
 réplications
 
 exécuter sans mode graphique avec sumo
+
+script avec graine sur ligne de commande et préfixe au nom des fichiers
+
+```xml
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="net.net.xml"/>
+        <route-files value="net.rou.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="200"/>
+	<step-length value="0.1"/>
+    </time>
+
+    <random>
+      <seed value="45"/>
+    </random>
+</configuration>
+```
 
 # Configuration des carrefours
 

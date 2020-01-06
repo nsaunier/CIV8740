@@ -1,12 +1,12 @@
 Table des matières TODO
-- [Introduction](#introduction)
-- [Liste des outils](#liste-des-outils)
-- [Réseaux de transport](#réseaux-de-transport)
-- [Demande de déplacements](#demande-de-déplacements)
-- [Simulation](#simulation)
-- [Configuration des carrefours](#configuration-des-carrefours)
-- [Collecte de données](#collecte-de-données)
-- [Annexes](#annexes)
+1. [Introduction](#introduction)
+1. [Liste des outils](#liste-des-outils)
+1. [Réseaux de transport](#réseaux-de-transport)
+1. [Demande de déplacements](#demande-de-déplacements)
+1. [Simulation](#simulation)
+1. [Configuration des carrefours](#configuration-des-carrefours)
+1. [Collecte de données](#collecte-de-données)
+1. [Annexes](#annexes)
 
 # Introduction
 Le logiciel SUMO, pour "Simulation of Urban MObility", est un logiciel de simulation de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'agence aérospatiale allemande DLR.

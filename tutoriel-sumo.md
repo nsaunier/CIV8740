@@ -18,6 +18,8 @@ Fichiers indispensables:
 * réseau routier: fichier avec extension `.net.xml`
 * demande de déplacement (itinéraires): fichier avec extension `.rou.xml`
 
+exemple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html
+
 Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
 Références
@@ -89,11 +91,21 @@ Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 # Demande de déplacements
 TODO: comprendre choix des vitesses, tirages aléatoires
 ## Types de demandes et données
-Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. 
+Dans SUMO, un véhicule est défini par trois éléments: 
+* un type de véhicule qui décrit ses propriétés physiques;
+* l'itinéraire que le véhicule suivra;
+* le véhicule lui-même.
 
-A route is an expanded trip, that means, that a route definition contains not only the first and the last edge, but all edges the vehicle will pass. 
+Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
+
+Une simulation SUMO a besoin d'itinéraires comme entrée pour les déplacements des véhicules qui peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html).
+
+https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html
+
+TODO traduire véhicule, flow et routes
 
 types de véhicules
+nécessaire. Si non-défini, un type de véhicule par défaut sera utilisé.
 
 Les types de véhicules sont définis par des éléments `vType`. Ils ont de nombreux attributs, les plus importants étant: 
 * longueur

@@ -61,6 +61,7 @@ Il existe différentes façons de créer ou importer des réseaux de transport d
 La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
 
 Un réseau SUMO est constitué de liens ("egde"), voies ("lane") et carrefours ("junction"). TODO définir
+https://sumo.dlr.de/docs/NETEDIT.html#network_elements
 
 et connection
 

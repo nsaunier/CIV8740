@@ -1,0 +1,5 @@
+<routes>
+  <vehicle id="0" depart="0" color="red">
+    <route edges="1to2 2to3"/>
+  </vehicle>
+</routes>

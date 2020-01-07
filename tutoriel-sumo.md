@@ -99,11 +99,26 @@ Dans SUMO, un véhicule est défini par trois éléments:
 
 Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
 
-Une simulation SUMO a besoin d'itinéraires comme entrée pour les déplacements des véhicules qui peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html).
+Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier d'itinéraires `.rou.xml`.
+
+TODO construire réseau de base pour les exemples, une route qui diverge. utiliser les id pour les exemples
+
+Une première façon consiste à définir un véhicule avec un itinéraire (pour lui seulement): 
+```xml
+<routes>
+    <vehicle id="0" depart="0" color="red">
+      <route edges="beg middle end rend"/>
+    </vehicle>
+</routes>
+```
+De cette façon, SUMO construira un véhicule rouge
+
 
 https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html
 
 TODO traduire véhicule, flow et routes
+
+
 
 types de véhicules
 nécessaire. Si non-défini, un type de véhicule par défaut sera utilisé.
@@ -153,6 +168,9 @@ script python
 
 interface netedit (voir tuto-netedit)
 
+définir itinéraire, puis ajouter la demande (trip, vehicle, flow ou route flow (ce qu'on veut?))
+
+autres: jtrrouter, dfrouter https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html
 
 # Simulation
 réplications

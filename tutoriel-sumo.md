@@ -65,6 +65,10 @@ https://sumo.dlr.de/docs/NETEDIT.html#network_elements
 
 et connection
 
+construire réseau jouet `hello`, base des autres exemples, à partir d'un fichier de liens (arrêtes) et carrefours (noeuds)
+```netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
+
+
 ## Importer un réseau d'OpenStreetMap
 ### Téléchargement d'OpenStreetMap et importation simple
 
@@ -91,6 +95,8 @@ Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
 TODO: comprendre choix des vitesses, tirages aléatoires
+
+
 ## Types de demandes et données
 Dans SUMO, un véhicule est défini par trois éléments: 
 * un type de véhicule qui décrit ses propriétés physiques;
@@ -99,19 +105,25 @@ Dans SUMO, un véhicule est défini par trois éléments:
 
 Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
 
-Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier d'itinéraires `.rou.xml`.
-
-TODO construire réseau de base pour les exemples, une route qui diverge. utiliser les id pour les exemples
+Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier d'itinéraires `.rou.xml`, par exemple `hello.rou.xml` pour notre exemple (voir la section #simulation pour le fichier de configuration sumo `.sumocfg` nécessaire pour exécuter une simulation avec ce fichier d'itinéraires et le fichier du réseau).
 
 Une première façon consiste à définir un véhicule avec un itinéraire (pour lui seulement): 
 ```xml
 <routes>
-    <vehicle id="0" depart="0" color="red">
-      <route edges="beg middle end rend"/>
-    </vehicle>
+  <vehicle id="0" depart="0" color="red">
+    <route edges="1to2 2to3"/>
+  </vehicle>
 </routes>
 ```
-De cette façon, SUMO construira un véhicule rouge
+De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence son déplacement à l'instant 0. Ce véhicule suivra les liens 1to2 puis 2to3 puis disparaîtra à la fin du dernier lien (la liste de liens peut être aussi longue que désirée, du type "lien1 lien2 lien3 ... lienn"). Ce véhicule a son propre itinéraire qui n'est pas partagé avec les autres véhicules. Il est aussi possible de définir deux véhicule se déplaçant selon le même itinéraire, auquel cas l'itinéraire doit être défini à l'extérieur du véhicule et avoir un identifiant:
+```xml
+<routes>
+  <route id="route0" edges="1to2 2to3"/>
+  <vehicle id="0" depart="0" color="red">
+  <vehicle id="1" depart="0" color="blue">
+  </vehicle>
+</routes>
+```
 
 
 https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html
@@ -181,21 +193,20 @@ script avec graine sur ligne de commande et préfixe au nom des fichiers
 
 ```xml
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
-
-    <input>
-        <net-file value="net.net.xml"/>
-        <route-files value="net.rou.xml"/>
-    </input>
-
-    <time>
-        <begin value="0"/>
-        <end value="200"/>
-	<step-length value="0.1"/>
-    </time>
-
-    <random>
-      <seed value="45"/>
-    </random>
+  <input>
+    <net-file value="hello.net.xml"/>
+    <route-files value="hello.rou.xml"/>
+  </input>
+  
+  <time>
+    <begin value="0"/>
+    <end value="600"/>
+    <step-length value="0.1"/>
+  </time>
+  
+  <random>
+    <seed value="45"/>
+  </random>
 </configuration>
 ```
 

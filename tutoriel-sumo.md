@@ -105,6 +105,7 @@ Dans SUMO, un véhicule est défini par trois éléments:
 
 Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
 
+### Définition des véhicules et itinéraires
 Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier d'itinéraires `.rou.xml`, par exemple `hello.rou.xml` pour notre exemple (voir la section #simulation pour le fichier de configuration sumo `.sumocfg` nécessaire pour exécuter une simulation avec ce fichier d'itinéraires et le fichier du réseau).
 
 Une première façon consiste à définir un véhicule avec un itinéraire (pour lui seulement): 
@@ -120,8 +121,7 @@ De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence
 <routes>
   <route id="route0" edges="1to2 2to3"/>
   <vehicle id="0" route="route0" depart="0" color="red">
-  <vehicle id="1" route="route0" depart="0" color="blue">
-  </vehicle>
+  <vehicle id="1" route="route0" depart="0" color="blue"/>
 </routes>
 ```
 Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Une route peut avoir un attribut "color" comme les véhicules (ci-dessous). 
@@ -147,6 +147,7 @@ Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (le
 
 Vous pouvez trouver plus de détails sur les attributs de dépat et d'arrivée ("depart*" et "arrival*") de chaque véhicule dans la [documentation de SUMO](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#a_vehicles_depart_and_arrival_parameter). Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. Tout type de véhicule (défini ci-dessous) ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
 
+### Définition de flux de véhicules
 Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes paramètres que les véhicules, à l'exception de l'instant de départ ("depart"). Leur identifiant est "flowId.runningNumber". Les véhicules entrent sur le réseau avec des temps inter-véhiculaires égaux ou distribués aléatoirement pendant un intervalle donné. Ils ont les attributs supplémentaires suivants: 
 
 | Attribut  | Type de valeur                                                                    | Description                            |
@@ -158,14 +159,49 @@ Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes 
 | probability    | float(\[0,1\]) | Probabilité d'émettre un véhicule à chaque seconde (ne peut être utilisé avec vehsPerHour ou period) (voir le [caractère aléatoire des simulations](#simulation) |
 | number         | int(\#)        | Nombre total de véhicules, insérés avec des TIV égaux |
 
+Flux pour un itinéraire
+```xml
+<routes>
+  <route id="route0" edges="1to2 2to3"/>
+  <flow id="flow0" route="route0" begin="0" vehsPerHour="1000" color="red"/>
+</routes>
+```
+Pour deux itinéraires, avec le second flux générant des véhicules à partir de 50 s après le début de la simulation. 
+```xml
+<routes>
+  <route id="route0" edges="1to2 2to3"/>
+  <route id="route1" edges="1to2 2to4"/>
+  <flow id="flow0" route="route0" begin="0" vehsPerHour="1000" color="red"/>
+  <flow id="flow1" route="route1" begin="50" vehsPerHour="500" color="blue"/>
+</routes>
+```
+Et sans itinéraire
+```xml
+<routes>
+  <flow id="flow0" from="1to2" to="2to3" begin="0" vehsPerHour="1000" color="red"/>
+  <flow id="flow1" from="1to2" to="2to4" begin="50" vehsPerHour="500" color="blue"/>
+</routes>
+```
+Il est équivalent d'utiliser vehsPerHour="1000", period="3.6" et number="1000" avec begin="0" et end="3600". 
+
+Et avec des flux de véhicules aléatoires
+```xml
+<routes>
+  <flow id="flow0" from="1to2" to="2to3" begin="0" probability="0.3" color="red"/>
+  <flow id="flow1" from="1to2" to="2to4" begin="0" probability="0.15" color="blue"/>
+</routes>
+```
+probability="0.2778" donnerait en moyenne un véhicule tous les 3.6 s, soit un débit de 1000 véh/h
+
 TODO traduire flow
 
 
 
 Incomplete Routes (trips and flows)
 
-types de véhicules
-nécessaire. Si non-défini, un type de véhicule par défaut sera utilisé.
+### Définition des types de véhicules
+
+Si non-défini, un type de véhicule par défaut sera utilisé.
 
 Les types de véhicules sont définis par des éléments `vType`. Ils ont de nombreux attributs, les plus importants étant: 
 

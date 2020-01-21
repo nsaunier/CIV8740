@@ -156,10 +156,10 @@ Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes 
 | end            | float(s)       | Instant de fin de l'intervalle des départs (if non défini, 24 h par défaut) |
 | vehsPerHour    | float(\#/h)    | Nombre de véhicules par heure, insérés avec des TIV égaux (ne peut être utilisé avec period ou probability) |
 | period         | float(s)       | Valeur du TIV entre chaque véhicule inséré (ne peut être utilisé avec vehsPerHour ou probability) |
-| probability    | float(\[0,1\]) | Probabilité d'émettre un véhicule à chaque seconde (ne peut être utilisé avec vehsPerHour ou period) (voir le [caractère aléatoire des simulations](#simulation) |
+| probability    | float(\[0,1\]) | Probabilité d'émettre un véhicule à chaque seconde (ne peut être utilisé avec vehsPerHour ou period) (voir le [caractère aléatoire des simulations](#simulation)) |
 | number         | int(\#)        | Nombre total de véhicules, insérés avec des TIV égaux |
 
-Voici la définition d'un flux pour un itinéraire:
+Voici une définition d'un fichier d'itinéraire pour un flux avec un itinéraire (il est aussi possible de [structurer l'itinéraire dans le flux](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#repeated_vehicles_flows)):
 ```xml
 <routes>
   <route id="route0" edges="1to2 2to3"/>
@@ -201,6 +201,7 @@ On peut noter qu'il est aussi possible de modifier de façon aléatoire les inst
 </random>
 ```
 
+### Itinéraires incomplets et distributions d'itinéraires
 Incomplete Routes (trips and flows)
 
 Distributions d'itinéraires routeDistributions

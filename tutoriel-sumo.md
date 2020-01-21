@@ -159,14 +159,14 @@ Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes 
 | probability    | float(\[0,1\]) | Probabilité d'émettre un véhicule à chaque seconde (ne peut être utilisé avec vehsPerHour ou period) (voir le [caractère aléatoire des simulations](#simulation) |
 | number         | int(\#)        | Nombre total de véhicules, insérés avec des TIV égaux |
 
-Flux pour un itinéraire
+Voici la définition d'un flux pour un itinéraire:
 ```xml
 <routes>
   <route id="route0" edges="1to2 2to3"/>
   <flow id="flow0" route="route0" begin="0" vehsPerHour="1000" color="red"/>
 </routes>
 ```
-Pour deux itinéraires, avec le second flux générant des véhicules à partir de 50 s après le début de la simulation. 
+Et la définition de deux flux avec deux itinéraires, avec le second flux générant des véhicules à partir de 50 s après le début de la simulation: 
 ```xml
 <routes>
   <route id="route0" edges="1to2 2to3"/>
@@ -175,7 +175,7 @@ Pour deux itinéraires, avec le second flux générant des véhicules à partir 
   <flow id="flow1" route="route1" begin="50" vehsPerHour="500" color="blue"/>
 </routes>
 ```
-Et sans itinéraire
+Et enfin la définition de flux sans itinéraire, avec les attributs "from" et "to":
 ```xml
 <routes>
   <flow id="flow0" from="1to2" to="2to3" begin="0" vehsPerHour="1000" color="red"/>
@@ -195,9 +195,20 @@ probability="0.2778" donnerait en moyenne un véhicule tous les 3.6 s, soit un d
 
 TODO traduire flow
 
+possibilité de changer les instants de départ de façon aléatoire avec le paramètre --random-depart-offset
 
+```xml
+<random>
+    <random-depart-offset value="5.0"/>
+    <seed value="42"/>
+</random>
+```
 
 Incomplete Routes (trips and flows)
+
+Distributions d'itinéraires routeDistributions
+
+https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_distributions
 
 ### Définition des types de véhicules
 
@@ -302,8 +313,9 @@ autres: jtrrouter, dfrouter https://sumo.dlr.de/docs/Demand/Introduction_to_dema
 réplications
 
 exécuter sans mode graphique avec sumo
+`sumo --seed 42 -c hello.sumocfg`
 
-script avec graine sur ligne de commande et préfixe au nom des fichiers
+script avec graine sur ligne de commande et préfixe au nom des fichiers --output-prefix
 
 ```xml
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
@@ -324,6 +336,10 @@ script avec graine sur ligne de commande et préfixe au nom des fichiers
 </configuration>
 ```
 
+attributs et phénomènes aléatoires dans SUMO https://sumo.dlr.de/docs/Simulation/Randomness.html
+
+
+
 # Configuration des carrefours
 
 
@@ -333,6 +349,7 @@ https://sumo.dlr.de/docs/Simulation/Output
 conversion des xml /usr/share/sumo/tools/xml/xml2csv.py
 
 info véhicules --tripinfo-output
+données sur la ligne de commande: --duration-log.statistics
 
 ## Réseau
 

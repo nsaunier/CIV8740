@@ -145,15 +145,24 @@ Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (le
 | departPosLat    | float(m)/string ("random", "free", "random_free", "left", "right", "center") | Position latérale sur la voie de départ à l'insertion du véhicule (soir [modèles de positionnement dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html)) (défault "center") |
 | arrivalPosLat   | float(m)/string ("left", "right", "center")                                   | Position latérale sur la voie de départ à la sortie du véhicule (soir [modèles de positionnement dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html)) (par défault le véhicule ne se préoccupe pas de sa position latérale à l'arrivée) |
 
-Vous pouvez trouver plus de détails sur les paramètres de dépat et d'arrivée ("depart*" et "arrival*") de chaque véhicule dans la [documentation de SUMO](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#a_vehicles_depart_and_arrival_parameter). Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. 
-Tout type de véhicule ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
+Vous pouvez trouver plus de détails sur les attributs de dépat et d'arrivée ("depart*" et "arrival*") de chaque véhicule dans la [documentation de SUMO](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#a_vehicles_depart_and_arrival_parameter). Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. Tout type de véhicule (défini ci-dessous) ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
+
+Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes paramètres que les véhicules, à l'exception de l'instant de départ ("depart"). Leur identifiant est "flowId.runningNumber". Les véhicules entrent sur le réseau à des instants distribués également ou aléatoirement pendant un intervalle donné. Ils ont les attributs supplémentaires suivants: 
+
+| Attribute Name | Value Type     | Description                                                                                                                                                                                         |
+| -------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| begin          | float(s)       | first vehicle departure time                                                                                                                                                                        |
+| end            | float(s)       | end of departure interval (if undefined, defaults to 24 hours)                                                                                                                                      |
+| vehsPerHour    | float(\#/h)    | number of vehicles per hour, equally spaced (not together with period or probability)                                                                                                               |
+| period         | float(s)       | insert equally spaced vehicles at that period (not together with vehsPerHour or probability)                                                                                                        |
+| probability    | float(\[0,1\]) | probability for emitting a vehicle each second (not together with vehsPerHour or period), see also [Simulation/Randomness](Simulation/Randomness.md#flows_with_a_random_number_of_vehicles) |
+| number         | int(\#)        | total number of vehicles, equally spaced                                                                                                                                                            |
+
+TODO traduire flow
 
 
-https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html
 
-TODO traduire véhicule, flow et routes
-
-
+Incomplete Routes (trips and flows)
 
 types de véhicules
 nécessaire. Si non-défini, un type de véhicule par défaut sera utilisé.

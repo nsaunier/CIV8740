@@ -66,7 +66,7 @@ https://sumo.dlr.de/docs/NETEDIT.html#network_elements
 et connection
 
 construire réseau jouet `hello`, base des autres exemples, à partir d'un fichier de liens (arrêtes) et carrefours (noeuds)
-```netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
+```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
 
 
 ## Importer un réseau d'OpenStreetMap
@@ -182,21 +182,18 @@ Et enfin la définition de flux sans itinéraire, avec les attributs "from" et "
   <flow id="flow1" from="1to2" to="2to4" begin="50" vehsPerHour="500" color="blue"/>
 </routes>
 ```
-Il est équivalent d'utiliser vehsPerHour="1000", period="3.6" et number="1000" avec begin="0" et end="3600". 
+Pour générer par exemple 1000 véh/h, soit un véhicule tous les 3.6 s, il est équivalent d'utiliser vehsPerHour="1000", period="3.6" et number="1000" avec begin="0" et end="3600" (dans le dernier cas, les véhicules ne seront simulés quand pendant 3600 s, alors qu'il est possible de définir l'intervalle de simulation indépendamment avec "vehsPerHour" et "period"). 
 
-Et avec des flux de véhicules aléatoires
+Dans la réalité, les TIV entre véhicules ne sont pas égaux même lorsque le débit reste constant sur une longue périod de temps, mais varie autour de sa valeur moyenne. Cela peut être reproduit en utilisant l'attribut "probability":
 ```xml
 <routes>
-  <flow id="flow0" from="1to2" to="2to3" begin="0" probability="0.3" color="red"/>
-  <flow id="flow1" from="1to2" to="2to4" begin="0" probability="0.15" color="blue"/>
+  <flow id="flow0" from="1to2" to="2to3" begin="0" probability="0.2" color="red"/>
+  <flow id="flow1" from="1to2" to="2to4" begin="0" probability="0.1" color="blue"/>
 </routes>
 ```
-probability="0.2778" donnerait en moyenne un véhicule tous les 3.6 s, soit un débit de 1000 véh/h
+Dans ce cas, le flux "flow0" génère en moyenne 0.2 véh par seconde (le nombre de véhicules arrivant pendant n intervalles de 1 s suit la [loi binomiale de paramètre n et probability](https://sumo.dlr.de/docs/Simulation/Randomness.html#flows_with_a_random_number_of_vehicles)), soit 720 véh/h, et le flux "flow1" la moitié, soit 360 véh/h. 
 
-TODO traduire flow
-
-possibilité de changer les instants de départ de façon aléatoire avec le paramètre --random-depart-offset
-
+On peut noter qu'il est aussi possible de modifier de façon aléatoire les instants de départ de tous les véhicules de façon aléatoire avec le paramètre --random-depart-offset en ligne de commande ou en ajoutant la portion suivante dans le fichier de configuration `.sumocfg` (avec une graine d'initialisation de la simulation):
 ```xml
 <random>
     <random-depart-offset value="5.0"/>
@@ -270,6 +267,8 @@ implemented car-following models in the subsection [\#Car-Following Models](#car
 * speedDev: écart-type du speedFactor (speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1)
 
 vitesse toujours inférieure à maxSpeed
+
+--default.speeddev 0 
 
 https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_and_vehicle_type_distributions
 Vehicle Type Distributions

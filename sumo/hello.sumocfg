@@ -13,4 +13,8 @@
   <random>
     <seed value="45"/>
   </random>
+
+  <gui_only>
+    <gui-settings-file value="hello.settings.xml"/>
+  </gui_only>
 </configuration>

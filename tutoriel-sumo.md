@@ -9,9 +9,9 @@ Table des matières TODO
 1. [Annexes](#annexes)
 
 # Introduction
-Le logiciel SUMO, pour "Simulation of Urban MObility", est un logiciel de simulation de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'agence aérospatiale allemande DLR.
+Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
-La plupart des fichiers sont des fichiers texte suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language).
+La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language).
 
 Fichiers indispensables: 
 * configuration de SUMO: fichier avec extension `.sumocfg`
@@ -20,7 +20,6 @@ Fichiers indispensables:
 
 exemple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html
 
-Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
 Références
 La documentation de référence de SUMO est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html).  
@@ -210,32 +209,29 @@ Les itinéraires peuvent être incomplets et prendre simplement la forme de lien
 ```
 Les attributs des "trip" et "flow" sont décrits complètement sur la [page décrivant le choix d'itinéraire par plus court chemin](https://sumo.dlr.de/docs/Demand/Shortest_or_Optimal_Path_Routing.html). 
 
-Pour résumer, il faut soit définir des véhicules avec des itinéraires complets, soit des flux avec des itinéraires complets, soit des déplacements ou des flux avec des origines et destinations, la simulation trouvant l'itinéraire complet de chaque véhicule lors de son exécution (ou les itinéraires peuvent être pré-calculés avec [duarouter](https://sumo.dlr.de/docs/Demand/Shortest_or_Optimal_Path_Routing.html)). 
+Pour résumer, il faut soit définir des véhicules avec des itinéraires complets, soit des flux avec des itinéraires complets, soit des déplacements ("trip") ou des flux avec des origines et destinations, la simulation trouvant l'itinéraire complet de chaque véhicule lors de son exécution (ou les itinéraires peuvent être pré-calculés avec [duarouter](https://sumo.dlr.de/docs/Demand/Shortest_or_Optimal_Path_Routing.html)). 
 
 Enfin, il existe d'autres solutions qui utilisent
-* des ensembles de liens constituant des zones (zones de trafic ou "traffic analysis zones") comme origine et destination des itinéraires;
-https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#traffic_assignement_zones_taz
-
-* des carrefours comme origine et destination. https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#routing_between_junctions
-
-
-
+* des [ensembles de liens constituant des zones](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#traffic_assignement_zones_taz) (zones de trafic ou "traffic analysis zones" utilisées en transport) comme origine et destination des itinéraires;
+* des [carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#routing_between_junctions) comme origine et destination. 
 
 Distributions d'itinéraires routeDistributions
 
 https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_distributions
 
 ### Définition des types de véhicules
+Un type de véhicule (élément "vtype") définit une catégorie de véhicule avec des attributs communs. L'exemple suivant montre la définition du "type1" de véhicule avec les paramètres standards utilisés dans le modèle de Stefan Krauss:
+```xml
+<routes>
+    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="70" color="blue"/>
+    <vehicle id="veh1" type="type1" depart="0">
+        <route edges="1to2 2to3"/>
+    </vehicle>
+</routes>
+```
+Ces paramètres définissent des caractéristiques physiques comme sa couleur, longueur et accélération maximale, et des paramètres du modèle de poursuite (attention à leur interprétation, il faut se renseigner sur le fonctionnement du modèle pour comprendre leur rôle). Le modèle de conduite utilisé fait partie des différents attributs d'un type de véhicule:   
 
-Si non-défini, un type de véhicule par défaut sera utilisé.
-
-Les types de véhicules sont définis par des éléments `vType`. Ils ont de nombreux attributs, les plus importants étant: 
-
-Available vType Attributes
-
-These values have the following meanings:
-
-| Attribute Name    | Value Type                        | Default                                                             | Description      |
+| Attribut  | Type de valeur                                                                    | Description                            |
 | ----------------- | --------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
 | **id**            | id (string)                       | \-                                                                  | The name of the vehicle type                                                                                                                                                                                           |
 | accel             | float                             | 2.6                                                                 | The acceleration ability of vehicles of this type (in m/s^2)                                                                                                                                                           |
@@ -268,6 +264,9 @@ These values have the following meanings:
 | minGapLat         | float                             | 0.6                                                                 | The desired minimum lateral gap when using the [sublane-model](Simulation/SublaneModel.md)                                                                                                                     |
 | maxSpeedLat       | float                             | 1.0                                                                 | The maximum lateral speed when using the [sublane-model](Simulation/SublaneModel.md)                                                                                                                           |
 | actionStepLength  | float                             | global default (defaults to the simulation step, configurable via **--default.action-step-length**) | The interval length for which vehicle performs its decision logic (acceleration and lane-changing). The given value is processed to the closest (if possible smaller) positive multiple of the simulation step length. |
+
+Si non-défini, un type de véhicule par défaut sera utilisé.
+
 
 Besides values which describe the vehicle's car-following properties,
 one can find definitions of the assigned vehicles' shapes, emissions,

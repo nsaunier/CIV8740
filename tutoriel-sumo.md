@@ -124,7 +124,7 @@ De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence
   <vehicle id="1" route="route0" depart="0" color="blue"/>
 </routes>
 ```
-Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Une route peut avoir un attribut "color" comme les véhicules (ci-dessous). 
+Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 
 
 Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (les éléments en gras sont requis): 
 
@@ -175,25 +175,20 @@ Et la définition de deux flux avec deux itinéraires, avec le second flux gén�
   <flow id="flow1" route="route1" begin="50" vehsPerHour="500" color="blue"/>
 </routes>
 ```
-Et enfin la définition de flux sans itinéraire, avec les attributs "from" et "to":
-```xml
-<routes>
-  <flow id="flow0" from="1to2" to="2to3" begin="0" vehsPerHour="1000" color="red"/>
-  <flow id="flow1" from="1to2" to="2to4" begin="50" vehsPerHour="500" color="blue"/>
-</routes>
-```
 Pour générer par exemple 1000 véh/h, soit un véhicule tous les 3.6 s, il est équivalent d'utiliser vehsPerHour="1000", period="3.6" et number="1000" avec begin="0" et end="3600" (dans le dernier cas, les véhicules ne seront simulés quand pendant 3600 s, alors qu'il est possible de définir l'intervalle de simulation indépendamment avec "vehsPerHour" et "period"). 
 
-Dans la réalité, les TIV entre véhicules ne sont pas égaux même lorsque le débit reste constant sur une longue périod de temps, mais varie autour de sa valeur moyenne. Cela peut être reproduit en utilisant l'attribut "probability":
+Dans la réalité, les TIV entre véhicules ne sont pas égaux, même lorsque le débit reste constant sur une longue période de temps, mais varient autour de la valeur moyenne. Cela peut être reproduit en utilisant l'attribut "probability":
 ```xml
 <routes>
-  <flow id="flow0" from="1to2" to="2to3" begin="0" probability="0.2" color="red"/>
-  <flow id="flow1" from="1to2" to="2to4" begin="0" probability="0.1" color="blue"/>
+  <route id="route0" edges="1to2 2to3"/>
+  <route id="route1" edges="1to2 2to4"/>
+  <flow id="flow0" route="route0" begin="0" probability="0.2" color="red"/>
+  <flow id="flow1" route="route1" begin="0" probability="0.1" color="blue"/>
 </routes>
 ```
 Dans ce cas, le flux "flow0" génère en moyenne 0.2 véh par seconde (le nombre de véhicules arrivant pendant n intervalles de 1 s suit la [loi binomiale de paramètre n et probability](https://sumo.dlr.de/docs/Simulation/Randomness.html#flows_with_a_random_number_of_vehicles)), soit 720 véh/h, et le flux "flow1" la moitié, soit 360 véh/h. 
 
-On peut noter qu'il est aussi possible de modifier de façon aléatoire les instants de départ de tous les véhicules de façon aléatoire avec le paramètre --random-depart-offset en ligne de commande ou en ajoutant la portion suivante dans le fichier de configuration `.sumocfg` (avec une graine d'initialisation de la simulation):
+On peut noter qu'il est aussi possible de modifier de façon aléatoire les instants de départ de tous les véhicules avec le paramètre --random-depart-offset en ligne de commande ou en ajoutant la portion suivante dans le fichier de configuration `.sumocfg` (avec une graine d'initialisation de la simulation):
 ```xml
 <random>
     <random-depart-offset value="5.0"/>
@@ -202,7 +197,29 @@ On peut noter qu'il est aussi possible de modifier de façon aléatoire les inst
 ```
 
 ### Itinéraires incomplets et distributions d'itinéraires
-Incomplete Routes (trips and flows)
+Les itinéraires peuvent être incomplets et prendre simplement la forme de liens d'origine et de destination avec les attributs "from" et "to", sans la liste complète des liens à parcourir. Dans ce cas, l'itinéraire assigné aux véhicules repose est le plus court chemin selon les conditions de circulation au début du déplacement (pour un "trip") ou du flux (pour un "flow"):
+```xml
+<routes>
+  <flow id="flow0" from="1to2" to="2to3" begin="0" vehsPerHour="1000" color="red"/>
+  <flow id="flow1" from="1to2" to="2to4" begin="50" vehsPerHour="500" color="blue"/>
+</routes>
+
+<routes>
+  <trip id="1" depart="0" from="1to2" to="2to3"/>
+</routes>
+```
+Les attributs des "trip" et "flow" sont décrits complètement sur la [page décrivant le choix d'itinéraire par plus court chemin](https://sumo.dlr.de/docs/Demand/Shortest_or_Optimal_Path_Routing.html). 
+
+Pour résumer, il faut soit définir des véhicules avec des itinéraires complets, soit des flux avec des itinéraires complets, soit des déplacements ou des flux avec des origines et destinations, la simulation trouvant l'itinéraire complet de chaque véhicule lors de son exécution (ou les itinéraires peuvent être pré-calculés avec [duarouter](https://sumo.dlr.de/docs/Demand/Shortest_or_Optimal_Path_Routing.html)). 
+
+Enfin, il existe d'autres solutions qui utilisent
+* des ensembles de liens constituant des zones (zones de trafic ou "traffic analysis zones") comme origine et destination des itinéraires;
+https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#traffic_assignement_zones_taz
+
+* des carrefours comme origine et destination. https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#routing_between_junctions
+
+
+
 
 Distributions d'itinéraires routeDistributions
 

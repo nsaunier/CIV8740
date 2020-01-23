@@ -90,7 +90,7 @@ Dans SUMO, un véhicule est défini par trois éléments:
 Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
 
 ### Définition des véhicules et itinéraires
-Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier d'itinéraires `.rou.xml`, par exemple `hello.rou.xml` pour notre exemple (voir la section #simulation pour le fichier de configuration sumo `.sumocfg` nécessaire pour exécuter une simulation avec ce fichier d'itinéraires et le fichier du réseau).
+Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier de demande de déplacement `.rou.xml`, par exemple `hello.rou.xml` pour notre exemple (voir la section [Simulation](#simulation) pour le fichier de configuration sumo `.sumocfg` nécessaire pour exécuter une simulation avec ce fichier d'itinéraires et le fichier du réseau).
 
 Une première façon consiste à définir un véhicule avec un itinéraire (pour lui seulement): 
 ```xml
@@ -218,16 +218,16 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 
 | Attribut  | Type de valeur | Valeur par défaut | Description  |
 | ----------------- | --------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
-| **id**            | id (string)                       | \-                                                                  | The name of the vehicle type                                                                                                                                                                                           |
-| accel             | float                             | 2.6                                                                 | The acceleration ability of vehicles of this type (in m/s^2)                                                                                                                                                           |
-| decel             | float                             | 4.5                                                                 | The deceleration ability of vehicles of this type (in m/s^2)                                                                                                                                                           |
-| apparentDecel     | float                             | `==decel`                                                           | The apparent deceleration of the vehicle as used by the standard model (in m/s^2). The follower uses this value as expected maximal deceleration of the leader.                                                        |
-| emergencyDecel    | float                             | `==decel`                                                           | The maximal physically possible deceleration for the vehicle (in m/s^2).                                                                                                                                               |
-| sigma             | float                             | 0.5                                                                 | [Car-following model](#car-following_models) parameter, see below                                                                                          |
-| tau               | float                             | 1.0                                                                 | [Car-following model](#car-following_models) parameter, see below                                                                                          |
-| length            | float                             | 5.0                                                                 | The vehicle's **netto**-length (length) (in m)                                                                                                                                                                         |
-| minGap            | float                             | 2.5                                                                 | Empty space after leader \[m\]                                                                                                                                                                                         |
-| maxSpeed          | float                             | 55.55 (200 km/h) for vehicles, 1.39 (5 km/h) for pedestrians        | The vehicle's maximum velocity (in m/s)                                                                                                                                                                                |
+| **id**            | id (string)                       | \-                                                                  | Identifiant du type de véhicule |
+| accel             | float                             | 2.6                                                                 | Capacité d'accélération des véhicules (m/s^2) |
+| decel             | float                             | 4.5                                                                 | Capacité de décélération des véhicules (m/s^2) |
+| apparentDecel     | float                             | `==decel`                                                           | Décélération apparent des véhicules selon la modèle standard (m/s^2); le suiveur utilise cette valeur comme décélération maximale attendue pour le meneur |
+| emergencyDecel    | float                             | `==decel`                                                           | Décélération maximale physiquement possible des véhicules (m/s^2) |
+| sigma             | float                             | 0.5                                                                 | Paramètre des [modèles de poursuite](#car-following_models), voir ci-dessous |
+| tau               | float                             | 1.0                                                                 | Paramètre des [modèles de poursuite](#car-following_models), voir ci-dessous |
+| length            | float                             | 5.0                                                                 | Longueur **nette** du véhicule (m) |
+| minGap            | float                             | 2.5                                                                 | Espace vide après le meneur (m) |
+| maxSpeed          | float                             | 55.55 m/s (200 km/h) pour les véhicules, 1.39 m/s (5 km/h) pour les piétons | Vitesse maximale des véhicules (m/s) |
 | speedFactor       | float                             | 1.0                                                                 | The vehicles expected multiplicator for lane speed limits                                                                                                                                                              |
 | speedDev          | float                             | 0.1                                                                 | The deviation of the speedFactor; see below for details (some vClasses use a different default)     |
 | color             | [RGB-color](#colors)   | "1,1,0" (yellow)                                                    | This vehicle type's color                                                                                                                                                                                              |
@@ -361,7 +361,8 @@ script avec graine sur ligne de commande et préfixe au nom des fichiers --outpu
 
 attributs et phénomènes aléatoires dans SUMO https://sumo.dlr.de/docs/Simulation/Randomness.html
 
-
+vitesse, TIV, 
+vType-attribute sigma (default 0.5). When this value is non-zero drivers will randomly vary their speed based on the RNG described above
 
 # Configuration des carrefours
 

@@ -229,8 +229,9 @@ Un type de véhicule (élément "vtype") définit une catégorie de véhicule av
     </vehicle>
 </routes>
 ```
-Ces paramètres définissent des caractéristiques physiques comme sa couleur, longueur et accélération maximale, et des paramètres du modèle de poursuite (attention à leur interprétation, il faut se renseigner sur le fonctionnement du modèle pour comprendre leur rôle). Le modèle de conduite utilisé fait partie des différents attributs d'un type de véhicule:   
-| Attribut  | Type de valeur | Valeur par défaut | Description                            |
+Ces paramètres définissent des caractéristiques physiques comme sa couleur, longueur et accélération maximale, et des paramètres du modèle de poursuite (attention à leur interprétation, il faut se renseigner sur le fonctionnement du modèle pour comprendre leur rôle). Le modèle de conduite utilisé fait partie des différents attributs d'un type de véhicule:
+
+| Attribut  | Type de valeur | Valeur par défaut | Description  |
 | ----------------- | --------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
 | **id**            | id (string)                       | \-                                                                  | The name of the vehicle type                                                                                                                                                                                           |
 | accel             | float                             | 2.6                                                                 | The acceleration ability of vehicles of this type (in m/s^2)                                                                                                                                                           |

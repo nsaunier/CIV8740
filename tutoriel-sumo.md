@@ -1,4 +1,7 @@
-Table des matières TODO
+Tutoriel pour le logiciel SUMO
+==============
+
+**Table des matières**
 1. [Introduction](#introduction)
 1. [Liste des outils](#liste-des-outils)
 1. [Réseaux de transport](#réseaux-de-transport)
@@ -8,51 +11,33 @@ Table des matières TODO
 1. [Collecte de données](#collecte-de-données)
 1. [Annexes](#annexes)
 
+Ce tutoriel est en développement actif dans le cadre du cours de Circulation CIV8740. 
+
 # Introduction
 Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
-La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language).
+La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language). Assurez-vous d'avoir un bon éditeur texte pour éditer ces fichiers directement, par exemple [Notepad++}(https://notepad-plus-plus.org/) sur Windows, [Atom](https://atom.io/) ou [emacs](https://www.gnu.org/software/emacs/) sur toutes les plateformes. Il est **très important** d'avoir des [compétences informatiques minimales](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html) de manipulation des fichiers textes, du format XML et de l'utilisation d'outils en ligne de commande pour utiliser SUMO.
 
-Fichiers indispensables: 
-* configuration de SUMO: fichier avec extension `.sumocfg`
-* réseau routier: fichier avec extension `.net.xml`
-* demande de déplacement (itinéraires): fichier avec extension `.rou.xml`
-
-exemple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html
-
-
-Références
-La documentation de référence de SUMO est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html).  
-
-Lien tutoriels SUMO
+La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html). Plusieurs tutoriels en anglais sont aussi [disponibles}(https://sumo.dlr.de/docs/Tutorials.html).
 
 # Liste des outils
-De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront 
-* netedit https://sumo.dlr.de/docs/NETEDIT 
-* netconvert https://sumo.dlr.de/docs/NETCONVERT 
-* netgenerate
-* sumo-gui interface graphique de simulation (configuration http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files)
-* sumo outil de simulation en ligne de commande
+De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront
+* [netedit](https://sumo.dlr.de/docs/NETEDIT): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
+* [netconvert](https://sumo.dlr.de/docs/NETCONVERT): outil en ligne de commande de conversion des éléments de réseau au format SUMO
+* [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html): outil en ligne de commande de génération de réseaux abstraits
+* plusieurs outils d'affectation de la demande au réseau comme duarouter, jtrrouter, etc.
+* [sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html): interface graphique de simulation
+* [sumo](https://sumo.dlr.de/docs/SUMO.html): outil en ligne de commande de simulation
 
-TODO 
-insérer dans fichier sumocfg
+Le processus général pour construire un scénario SUMO est décrit dans un [tutoriel](https://sumo.dlr.de/docs/Tutorials/ScenarioGuide.html). Les deux tutoriels suivant montrent pas à pas comment construire un petit scénario SUMO:
+* ["Hello World"](https://sumo.dlr.de/docs/Tutorials/Hello_World.html)
+* ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html)
 
-```xml
-<gui_only>
-    <gui-settings-file value="hello.settings.xml"/>
-</gui_only>
-```
-
-fichier pour la configuration de la vue de sumo-gui
-```xml
-<viewsettings>
-    <viewport y="0" x="250" zoom="100"/>
-    <delay value="100"/>
-    <scheme name="real world"/>
-</viewsettings>
-```
-
-Compétences informatiques: fichiers texte, XML, ligne de commande https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html
+Un scénario nécessite au moins les fichiers suivants: 
+* un fichier de configuration de SUMO, avec extension `.sumocfg`
+* un réseau routier, avec extension `.net.xml`
+* un fichier de demande de déplacement, incluant des itinéraires, avec extension `.rou.xml`
+Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simulation avec les outils sumo ou sumo-gui, en leur indiquant directement d'utiliser les fichiers réseau et demande, ou en utilisant un fichier de configuration qui fait référence à ces deux fichiers et inclue d'autres paramètres de simulation. Cela est présenté en détail dans la section [Simulation](#simulation).
 
 # Réseaux de transport
 Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des réseaux d'[OpenStreetMap](https://www.openstreetmap.org/). 
@@ -326,6 +311,28 @@ définir itinéraire, puis ajouter la demande (trip, vehicle, flow ou route flow
 autres: jtrrouter, dfrouter https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html
 
 # Simulation
+https://sumo.dlr.de/docs/Simulation/Basic_Definition.html
+
+soit -r -n en ligne de commande, soit via fichier de configuration sumocfg
+
+insérer dans fichier sumocfg
+
+```xml
+<gui_only>
+    <gui-settings-file value="hello.settings.xml"/>
+</gui_only>
+```
+configuration http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files
+fichier pour la configuration de la vue de sumo-gui
+```xml
+<viewsettings>
+    <viewport y="0" x="250" zoom="100"/>
+    <delay value="100"/>
+    <scheme name="real world"/>
+</viewsettings>
+```
+
+
 réplications
 
 exécuter sans mode graphique avec sumo

@@ -369,38 +369,8 @@ Une façon alternative de définir la distribution des speedFactor est d'utilise
 ```
 On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
 
-## 
-
 # Simulation
-https://sumo.dlr.de/docs/Simulation/Basic_Definition.html
-
-soit -r -n en ligne de commande, soit via fichier de configuration sumocfg
-
-insérer dans fichier sumocfg
-
-```xml
-<gui_only>
-    <gui-settings-file value="hello.settings.xml"/>
-</gui_only>
-```
-configuration http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files
-fichier pour la configuration de la vue de sumo-gui
-```xml
-<viewsettings>
-    <viewport y="0" x="250" zoom="100"/>
-    <delay value="100"/>
-    <scheme name="real world"/>
-</viewsettings>
-```
-
-
-réplications
-
-exécuter sans mode graphique avec sumo
-`sumo --seed 42 -c hello.sumocfg`
-
-script avec graine sur ligne de commande et préfixe au nom des fichiers --output-prefix
-
+Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html) sont un fichier réseau et un fichier de demande de déplacement. Pour notre exemple ["hello"](sumo/), une simulation peut être exécutée avec la commande ```$ sumo -n hello.net.xml -r hello.rou.xml``` (ou en remplaçant sumo par sumo-gui pour l'interface graphique de simulation montrant l'animation des véhicules). Il est préférable d'utiliser un fichier de configuration `.sumocfg` qui permet de spécifier d'autres paramètres: 
 ```xml
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
   <input>
@@ -417,13 +387,32 @@ script avec graine sur ligne de commande et préfixe au nom des fichiers --outpu
   <random>
     <seed value="45"/>
   </random>
+
+  <gui_only>
+    <gui-settings-file value="hello.settings.xml"/>
+  </gui_only>
 </configuration>
 ```
+Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1 s), la graine d'initialisation ("seed") pour les générateurs de nombres aléatoires et une référence à un [fichier de configuration de l'interface de sumo-gui](http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files) (qui peut permettre [d'afficher une image en arrière plan](https://sumo.dlr.de/docs/SUMO-GUI.html#using_decals_within_sumo-gui) pour tracer le réseau dans netedit): 
+```xml
+<viewsettings>
+    <viewport y="0" x="250" zoom="100"/>
+    <delay value="100"/>
+    <scheme name="real world"/>
+</viewsettings>
+```
 
-attributs et phénomènes aléatoires dans SUMO https://sumo.dlr.de/docs/Simulation/Randomness.html
+Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
+* distributions d'itinéraires et de types de véhicules
+* distributions de vitesses
+* distributions de paramètres des modèles des usagers (modèle de poursuite, etc.)
+* distributions des instants de départ
+* distributions des TIV
+* distributions d'attributs des flux, déplacements et véhicules
 
-vitesse, TIV, 
-vType-attribute sigma (default 0.5). When this value is non-zero drivers will randomly vary their speed based on the RNG described above
+Il est alors indispensables de réaliser plusieurs exécutions (réplications) d'une simulation avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Un premier exemple de script Linux [`replicate.sh`](sumo/replicate.sh) est fourni pour effectuer plusieurs simulation avec des graines différentes. 
+
+<!--script avec graine sur ligne de commande et préfixe au nom des fichiers --output-prefix-->
 
 # Configuration des carrefours
 

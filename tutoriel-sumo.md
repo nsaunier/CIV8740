@@ -78,9 +78,6 @@ netgenerate
 Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
-TODO: comprendre choix des vitesses, tirages aléatoires
-
-
 ## Types de demandes et données
 Dans SUMO, un véhicule est défini par trois éléments: 
 * un type de véhicule qui décrit ses propriétés physiques;
@@ -256,21 +253,15 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 | maxSpeedLat       | float                             | 1.0                                                                 | Vitesse latérale maximale dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
 | actionStepLength  | float                             | valeur globale par défaut (pas de simulation, configurable via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite). |
 
-Si non-défini, un type de véhicule par défaut sera utilisé.
+Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées sur le [wiki](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
 
-
-Besides values which describe the vehicle's car-following properties,
-one can find definitions of the assigned vehicles' shapes, emissions,
-and assignment to abstract vehicle classes. These concepts will be
-described in the following. Also, you may find further descriptions of
-implemented car-following models in the subsection [\#Car-Following Models](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
 
 gestion des vitesses
 
 * speedFactor: multiplicateur de la limite de vitesse d'une voie, peut suivre une distribution avec la syntaxe "norm(mean, dev)" ou "normc(mean, dev, min, max)"
 * speedDev: écart-type du speedFactor (speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1)
 
-
+type de véhicule avec dist de vitesses
 
 * longueur
 * accélération et décélération

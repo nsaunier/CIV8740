@@ -85,27 +85,20 @@ Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne
 D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 
 ### Script intégré d'importation
-Le script `osmWebWizard.py` situé dans le répertoire `tools` permet d'importer des données d'OpenStreetMap et de générer une demande de déplacement via une interface Internet. 
+Le script [`osmWebWizard.py`](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html) situé dans le répertoire `tools` permet d'importer des données d'OpenStreetMap et de générer une demande de déplacement via une interface Internet. 
 ![Export OSM](images/osm-web-wizard.png)
-Après génération du scénario, il est automatiquement ouvert dans sumo-gui. Il est généralement nécessaire de retoucher le réseau avec netedit. 
+Après génération du scénario, il est automatiquement ouvert dans sumo-gui. Il est généralement nécessaire de retoucher le réseau avec netedit. Tous les fichiers sont sauvés dans un répertoire au format du jour et de l'heure du type `yyyy-mm-dd-hh-mm-ss`. 
 
 ## Créer un réseau géométrique
-netgenerate
-
-Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
+Il est possible de générer des réseaux géométriques avec l'outil [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html) en ligne de commande,  en forme 
+* de toile d'araignée: ```$ netgenerate -s --spider.arm-number 10 -o network.net.xml```;
+* de grille: ```$ netgenerate -g --grid.number 10 -o network.net.xml```;
+* de réseau aléatoire: ```$ netgenerate -r --rand.iterations 2000 -o network.net.xml```. 
 
 ## Créer et modifier un réseau
-Cette sous-section explique comment créer un réseau à partir de rien et comment modifier un réseau existant avec l'utilitaire `netedit`.
+Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit](https://sumo.dlr.de/docs/NETEDIT.html). La page de l'outil inclut un guide d'utilisation avec des vues de l'interface. Le tutoriel ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html) comprend aussi des explications pas à pas pour utiliser netedit. netedit a plusieurs modes et les actions effectuées à la souris dépendent du mode sélectionné: "inspect", "delete", "select", "move", etc. Un aspect intéressant du mode "inspect" est qu'il permet de voir les attributs des éléments d'un réseau, mais aussi d'éditer ces attributs: il est par exemple possible de modifier les coordonnées de noeuds ou le nombre de voies d'un lien directement de cette façon. 
 
-explication dans l'exemple hello Exemple le plus simple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html 
-
-Graphes: noeuds et arrêtes 
-
-
-
-TODO gérer les limites de vitesse, comprendre les dead-end, functional edge
-
-
+Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue ci-dessous. 
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 
@@ -375,6 +368,8 @@ Une façon alternative de définir la distribution des speedFactor est d'utilise
 </routes>
 ```
 On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
+
+## 
 
 # Simulation
 https://sumo.dlr.de/docs/Simulation/Basic_Definition.html

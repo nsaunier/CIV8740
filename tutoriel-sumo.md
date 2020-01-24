@@ -181,6 +181,14 @@ On peut noter qu'il est aussi possible de modifier de façon aléatoire les inst
   <seed value="42"/>
 </random>
 ```
+Il est aussi possible de faire varier les débits dans le temps avec plusieurs flux sur des intervalles de temps successifs:
+```xml
+<routes>
+  <route id="route0" edges="1to2 2to3"/>
+  <flow id="flow0" route="route0" begin="0" end="100" vehsPerHour="1000" color="red"/>
+  <flow id="flow1" route="route0" begin="100" end="200" vehsPerHour="200" color="blue"/>
+</routes>
+```
 
 ## Itinéraires incomplets et distributions d'itinéraires
 Les itinéraires peuvent être incomplets et prendre simplement la forme de liens d'origine et de destination avec les attributs "from" et "to", sans la liste complète des liens à parcourir. Dans ce cas, l'itinéraire assigné aux véhicules repose est le plus court chemin selon les conditions de circulation au début du déplacement (pour un "trip") ou du flux (pour un "flow"):
@@ -290,7 +298,7 @@ La distribution peut utiliser des types définis préalablement:
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
 ```
-Et de combiner avec des distributions d'itinéraires:
+Il est enfin possible de combiner des distributions de types de véhicule avec des distributions d'itinéraires:
 ```xml
 <routes>
   <vTypeDistribution id="typedist1">
@@ -304,44 +312,39 @@ Et de combiner avec des distributions d'itinéraires:
   <flow id="flow0" type="typedist1" route="routedist1" begin="0" vehsPerHour="1500"/>
 </routes>
 ```
-
-## Distributions de vitesses
-
-inc deparSpeed
-
-* speedFactor: multiplicateur de la limite de vitesse d'une voie, peut suivre une distribution avec la syntaxe "norm(mean, dev)" ou "normc(mean, dev, min, max)"
-* speedDev: écart-type du speedFactor (speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1)
-
-type de véhicule avec dist de vitesses
-
-
---default.speeddev 0 
-
-https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_and_vehicle_type_distributions
-Vehicle Type Distributions
+Il est aussi possible d'utiliser les classes abstraites de véhicule:
 ```xml
-<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <vTypeDistribution id="typedist1">
-        <vType id="type1" accel="0.8" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="27" color="red" probability="0.9"/>
-        <vType id="type2" accel="1.8" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="20" color="blue" probability="0.1"/>
-    </vTypeDistribution>
-    <flow id="flow_0" begin="0.00" from="gneE0" to="gneE0" end="3600.00" vehsPerHour="8000" type="typedist1" departSpeed="desired" departLane="random"/>
+<routes>
+  <vTypeDistribution id="typedist1">
+    <vType id="type1" vclass="passenger" color="blue" probability="2"/>
+    <vType id="type2" vclass="truck" length="10" color="red" probability="1"/>
+  </vTypeDistribution>
+  <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
 ```
+Ces classes existantes ont des valeurs par défaut pour l'attribut speedDev (écart-type du speedFactor):
+* passenger (default vClass): 0.1
+* pedestrian: 0.1
+* bicycle: 0.1
+* truck, trailer, coach, delivery, taxi: 0.05
+* tram, rail_urban, rail, rail_electric, rail_fast: 0
+* emergency: 0
+* everything else: 0.1
 
+## Distributions de vitesses
+Tous les conducteurs n'ont pas le même comportement de choix de leur vitesse, ce qui est représenté dans SUMO par la distribution de l'attribut speedFactor de chaque véhicule, obtenu par l'utilisation des paramètres speedFactor et speedDev des types de véhicule. Il est possible d'utiliser l'option globable de sumo `--default.speeddev` comme valeur par défaut. Il est donc possible d'éliminer la variabilité des choix de vitesses par les conducteur en fixant cette valeur à 0. 
 
-variation des debits dans le temps
-référence https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
+Une façon alternative de définir la distribution des speedFactor est d'utiliser la notation "norm(mean, dev)" or "normc(mean, dev, min, max)" pour des distributions normales de paramètres mean et dev, la seconde version étant tronquée entre min et max. Utiliser speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1.
 
-
-## Outils
-script python
-
-interface netedit (voir tuto-netedit)
-
-définir itinéraire, puis ajouter la demande (trip, vehicle, flow ou route flow (ce qu'on veut?))
-
-autres: jtrrouter, dfrouter https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html
+```xml
+<routes>
+  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="normc(1.0,0.1,0.6,1.3)" maxSpeed="30" color="blue"/>
+  <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="normc(0.7,0.1,0.5,0.9)" maxSpeed="20" color="red"/>
+  <flow id="flow1" type="type1" from="1to2" to="2to3" begin="0" departSpeed="desired" vehsPerHour="1000"/>
+  <flow id="flow2" type="type2" from="1to2" to="2to4" begin="0" departSpeed="desired" vehsPerHour="500"/>
+</routes>
+```
+On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
 
 # Simulation
 https://sumo.dlr.de/docs/Simulation/Basic_Definition.html

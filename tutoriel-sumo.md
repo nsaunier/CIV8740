@@ -18,7 +18,7 @@ Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) es
 
 La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language). Assurez-vous d'avoir un bon éditeur texte pour éditer ces fichiers directement, par exemple [Notepad++}(https://notepad-plus-plus.org/) sur Windows, [Atom](https://atom.io/) ou [emacs](https://www.gnu.org/software/emacs/) sur toutes les plateformes. Il est **très important** d'avoir des [compétences informatiques minimales](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html) de manipulation des fichiers textes, du format XML et de l'utilisation d'outils en ligne de commande pour utiliser SUMO.
 
-La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html). Plusieurs tutoriels en anglais sont aussi [disponibles}(https://sumo.dlr.de/docs/Tutorials.html).
+La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles}(https://sumo.dlr.de/docs/Tutorials.html).
 
 # Liste des outils
 De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront
@@ -40,29 +40,46 @@ Un scénario nécessite au moins les fichiers suivants:
 Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simulation avec les outils sumo ou sumo-gui, en leur indiquant directement d'utiliser les fichiers réseau et demande, ou en utilisant un fichier de configuration qui fait référence à ces deux fichiers et inclue d'autres paramètres de simulation. Cela est présenté en détail dans la section [Simulation](#simulation).
 
 # Réseaux de transport
-Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des réseaux d'[OpenStreetMap](https://www.openstreetmap.org/). 
+Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
 La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
 
-Un réseau SUMO est constitué de liens ("egde"), voies ("lane") et carrefours ("junction"). TODO définir
-https://sumo.dlr.de/docs/NETEDIT.html#network_elements
+Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Le format et ces éléments sont décrits sur le [wiki](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
 
-et connection
+Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
-construire réseau jouet `hello`, base des autres exemples, à partir d'un fichier de liens (arrêtes) et carrefours (noeuds)
+Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce tutoriel, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué de quatre noeuds:
+```xml
+<nodes>
+  <node id="1" x="-250.0" y="0.0" />
+  <node id="2" x="+250.0" y="0.0" />
+  <node id="3" x="+500.0" y="100.0" />
+  <node id="4" x="+500.0" y="-100.0" />
+</nodes>
+```
+Et de trois liens:
+```xml
+<edges>
+    <edge from="1" id="1to2" to="2" />
+    <edge from="2" id="2to3" to="3" />
+    <edge from="2" id="2to4" to="4" />
+</edges>
+```
+Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
 
 
 ## Importer un réseau d'OpenStreetMap
+Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
+
 ### Téléchargement d'OpenStreetMap et importation simple
+![Export OSM](images/osm-export.png)
 
 ### Script intégré d'importation
 
 
 ## Créer et modifier un réseau
-Cette sous-section expliquer comment créer un réseau à partir de rien et comment modifier un réseau existant avec l'utilitaire `netedit`.
-
-Revenons tout d'abord sur la structure de données décrivant un réseau de transport et la façon dont il 
+Cette sous-section explique comment créer un réseau à partir de rien et comment modifier un réseau existant avec l'utilitaire `netedit`.
 
 explication dans l'exemple hello Exemple le plus simple https://sumo.dlr.de/docs/Tutorials/Hello_Sumo.html 
 
@@ -317,7 +334,7 @@ Il est aussi possible d'utiliser les classes abstraites de véhicule:
 <routes>
   <vTypeDistribution id="typedist1">
     <vType id="type1" vclass="passenger" color="blue" probability="2"/>
-    <vType id="type2" vclass="truck" length="10" color="red" probability="1"/>
+    <vType id="type2" vclass="truck" length="10" guiShape="delivery" color="red" probability="1"/>
   </vTypeDistribution>
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>

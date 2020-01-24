@@ -78,7 +78,6 @@ netgenerate
 Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
-## Types de demandes et données
 Dans SUMO, un véhicule est défini par trois éléments: 
 * un type de véhicule qui décrit ses propriétés physiques;
 * l'itinéraire que le véhicule suivra;
@@ -86,7 +85,7 @@ Dans SUMO, un véhicule est défini par trois éléments:
 
 Un déplacement ("trip") correspond au déplacement d'un véhicule d'un endroit à un autre, défini par un lien de départ, un lien d'arrivée et un instant de départ. Un itinéraire ("route") est un déplacement généralisé, c'est-à-dire une définition d'itinéraire qui contient non seulement les liens de départ et d'arrivée, mais aussi les liens par lesquels le véhicule passera. 
 
-### Définition des véhicules et itinéraires
+## Définition des véhicules et itinéraires
 Une simulation SUMO a besoin d'itinéraires pour les déplacements des véhicules. Il peuvent être générés de [différentes façons](https://sumo.dlr.de/docs/Demand/Introduction_to_demand_modelling_in_SUMO.html). Ces éléments sont définis dans un fichier de demande de déplacement `.rou.xml`, par exemple `hello.rou.xml` pour notre exemple (voir la section [Simulation](#simulation) pour le fichier de configuration sumo `.sumocfg` nécessaire pour exécuter une simulation avec ce fichier d'itinéraires et le fichier du réseau).
 
 Une première façon consiste à définir un véhicule avec un itinéraire (pour lui seulement): 
@@ -134,7 +133,7 @@ Vous pouvez trouver plus de détails sur les attributs de dépat et d'arrivée (
 * "speedLimit": La limite de vitesse de la voie est utilisée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
 Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. Tout type de véhicule (défini ci-dessous) ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
 
-### Définition de flux de véhicules
+## Définition de flux de véhicules
 Il est possible de définir des flux de véhicules ("flow"). Ils ont les mêmes paramètres que les véhicules, à l'exception de l'instant de départ ("depart"). Leur identifiant est "flowId.runningNumber". Les véhicules entrent sur le réseau avec des temps inter-véhiculaires égaux ou distribués aléatoirement pendant un intervalle donné. Ils ont les attributs supplémentaires suivants: 
 
 | Attribut  | Type de valeur                                                                    | Description                            |
@@ -178,12 +177,12 @@ Dans ce cas, le flux "flow0" génère en moyenne 0.2 véh par seconde (le nombre
 On peut noter qu'il est aussi possible de modifier de façon aléatoire les instants de départ de tous les véhicules avec le paramètre --random-depart-offset en ligne de commande ou en ajoutant la portion suivante dans le fichier de configuration `.sumocfg` (avec une graine d'initialisation de la simulation):
 ```xml
 <random>
-    <random-depart-offset value="5.0"/>
-    <seed value="42"/>
+  <random-depart-offset value="5.0"/>
+  <seed value="42"/>
 </random>
 ```
 
-### Itinéraires incomplets et distributions d'itinéraires
+## Itinéraires incomplets et distributions d'itinéraires
 Les itinéraires peuvent être incomplets et prendre simplement la forme de liens d'origine et de destination avec les attributs "from" et "to", sans la liste complète des liens à parcourir. Dans ce cas, l'itinéraire assigné aux véhicules repose est le plus court chemin selon les conditions de circulation au début du déplacement (pour un "trip") ou du flux (pour un "flow"):
 ```xml
 <routes>
@@ -203,18 +202,26 @@ Enfin, il existe d'autres solutions qui utilisent
 * des [ensembles de liens constituant des zones](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#traffic_assignement_zones_taz) (zones de trafic ou "traffic analysis zones" utilisées en transport) comme origine et destination des itinéraires;
 * des [carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#routing_between_junctions) comme origine et destination. 
 
-Distributions d'itinéraires routeDistributions
+Il est aussi possible d'utiliser des distributions d'itinéraires avec des probabilities pour chaque itinéraires (tirés lors de la simulation):
+```xml
+<routes>
+  <routeDistribution id="routedist1">
+    <route id="route0" edges="1to2 2to3" color="red" probability="2"/>
+    <route id="route1" edges="1to2 2to4" color="blue" probability="1"/>
+  </routeDistribution>
+  <flow id="flow0" route="routedist1" begin="0" vehsPerHour="1000"/>
+</routes>
+```
+L'exemple est équivalent au précédent en terme de proportion des véhicules suivant les deux itinéraires. Il n'est pas nécessaire que la somme des probabilités soit égale à 1, les probabilités sont proportionnelles aux nombres données. 
 
-https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#route_distributions
-
-### Définition des types de véhicules
+## Définition de types de véhicules
 Un type de véhicule (élément "vtype") définit une catégorie de véhicule avec des attributs communs. L'exemple suivant montre la définition du "type1" de véhicule avec les paramètres standards utilisés dans le modèle de Stefan Krauss:
 ```xml
 <routes>
-    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="70" color="blue"/>
-    <vehicle id="veh1" type="type1" depart="0">
-        <route edges="1to2 2to3"/>
-    </vehicle>
+  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="30" color="blue"/>
+  <vehicle id="veh1" type="type1" depart="0">
+    <route edges="1to2 2to3"/>
+  </vehicle>
 </routes>
 ```
 Ces paramètres définissent des caractéristiques physiques comme sa couleur, longueur et accélération maximale, et des paramètres du modèle de poursuite (attention à leur interprétation, il faut se renseigner sur le fonctionnement du modèle pour comprendre leur rôle). Le modèle de conduite utilisé fait partie des différents attributs d'un type de véhicule:
@@ -251,25 +258,62 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 | latAlignment      | string                            | center                                                            | Positionnement latéral préféré dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) ("left", "right", "center", "compact", "nice", "arbitrary") |
 | minGapLat         | float                             | 0.6                                                                 | Créneau minimal désiré dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
 | maxSpeedLat       | float                             | 1.0                                                                 | Vitesse latérale maximale dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
-| actionStepLength  | float                             | valeur globale par défaut (pas de simulation, configurable via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite). |
+| actionStepLength  | float                             | valeur globale par défaut (égale au pas de simulation, configurable via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite). |
 
 Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées sur le [wiki](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
 
+L'exemple suivant définit deux types de véhicules:
+```xml
+<routes>
+  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue"/>
+  <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red"/>
+  <flow id="flow1" type="type1" from="1to2" to="2to3" begin="0" vehsPerHour="1000"/>
+  <flow id="flow2" type="type2" from="1to2" to="2to4" begin="0" vehsPerHour="500"/>
+</routes>
+```
+Il est aussi possible d'utiliser des distributions de types de véhicule (tirées lors de la simulation) en ajoutant un attribut probability pour chaque type:
+```xml
+<routes>
+  <vTypeDistribution id="typedist1">
+    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+    <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+  </vTypeDistribution>
+  <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
+</routes>
+```
+La distribution peut utiliser des types définis préalablement:
+```xml
+<routes>
+  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+  <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+  <vTypeDistribution id="typedist1" vTypes="type1 type2"/>
+  <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
+</routes>
+```
+Et de combiner avec des distributions d'itinéraires:
+```xml
+<routes>
+  <vTypeDistribution id="typedist1">
+    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+    <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+  </vTypeDistribution>
+  <routeDistribution id="routedist1">
+    <route id="route0" edges="1to2 2to3" color="red" probability="2"/>
+    <route id="route1" edges="1to2 2to4" color="blue" probability="1"/>
+  </routeDistribution>
+  <flow id="flow0" type="typedist1" route="routedist1" begin="0" vehsPerHour="1500"/>
+</routes>
+```
 
-gestion des vitesses
+## Distributions de vitesses
+
+inc deparSpeed
 
 * speedFactor: multiplicateur de la limite de vitesse d'une voie, peut suivre une distribution avec la syntaxe "norm(mean, dev)" ou "normc(mean, dev, min, max)"
 * speedDev: écart-type du speedFactor (speedFactor=norm(1, 0.1) est identique à speedFactor = 1 et speedDev = 0.1)
 
 type de véhicule avec dist de vitesses
 
-* longueur
-* accélération et décélération
-* laneChangeModel
-* carFollowModel, avec paramètres sigma et tau
-* maxSpeed (m/s)
-
-vitesse toujours inférieure à maxSpeed
 
 --default.speeddev 0 
 
@@ -289,18 +333,6 @@ Vehicle Type Distributions
 variation des debits dans le temps
 référence https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes 
 
-flow sur route
-<flow id="flow_0" type="DEFAULT_VEHTYPE" begin="0.00" end="3600.00" vehsPerHour="360.00">
-  <route id="route_0" edges="458694445.389 458694446#0 458694444" color="blue"/>
-</flow>
-
-<flow id="flow_0" type="DEFAULT_VEHTYPE" begin="0.00" end="3600.00" probability="0.1">
-  <route id="route_0" edges="458694445.389 458694446#0 458694444" color="blue"/>
-</flow>
-
-vehsPerHour float(#/h) number of vehicles per hour, equally spaced (not together with period or probability) period float(s) insert equally spaced vehicles at that period (not together with vehsPerHour or probability) probability float([0,1]) probability for emitting a vehicle each second (not together with vehsPerHour or period), see also Simulation/Randomness number int(#) total number of vehicles, equally spaced 
-
-incomplete routes with TAZ
 
 ## Outils
 script python

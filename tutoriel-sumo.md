@@ -28,15 +28,16 @@ De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#inclu
 * plusieurs outils d'affectation de la demande au réseau comme duarouter, jtrrouter, etc.
 * [sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html): interface graphique de simulation
 * [sumo](https://sumo.dlr.de/docs/SUMO.html): outil en ligne de commande de simulation
+* plusieurs outils comme des scripts Python pour faciliter la création de fichier ou leur conversion, disponibles dans le répertoire `tools` du dossier `Sumo` (répertoire d'installation sur Windows, `/usr/share/sumo/` sur Linux). 
 
 Le processus général pour construire un scénario SUMO est décrit dans un [tutoriel](https://sumo.dlr.de/docs/Tutorials/ScenarioGuide.html). Les deux tutoriels suivant montrent pas à pas comment construire un petit scénario SUMO:
 * ["Hello World"](https://sumo.dlr.de/docs/Tutorials/Hello_World.html)
 * ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html)
 
 Un scénario nécessite au moins les fichiers suivants: 
-* un fichier de configuration de SUMO, avec extension `.sumocfg`
-* un réseau routier, avec extension `.net.xml`
-* un fichier de demande de déplacement, incluant des itinéraires, avec extension `.rou.xml`
+* un fichier de configuration de SUMO, avec extension `.sumocfg`;
+* un réseau routier, avec extension `.net.xml`;
+* un fichier de demande de déplacement, incluant des itinéraires, avec extension `.rou.xml`.
 Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simulation avec les outils sumo ou sumo-gui, en leur indiquant directement d'utiliser les fichiers réseau et demande, ou en utilisant un fichier de configuration qui fait référence à ces deux fichiers et inclue d'autres paramètres de simulation. Cela est présenté en détail dans la section [Simulation](#simulation).
 
 # Réseaux de transport
@@ -48,7 +49,8 @@ Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane"
 
 Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
-Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce tutoriel, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué de quatre noeuds:
+Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce tutoriel, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
+* de quatre noeuds:
 ```xml
 <nodes>
   <node id="1" x="-250.0" y="0.0" />
@@ -57,7 +59,7 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
   <node id="4" x="+500.0" y="-100.0" />
 </nodes>
 ```
-Et de trois liens:
+* et de trois liens:
 ```xml
 <edges>
     <edge from="1" id="1to2" to="2" />
@@ -68,15 +70,29 @@ Et de trois liens:
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
 
-
 ## Importer un réseau d'OpenStreetMap
 Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
 ### Téléchargement d'OpenStreetMap et importation simple
+La méthode consiste à naviguer sur le site d'[OpenStreetMap](https://www.openstreetmap.org/), trouver la zone dont on désire importer les données et à les exporter en cliquant sur le bouton tel que montré dans l'image ci-dessous. 
 ![Export OSM](images/osm-export.png)
+Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```
+
+Le fichier obtenu `.osm` est ensuite converti en fichier réseau SUMO `.net.xml` avec la commande: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
+
+Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
+
+D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 
 ### Script intégré d'importation
+Le script `osmWebWizard.py` situé dans le répertoire `tools` permet d'importer des données d'OpenStreetMap et de générer une demande de déplacement via une interface Internet. 
+![Export OSM](images/osm-web-wizard.png)
+Après génération du scénario, il est automatiquement ouvert dans sumo-gui. Il est généralement nécessaire de retoucher le réseau avec netedit. 
 
+## Créer un réseau géométrique
+netgenerate
+
+Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 ## Créer et modifier un réseau
 Cette sous-section explique comment créer un réseau à partir de rien et comment modifier un réseau existant avec l'utilitaire `netedit`.
@@ -89,10 +105,7 @@ Graphes: noeuds et arrêtes
 
 TODO gérer les limites de vitesse, comprendre les dead-end, functional edge
 
-## Créer un réseau géométrique
-netgenerate
 
-Exemples de réseaux http://sumo.dlr.de/wiki/Data/Networks
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 

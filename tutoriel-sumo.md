@@ -419,9 +419,22 @@ Il est alors indispensables de réaliser plusieurs exécutions (réplications) d
 
 
 # Collecte de données
-https://sumo.dlr.de/docs/Simulation/Output 
-conversion des xml /usr/share/sumo/tools/xml/xml2csv.py
+Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
+Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel":
+```xml
+  <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
+  <instantInductionLoop id="instantind1" lane="1to2_0" pos="300" file="instantinduction1.xml"/>
+  <inductionLoop id="lanedet1" lane="1to2_0" pos="300" length="100" freq="100" file="lane1.xml"/>
+  <edgeData id="edge1" freq="100" file="edgedata.xml" />
+  <laneData id="lane1" freq="100" file="lanedata.xml" />
+```
+Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
+```xml
+  <additional-files value = "hello.add.xml"/>
+```
+
+Il existe un outil (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format csv.
 
 ## Réseau
 info véhicules --tripinfo-output

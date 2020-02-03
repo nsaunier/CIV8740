@@ -423,11 +423,13 @@ Les nombreuses méthodes pour extraire des données d'une simulation sont décri
 
 Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel":
 ```xml
+<additional>
   <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
   <instantInductionLoop id="instantind1" lane="1to2_0" pos="300" file="instantinduction1.xml"/>
   <inductionLoop id="lanedet1" lane="1to2_0" pos="300" length="100" freq="100" file="lane1.xml"/>
   <edgeData id="edge1" freq="100" file="edgedata.xml" />
   <laneData id="lane1" freq="100" file="lanedata.xml" />
+</additional>
 ```
 
 TODO décrire les types de capteurs importants

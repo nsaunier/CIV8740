@@ -429,12 +429,15 @@ Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesqu
   <edgeData id="edge1" freq="100" file="edgedata.xml" />
   <laneData id="lane1" freq="100" file="lanedata.xml" />
 ```
+
+TODO décrire les types de capteurs importants
+
 Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
 ```xml
   <additional-files value = "hello.add.xml"/>
 ```
 
-Il existe un outil (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format csv.
+Il existe un outil (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format csv. Sur Linux, la commande suivante ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` générera le fichier csv `induction1.csv` qui contient toutes les information du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
 
 ## Réseau
 info véhicules --tripinfo-output

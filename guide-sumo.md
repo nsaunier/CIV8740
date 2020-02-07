@@ -420,44 +420,47 @@ Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plu
 # Collecte de données
 Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
-Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel". Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
+Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel" `.add.xml`. Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
 ```xml
   <additional-files value = "hello.add.xml"/>
 ```
 
 Les fichiers des données sont sauvés au format XML qui peut être lu dans un éditeur texte, mais ne sont pas très faciles à manipuler (quelques [outils](https://sumo.dlr.de/docs/Tools/Visualization.html#plot_tripinfo_distributionspy) existent pour la visualisation). Il existe un outil en ligne de commande (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format CSV (pour ouvrir dans un chiffrier). Les commandes ```python "C:\Program Files (x86)\Eclipse\Sumo\tools\xml\xml2csv.py" .\seed42-induction2.xml``` (Windows) et ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` (Linux) (à ajuster selon le chemin d'installation du script) génèrent le fichier CSV `induction1.csv` qui contient toutes les données du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
 
+## Réseau
+Il est possible de collecter des données pour tout le réseau de plusieurs façons: 
+* [données agrégées sur les déplacements de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html) ("trip info") avec l'option `--tripinfo-output` passée en ligne de commande, incluant des informations sur le temps de parcours et le temps perdu,
+* données de circulation agrégées sur la simulation comme le temps perdu total sont obtenues avec l'option `--duration-log.statistics` passée en ligne de commande,
+* [données de trajectoires de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/AmitranOutput.html),
+* [données brutes de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/RawDump.html) incluant les données de trajectoires,
+* [données macroscopiques par lien ou voie](https://sumo.dlr.de/docs/Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html) pour tout le réseau.
 
-
+Pour ce dernier cas, il faut configurer le fichier additionnel `.add.xml` de la façon suivante: 
 ```xml
 <additional>
-  <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
-  <instantInductionLoop id="instantind1" lane="1to2_0" pos="300" file="instantinduction1.xml"/>
-  <inductionLoop id="lanedet1" lane="1to2_0" pos="300" length="100" freq="100" file="lane1.xml"/>
   <edgeData id="edge1" freq="100" file="edgedata.xml" />
   <laneData id="lane1" freq="100" file="lanedata.xml" />
 </additional>
 ```
+L'attribut id est l'identifiant de la mesure, l'attribut freq contrôle la fréquence à laquelle les données sont agrégées et l'attribut file le nom du fichier XML où les données sont sauvées. Les données sont collectées pour tous les liens ou toutes les voies du réseau et pour chaque lien ou réseau, incluent pour chaque intervalle la densité (véh/km), le taux d'occupation (%), la vitesse moyenne spatiale (m/s), les nombres de véhicules entrés ("entered") et sortis ("left") du lien ou de la voie
 
-TODO décrire les types de capteurs importants
+## Capteurs virtuels
+Plusieurs [types de capteurs](https://sumo.dlr.de/docs/Simulation/Output.html#simulated_detectors) peuvent être simulés dans SUMO. Le premier type et le plus utile est le capteur ponctuel de type boucle magnétique. Il existe en deux versions, selon que l'on désire obtenir des données microscopiques ou macroscopiques. Les premières s'obtiennent par un capteur ["instantInductionLoop"](https://sumo.dlr.de/docs/Simulation/Output/Instantaneous_Induction_Loops_Detectors.html), les secondes par un capteur ["inductionLoop"](https://sumo.dlr.de/docs/Simulation/Output/Induction_Loops_Detectors_(E1).html), configurés de la façon suivantes dans le fichier additionnel `.add.xml`: 
+```xml
+<additional>
+  <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
+  <instantInductionLoop id="instantind1" lane="1to2_0" pos="300" file="instantinduction1.xml"/>
+</additional>
+```
+Étant ponctuels, ces capteurs doivent être placés sur une voie spécifique via l'attribut lane à une position spécifique via l'attribut pos. Le capteur "instantInductionLoop" n'a pas attribut de fréquence enregistre le passage de chaque véhicule, sa vitesse (m/s), ainsi que le créneau au véhicule précédent (s) lorsque le véhicule avance sur le capteur et le temps d'occupation (s) lorsque le véhicule dépasse le capteur. Le capteur "inductionLoop" relève pour chaque intervalle de temps le débit (véh/h), le taux d'occupation (%) et les vitesses moyennes temporelle et spatiale (m/s).
 
+Les [capteurs de zone de voie ("laneAreaDetector")](https://sumo.dlr.de/docs/Simulation/Output/Lanearea_Detectors_(E2).html) simulent des capteurs spatiaux de type caméra vidéo pour une plusieurs voies successives et relèvent vitesses, taux d'occupation, temps perdu et des informations sur les files d'attente et les arrêts dans la zone surveillée.  
 
-
-
-
-## Réseau
-info véhicules --tripinfo-output
-données sur la ligne de commande: --duration-log.statistics
-
-## Lien
-
-
-## Capteurs
-
-
+Les [capteurs pour plusieurs entrées et sorties ("entryExitDetector")](https://sumo.dlr.de/docs/Simulation/Output/Multi-Entry-Exit_Detectors_(E3).html) permettent de collecter des données pour une zone décrite par plusieurs points d'entrée et de sorties (un point étant défini par sa position sur une voie) comme un carrefour. Les données obtenues sont similaires aux capteurs de zone de voie. 
 
 # Annexes
 ## Classification routière d'OpenStreetMap
-Les types de route utilisés dans OSM avec leurs descriptions sont disponibles sur https://wiki.openstreetmap.org/wiki/Key:highway.
+Les types de route utilisés dans OSM avec leurs descriptions sont disponibles sur https://wiki.openstreetmap.org/wiki/Key:highway. 
+
 Les types de routes sont les suivants dans la région de Montréal: Highway.motorway, 
 Highway.primary, Highway.secondary, Highway.tertiary, Highway.residential, Highway.service, Highway.pedestrian, Highway.footway, Railway.rail, Highway.cycleway, Railway.subway. On rencontre moins souvent des Highway.track, Highway.path, Highway.steps, Highway.primary.link, Highway.secondary.link, Highway.motorway.link, Highway.unclassified. 

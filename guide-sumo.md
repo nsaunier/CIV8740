@@ -420,7 +420,7 @@ Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plu
 # Collecte de données
 Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
-Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel" `.add.xml`. Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
+Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel" `.add.xml`. Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou spécifié dans le fichier de configuration `.sumocfg`:
 ```xml
   <additional-files value = "hello.add.xml"/>
 ```

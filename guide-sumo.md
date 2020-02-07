@@ -5,9 +5,9 @@ Guide pour le logiciel SUMO
 1. [Introduction](#introduction)
 1. [Liste des outils](#liste-des-outils)
 1. [Réseaux de transport](#réseaux-de-transport)
+1. [Configuration des carrefours](#configuration-des-carrefours)
 1. [Demande de déplacements](#demande-de-déplacements)
 1. [Simulation](#simulation)
-1. [Configuration des carrefours](#configuration-des-carrefours)
 1. [Collecte de données](#collecte-de-données)
 1. [Annexes](#annexes)
 
@@ -78,7 +78,9 @@ La méthode consiste à naviguer sur le site d'[OpenStreetMap](https://www.opens
 ![Export OSM](images/osm-export.png)
 Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```
 
-Le fichier obtenu `.osm` est ensuite converti en fichier réseau SUMO `.net.xml` avec la commande: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
+Le fichier obtenu `.osm` est peut soit être importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles lors de l'importation par netedit dans plusieurs onglet. 
+
+La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
 
@@ -99,6 +101,9 @@ Il est possible de générer des réseaux géométriques avec l'outil [netgenera
 Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit](https://sumo.dlr.de/docs/NETEDIT.html). La page de l'outil inclut un guide d'utilisation avec des vues de l'interface. Le tutoriel ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html) comprend aussi des explications pas à pas pour utiliser netedit. netedit a plusieurs modes et les actions effectuées à la souris dépendent du mode sélectionné: "inspect", "delete", "select", "move", etc. Un aspect intéressant du mode "inspect" est qu'il permet de voir les attributs des éléments d'un réseau, mais aussi d'éditer ces attributs: il est par exemple possible de modifier les coordonnées de noeuds ou le nombre de voies d'un lien directement de cette façon. 
 
 Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue ci-dessous. 
+
+# Configuration des carrefours
+
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 
@@ -414,7 +419,6 @@ Il est alors indispensables de réaliser plusieurs exécutions (réplications) d
 
 <!--script avec graine sur ligne de commande et préfixe au nom des fichiers --output-prefix-->
 
-# Configuration des carrefours
 
 
 

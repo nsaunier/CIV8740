@@ -9,3 +9,5 @@ do
     echo '--------------------'
     sumo --seed $seed -c hello.sumocfg --tripinfo-output trips.info.xml --duration-log.statistics --output-prefix seed$seed-
 done
+# exemple avec parallel
+# parallel -j 5 sumo --seed {} -c hello.sumocfg --duration-log.statistics --output-prefix seed{}- ::: {42..52..2}

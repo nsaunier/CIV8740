@@ -1,4 +1,4 @@
-Tutoriel pour le logiciel SUMO
+Guide pour le logiciel SUMO
 ==============
 
 **Table des matières**
@@ -11,10 +11,10 @@ Tutoriel pour le logiciel SUMO
 1. [Collecte de données](#collecte-de-données)
 1. [Annexes](#annexes)
 
-Ce tutoriel est en développement actif dans le cadre du cours de Circulation CIV8740. 
+Ce guide est en développement actif dans le cadre du cours de Circulation CIV8740. 
 
 # Introduction
-Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce tutoriel se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
+Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce guide se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
 La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language). Assurez-vous d'avoir un bon éditeur texte pour éditer ces fichiers directement, par exemple [Notepad++](https://notepad-plus-plus.org/) sur Windows, [Atom](https://atom.io/) ou [emacs](https://www.gnu.org/software/emacs/) sur toutes les plateformes. Il est **très important** d'avoir des [compétences informatiques minimales](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html) de manipulation des fichiers textes, du format XML et de l'utilisation d'outils en ligne de commande pour utiliser SUMO.
 
@@ -49,7 +49,7 @@ Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane"
 
 Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
-Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce tutoriel, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
+Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce guide, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
 * de quatre noeuds:
 ```xml
 <nodes>

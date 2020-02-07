@@ -408,21 +408,27 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 ```
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
-* distributions d'itinéraires et de types de véhicules
-* distributions de vitesses
-* distributions de paramètres des modèles des usagers (modèle de poursuite, etc.)
-* distributions des instants de départ
-* distributions des TIV
-* distributions d'attributs des flux, déplacements et véhicules
+* distributions d'itinéraires et de types de véhicules,
+* distributions de vitesses,
+* distributions de paramètres des modèles des usagers (modèle de poursuite, etc.),
+* distributions des instants de départ,
+* distributions des TIV,
+* distributions d'attributs des flux, déplacements et véhicules. 
 
-Il est alors indispensables d'exécutions une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Un exemple de script Linux [`replicate.sh`](sumo/replicate.sh) est fourni pour effectuer plusieurs simulation avec des graines différentes. 
-
-<!--script avec graine sur ligne de commande et préfixe au nom des fichiers --output-prefix-->
+Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Un exemple de script Linux [`replicate.sh`](sumo/replicate.sh) est fourni pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas du script `replicate.sh`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
 
 # Collecte de données
 Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
-Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel":
+Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel". Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
+```xml
+  <additional-files value = "hello.add.xml"/>
+```
+
+Les fichiers des données sont sauvés au format XML qui peut être lu dans un éditeur texte, mais ne sont pas très faciles à manipuler (quelques [outils](https://sumo.dlr.de/docs/Tools/Visualization.html#plot_tripinfo_distributionspy) existent pour la visualisation). Il existe un outil en ligne de commande (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format CSV (pour ouvrir dans un chiffrier). Les commandes ```python "C:\Program Files (x86)\Eclipse\Sumo\tools\xml\xml2csv.py" .\seed42-induction2.xml``` (Windows) et ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` (Linux) (à ajuster selon le chemin d'installation du script) génèrent le fichier CSV `induction1.csv` qui contient toutes les données du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
+
+
+
 ```xml
 <additional>
   <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
@@ -435,12 +441,9 @@ Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesqu
 
 TODO décrire les types de capteurs importants
 
-Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou dans le fichier de configuration `.sumocfg`:
-```xml
-  <additional-files value = "hello.add.xml"/>
-```
 
-Il existe un outil (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format csv. Sur Linux, la commande suivante ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` générera le fichier csv `induction1.csv` qui contient toutes les information du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
+
+
 
 ## Réseau
 info véhicules --tripinfo-output

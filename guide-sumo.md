@@ -217,6 +217,21 @@ Il est aussi possible de faire varier les débits dans le temps avec plusieurs f
   <flow id="flow1" route="route0" begin="100" end="200" vehsPerHour="200" color="blue"/>
 </routes>
 ```
+Il est aussi possible de combiner plusieurs flux pour plusieurs itinéraires sans répéter des informations qui ne changent pas d'un flux à l'autre:
+```xml
+<routes>
+  <route id="route0" edges="1to2 2to3"/>
+  <route id="route1" edges="1to2 2to4"/>
+  <interval begin="0" end="100" departSpeed="desired">
+    <flow id="flow0" route="route0" vehsPerHour="1000" color="red"/>
+    <flow id="flow1" route="route1" vehsPerHour="500" color="blue"/>
+  </interval>
+  <interval begin="100" end="200" departSpeed="desired">
+    <flow id="flow2" route="route0" vehsPerHour="500" color="red"/>
+    <flow id="flow3" route="route1" vehsPerHour="100" color="blue"/>
+  </interval>
+</routes>
+```
 
 ## Itinéraires incomplets et distributions d'itinéraires
 Les itinéraires peuvent être incomplets et prendre simplement la forme de liens d'origine et de destination avec les attributs "from" et "to", sans la liste complète des liens à parcourir. Dans ce cas, l'itinéraire assigné aux véhicules repose est le plus court chemin selon les conditions de circulation au début du déplacement (pour un "trip") ou du flux (pour un "flow"):
@@ -442,21 +457,26 @@ Pour ce dernier cas, il faut configurer le fichier additionnel `.add.xml` de la 
   <laneData id="lane1" freq="100" file="lanedata.xml" />
 </additional>
 ```
-L'attribut id est l'identifiant de la mesure, l'attribut freq contrôle la fréquence à laquelle les données sont agrégées et l'attribut file le nom du fichier XML où les données sont sauvées. Les données sont collectées pour tous les liens ou toutes les voies du réseau et pour chaque lien ou réseau, incluent pour chaque intervalle la densité (véh/km), le taux d'occupation (%), la vitesse moyenne spatiale (m/s), les nombres de véhicules entrés ("entered") et sortis ("left") du lien ou de la voie
+L'attribut id est l'identifiant de la mesure, l'attribut freq contrôle la fréquence à laquelle les données sont agrégées et l'attribut file le nom du fichier XML où les données sont sauvées. Les données sont collectées pour tous les liens ou toutes les voies du réseau et pour chaque lien ou réseau, incluent pour chaque intervalle la densité (véh/km), le taux d'occupation (%), la vitesse moyenne spatiale (m/s), les nombres de véhicules entrés ("entered") et sortis ("left") du lien ou de la voie. Parmi les autres attributs, l'attribut excludeEmpty mis à vrai (excludeEmpty="true") permet de ne sauver des données que pour les liens ou voies avec des observations (c-à-d. sur lesquels des véhicules circulent). 
 
 ## Capteurs virtuels
-Plusieurs [types de capteurs](https://sumo.dlr.de/docs/Simulation/Output.html#simulated_detectors) peuvent être simulés dans SUMO. Le premier type et le plus utile est le capteur ponctuel de type boucle magnétique. Il existe en deux versions, selon que l'on désire obtenir des données microscopiques ou macroscopiques. Les premières s'obtiennent par un [capteur "instantInductionLoop"](https://sumo.dlr.de/docs/Simulation/Output/Instantaneous_Induction_Loops_Detectors.html), les secondes par un [capteur "inductionLoop"](https://sumo.dlr.de/docs/Simulation/Output/Induction_Loops_Detectors_(E1).html), configurés de la façon suivantes dans le fichier additionnel `.add.xml`: 
+Plusieurs [types de capteurs](https://sumo.dlr.de/docs/Simulation/Output.html#simulated_detectors) peuvent être simulés dans SUMO. Le premier type et le plus utile est le capteur ponctuel de type boucle magnétique. Il existe en deux versions, selon que l'on désire obtenir des données microscopiques ou macroscopiques. Les premières s'obtiennent par un [capteur "instantInductionLoop"](https://sumo.dlr.de/docs/Simulation/Output/Instantaneous_Induction_Loops_Detectors.html), les secondes par un [capteur "inductionLoop" ou E1](https://sumo.dlr.de/docs/Simulation/Output/Induction_Loops_Detectors_(E1).html) (noté aussi "e1Detector" lorsque créé avec netedit), configurés de la façon suivantes dans le fichier additionnel `.add.xml`: 
 ```xml
 <additional>
   <inductionLoop id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
   <instantInductionLoop id="instantind1" lane="1to2_0" pos="300" file="instantinduction1.xml"/>
 </additional>
 ```
+```xml
+<additional>
+  <e1Detector id="ind1" lane="1to2_0" pos="300" freq="100" file="induction1.xml"/>
+</additional>
+```
 Étant ponctuels, ces capteurs doivent être placés sur une voie spécifique via l'attribut lane à une position spécifique via l'attribut pos (m). Le capteur "instantInductionLoop" n'a pas attribut de fréquence enregistre le passage de chaque véhicule, sa vitesse (m/s), ainsi que le créneau au véhicule précédent (s) lorsque le véhicule avance sur le capteur et le temps d'occupation (s) lorsque le véhicule dépasse le capteur. Le capteur "inductionLoop" relève pour chaque intervalle de temps le débit (véh/h), le taux d'occupation (%) et les vitesses moyennes temporelle et spatiale (m/s).
 
-Les [capteurs de zone de voie ("laneAreaDetector")](https://sumo.dlr.de/docs/Simulation/Output/Lanearea_Detectors_(E2).html) simulent des capteurs spatiaux de type caméra vidéo pour une plusieurs voies successives et relèvent vitesses (m/s), taux d'occupation (%), temps perdu (s) et des informations sur les files d'attente et les arrêts dans la zone surveillée.  
+Les [capteurs de zone de voie ("laneAreaDetector") ou E2](https://sumo.dlr.de/docs/Simulation/Output/Lanearea_Detectors_(E2).html) simulent des capteurs spatiaux de type caméra vidéo pour une plusieurs voies successives et relèvent vitesses (m/s), taux d'occupation (%), temps perdu (s) et des informations sur les files d'attente et les arrêts dans la zone surveillée.  
 
-Les [capteurs pour plusieurs entrées et sorties ("entryExitDetector")](https://sumo.dlr.de/docs/Simulation/Output/Multi-Entry-Exit_Detectors_(E3).html) permettent de collecter des données pour une zone décrite par plusieurs points d'entrée et de sorties (un point étant défini par sa position sur une voie) comme un carrefour. Les données obtenues sont similaires aux capteurs de zone de voie. 
+Les [capteurs pour plusieurs entrées et sorties ("entryExitDetector") ou E3](https://sumo.dlr.de/docs/Simulation/Output/Multi-Entry-Exit_Detectors_(E3).html) permettent de collecter des données pour une zone décrite par plusieurs points d'entrée et de sorties (un point étant défini par sa position sur une voie) comme un carrefour. Les données obtenues sont similaires aux capteurs de zone de voie. 
 
 # Annexes
 ## Classification routière d'OpenStreetMap

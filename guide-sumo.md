@@ -217,21 +217,6 @@ Il est aussi possible de faire varier les débits dans le temps avec plusieurs f
   <flow id="flow1" route="route0" begin="100" end="200" vehsPerHour="200" color="blue"/>
 </routes>
 ```
-Il est aussi possible de combiner plusieurs flux pour plusieurs itinéraires sans répéter des informations qui ne changent pas d'un flux à l'autre:
-```xml
-<routes>
-  <route id="route0" edges="1to2 2to3"/>
-  <route id="route1" edges="1to2 2to4"/>
-  <interval begin="0" end="100" departSpeed="desired">
-    <flow id="flow0" route="route0" vehsPerHour="1000" color="red"/>
-    <flow id="flow1" route="route1" vehsPerHour="500" color="blue"/>
-  </interval>
-  <interval begin="100" end="200" departSpeed="desired">
-    <flow id="flow2" route="route0" vehsPerHour="500" color="red"/>
-    <flow id="flow3" route="route1" vehsPerHour="100" color="blue"/>
-  </interval>
-</routes>
-```
 
 ## Itinéraires incomplets et distributions d'itinéraires
 Les itinéraires peuvent être incomplets et prendre simplement la forme de liens d'origine et de destination avec les attributs "from" et "to", sans la liste complète des liens à parcourir. Dans ce cas, l'itinéraire assigné aux véhicules repose est le plus court chemin selon les conditions de circulation au début du déplacement (pour un "trip") ou du flux (pour un "flow"):

@@ -389,6 +389,10 @@ Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulat
     <step-length value="0.1"/>
   </time>
   
+  <processing>
+    <step-method.ballistic value="true"/>
+  </processing>
+  
   <random>
     <seed value="45"/>
   </random>
@@ -407,7 +411,7 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 </viewsettings>
 ```
 
-Il faut noter que le [temps de perception et réaction, appelé pas de temps les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction à une valeur plus grande. 
+Il faut noter que le [temps de perception et réaction, appelé pas de temps les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction à une valeur plus grande (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). 
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
 * distributions d'itinéraires et de types de véhicules,

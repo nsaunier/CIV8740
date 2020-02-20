@@ -254,7 +254,7 @@ L'exemple est équivalent au précédent en terme de proportion des véhicules s
 Un type de véhicule (élément "vtype") définit une catégorie de véhicule avec des attributs communs. L'exemple suivant montre la définition du "type1" de véhicule avec les paramètres standards utilisés dans le modèle de Stefan Krauss:
 ```xml
 <routes>
-  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="30" color="blue"/>
+  <vType id="type1" minGap="2.5" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="30" color="blue"/>
   <vehicle id="veh1" type="type1" depart="0">
     <route edges="1to2 2to3"/>
   </vehicle>
@@ -301,8 +301,8 @@ Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera 
 L'exemple suivant définit deux types de véhicules:
 ```xml
 <routes>
-  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue"/>
-  <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red"/>
+  <vType id="type1" accel="2.6" decel="4.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue"/>
+  <vType id="type2" accel="1.3" decel="2.3" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red"/>
   <flow id="flow1" type="type1" from="1to2" to="2to3" begin="0" vehsPerHour="1000"/>
   <flow id="flow2" type="type2" from="1to2" to="2to4" begin="0" vehsPerHour="500"/>
 </routes>
@@ -311,8 +311,8 @@ Il est aussi possible d'utiliser des distributions de types de véhicule (tirée
 ```xml
 <routes>
   <vTypeDistribution id="typedist1">
-    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
-    <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+    <vType id="type1" accel="2.6" decel="4.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+    <vType id="type2" accel="1.3" decel="2.3" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
   </vTypeDistribution>
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
@@ -320,8 +320,8 @@ Il est aussi possible d'utiliser des distributions de types de véhicule (tirée
 La distribution peut utiliser des types définis préalablement:
 ```xml
 <routes>
-  <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
-  <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+  <vType id="type1" accel="2.6" decel="4.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+  <vType id="type2" accel="1.3" decel="2.3" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
   <vTypeDistribution id="typedist1" vTypes="type1 type2"/>
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
@@ -330,8 +330,8 @@ Il est enfin possible de combiner des distributions de types de véhicule avec d
 ```xml
 <routes>
   <vTypeDistribution id="typedist1">
-    <vType id="type1" accel="2.6" decel="4.5" sigma="0.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
-    <vType id="type2" accel="1.3" decel="2.3" sigma="0.5" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
+    <vType id="type1" accel="2.6" decel="4.5" length="5" speedFactor="1.0" speedDev="0.1" maxSpeed="30" color="blue" probability="2"/>
+    <vType id="type2" accel="1.3" decel="2.3" length="10" speedFactor="0.7" speedDev="0.1" maxSpeed="20" color="red" probability="1"/>
   </vTypeDistribution>
   <routeDistribution id="routedist1">
     <route id="route0" edges="1to2 2to3" color="red" probability="2"/>
@@ -408,8 +408,6 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 ```
 
 Il faut noter que le [temps de perception et réaction, appelé pas de temps les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction à une valeur plus grande. 
-
-https://github.com/nsaunier/CIV8740/blob/master/guide-sumo.md
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
 * distributions d'itinéraires et de types de véhicules,

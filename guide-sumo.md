@@ -272,7 +272,7 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 | sigma             | float                             | 0.5                                                                 | Paramètre des [modèles de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), voir ci-dessous |
 | tau               | float (s)                            | 1.0                                                                 | Paramètre des [modèles de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), voir ci-dessous |
 | length            | float                             | 5.0                                                                 | Longueur **nette** du véhicule (m) |
-| minGap            | float                             | 2.5                                                                 | Espace vide après le meneur (m) |
+| minGap            | float                             | 2.5                                                                 | Créneau avec le meneur à l'arrêt (m) |
 | maxSpeed          | float                             | 55.55 m/s (200 km/h) pour les véhicules, 1.39 m/s (5 km/h) pour les piétons | Vitesse maximale des véhicules (m/s) |
 | speedFactor       | float                             | 1.0                                                                 | Multiplicateur de la limite de vitesse de la voie pour les véhicules |
 | speedDev          | float                             | 0.1                                                                 | Écart-type du speedFactor; voir ci-dessous pour les détails (certaines vClass ont une valeur par défaut différente) |
@@ -350,14 +350,6 @@ Il est aussi possible d'utiliser les classes abstraites de véhicule:
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
 ```
-Ces classes existantes ont des valeurs par défaut pour l'attribut speedDev (écart-type du speedFactor):
-* passenger (default vClass): 0.1
-* pedestrian: 0.1
-* bicycle: 0.1
-* truck, trailer, coach, delivery, taxi: 0.05
-* tram, rail_urban, rail, rail_electric, rail_fast: 0
-* emergency: 0
-* everything else: 0.1
 
 ## Distributions de vitesses
 Tous les conducteurs n'ont pas le même comportement de choix de leur vitesse, ce qui est représenté dans SUMO par la distribution de l'attribut speedFactor de chaque véhicule, obtenu par l'utilisation des paramètres speedFactor et speedDev des types de véhicule. Il est possible d'utiliser l'option globable de sumo `--default.speeddev` comme valeur par défaut. Il est donc possible d'éliminer la variabilité des choix de vitesses par les conducteur en fixant cette valeur à 0. 
@@ -373,6 +365,20 @@ Une façon alternative de définir la distribution des speedFactor est d'utilise
 </routes>
 ```
 On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
+
+Les classes abstraites de véhicule existantes ont des valeurs par défaut pour l'attribut speedDev (écart-type du speedFactor):
+* passenger (default vClass): 0.1
+* pedestrian: 0.1
+* bicycle: 0.1
+* truck, trailer, coach, delivery, taxi: 0.05
+* tram, rail_urban, rail, rail_electric, rail_fast: 0
+* emergency: 0
+* everything else: 0.1
+
+## Modèles de circulation
+Le comportement des usagers dans SUMO repose sur trois modèles principaux: un [modèle de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), un [modèle de changement de voie](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#lane-changing_models) et un [modèle pour les carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#junction_model_parameters). Il existe différents types de modèles pour les deux premiers, définis respectivement par les attributs "carFollowModel" et "laneChangeModel" dans un type de véhicule. 
+
+Le modèle utilisé par défaut dans SUMO est le [modèle de Stefan Krauss](https://sumo.dlr.de/pdf/KraussDiss.pdf). C'est un modèle à distance de sécurité, soit un modèle dans lequel chaque véhicule cherche à atteindre sa vitesse désirée, tout en gardant un espace suffisant au véhicule meneur de sorte à éviter une collision si le conducteur meneur freine. Le modèle dépend d'au moins cinq paramètres (définis dans un type de véhicule), notés "accel", "decel", "minGap", "sigma" et "tau". 
 
 # Simulation
 Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html) sont un fichier réseau et un fichier de demande de déplacement. Pour notre exemple ["hello"](sumo/), une simulation peut être exécutée avec la commande ```$ sumo -n hello.net.xml -r hello.rou.xml``` (ou en remplaçant sumo par sumo-gui pour l'interface graphique de simulation montrant l'animation des véhicules). Il est préférable d'utiliser un fichier de configuration `.sumocfg` qui permet de spécifier d'autres paramètres: 

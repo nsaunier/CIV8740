@@ -441,7 +441,7 @@ Les fichiers des données sont sauvés au format XML qui peut être lu dans un �
 
 ## Réseau
 Il est possible de collecter des données pour tout le réseau de plusieurs façons: 
-* [données agrégées sur les déplacements de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html) ("trip info") avec l'option `--tripinfo-output` passée en ligne de commande, incluant des informations sur le temps de parcours et le temps perdu,
+* [données agrégées sur les déplacements de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html) ("trip info") avec l'option `--tripinfo-output` passée en ligne de commande ou en ajoutant `<tripinfo-output value = "trip.info.xml"/>` dans le fichier de configuration `.sumocfg`, incluant des informations sur le temps de parcours et le retard,
 * données de circulation agrégées sur la simulation comme le temps perdu total sont obtenues avec l'option `--duration-log.statistics` passée en ligne de commande,
 * [données de trajectoires de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/AmitranOutput.html),
 * [données brutes de tous les véhicules](https://sumo.dlr.de/docs/Simulation/Output/RawDump.html) incluant les données de trajectoires,

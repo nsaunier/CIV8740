@@ -481,3 +481,5 @@ Les types de route utilisés dans OSM avec leurs descriptions sont disponibles s
 
 Les types de routes sont les suivants dans la région de Montréal: Highway.motorway, 
 Highway.primary, Highway.secondary, Highway.tertiary, Highway.residential, Highway.service, Highway.pedestrian, Highway.footway, Railway.rail, Highway.cycleway, Railway.subway. On rencontre moins souvent des Highway.track, Highway.path, Highway.steps, Highway.primary.link, Highway.secondary.link, Highway.motorway.link, Highway.unclassified. 
+## Autre sujets
+Les type files permettent de faire des modifications en groupe d'attributs de plusieurs éléments. <!-- voir tuto ayoub Une autre méthode basées sur des fichiers type.xml permet de réaliser des modifications de grandes envergures (vitesse des tronçons par exemple), sans passer par NetEdit. -->

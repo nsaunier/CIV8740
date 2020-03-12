@@ -47,7 +47,7 @@ La configuration des carrefours (mouvement permis, priorités et types de contr�
 
 Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Le format et ces éléments sont décrits sur le [wiki](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
 
-## Format des liens et carrefours
+## Attributs des liens et carrefours
 Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html), à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
 Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce guide, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
@@ -181,6 +181,45 @@ Il existe trois niveaux de contrôle à un carrefour:
 * l'attribution explicite de la priorité par un panneau de cédez le passage ou d'arrêt;
 * les feux de circulation.
 
+Les types de carrefours sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
+
+
+- `priority`: Vehicles on a low-priority
+  edge have to wait until vehicles on a high-priority edge have passed
+  the junction.
+- `traffic_light`: The junction is
+  controlled by a traffic light (priority rules are used to avoid
+  collisions if conflicting links have green light at the same time).
+- `right_before_left`: Vehicles will let
+  vehicles coming from their right side pass.
+- `unregulated`: The junction is completely
+  unregulated - all vehicles may pass without braking; Collision
+  detection on the intersection is disabled but collisions beyond the
+  intersection will detected and are likely to occur.
+- `traffic_light_unregulated`: The
+  junction is controlled by a traffic light without any further rules.
+  This may cause collision if unsafe signal plans are used. Note, that
+  collisions within the intersection will never be detected.
+- `priority_stop`: This works like a
+  *priority*-junction but vehicles on minor links alway have to stop
+  before passing
+- `allway_stop`: This junction works like
+  an [*All-way stop*](https://en.wikipedia.org/wiki/All-way_stop)
+- `rail_signal`: This junction is
+  controlled by a [rail signal](../Simulation/Rail_signals.md).
+  This type of junction/control is only useful for rails.
+- `zipper`: This junction connects edges
+  where the number of lanes decreases and traffic needs to merge
+  [zipper-style (late merging)](https://en.wikipedia.org/wiki/Merge_%28traffic%29).
+- `rail_crossing`: This junction models a
+  rail road crossing. It will allow trains to pass unimpeded and will
+  restrict vehicles via traffic signals when a train is approaching..
+- `traffic_light_right_on_red`: The
+  junction is controlled by a traffic light as for type
+  *traffic_light*. Additionally, right-turning vehicles may drive in
+  any phase whenever it is safe to do so (after stopping once). This
+  behavior is known as
+  [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red).
 
 
 priorité en fonction de débit

@@ -50,7 +50,7 @@ Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane"
 Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
 Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce guide, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
-* de quatre noeuds:
+* de quatre noeuds (fichier `hello.nod.xml`):
 ```xml
 <nodes>
   <node id="1" x="-250.0" y="0.0" />
@@ -59,7 +59,7 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
   <node id="4" x="+500.0" y="-100.0" />
 </nodes>
 ```
-* et de trois liens:
+* et de trois liens (fichier `hello.edg.xml`):
 ```xml
 <edges>
     <edge from="1" id="1to2" to="2" />

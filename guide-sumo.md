@@ -103,6 +103,38 @@ Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit
 Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue ci-dessous. 
 
 # Configuration des carrefours
+Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet "carrefour" est disponible dans le [répertoire sumo](sumo). Il est constitué 
+* de cinq noeuds (fichier `carrefour.nod.xml`):
+```xml
+<nodes>
+  <node id="center" x="0.0" y="0.0" />
+  <node id="east" x="100.0" y="0.0" />
+  <node id="north" x="0.0" y="100.0" />
+  <node id="west" x="-100.0" y="0.0" />
+  <node id="south" x="0.0" y="-100.0" />
+</nodes>
+```
+* et de huit liens (fichier `carrefour.edg.xml`):
+```xml
+<edges>
+    <edge from="center" id="outwest" to="west" />
+    <edge from="center" id="outeast" to="east" />
+    <edge from="center" id="outnorth" to="north" />
+    <edge from="center" id="outsouth" to="south" />
+    <edge from="west" id="inwest" to="center" />
+    <edge from="east" id="ineast" to="center" />
+    <edge from="north" id="innorth" to="center" />
+    <edge from="south" id="insouth" to="center" />
+</edges>
+```
+Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
+```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-internal-links --no-turnarounds true```
+
+Il existe trois niveaux de contrôle à un carrefour: 
+* les règles de la route (par défaut);
+* l'attribution explicite de la priorité par un panneau de cédez le passage ou d'arrêt;
+* les feux de circulation.
+
 
 
 # Demande de déplacements

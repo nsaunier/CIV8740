@@ -1,0 +1,10 @@
+<edges>
+    <edge from="center" id="outwest" to="west" />
+    <edge from="center" id="outeast" to="east" />
+    <edge from="center" id="outnorth" to="north" />
+    <edge from="center" id="outsouth" to="south" />
+    <edge from="west" id="inwest" to="center" />
+    <edge from="east" id="ineast" to="center" />
+    <edge from="north" id="innorth" to="center" />
+    <edge from="south" id="insouth" to="center" />
+</edges>

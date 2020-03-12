@@ -128,7 +128,8 @@ Pour cette section, on crée un petit carrefour à quatre branches, avec une voi
 </edges>
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-internal-links --no-turnarounds true```
+```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
+Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "saute" le centre du carrefour lorsqu'ils le traversent. 
 
 Il existe trois niveaux de contrôle à un carrefour: 
 * les règles de la route (par défaut);

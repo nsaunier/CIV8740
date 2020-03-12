@@ -43,14 +43,15 @@ Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simu
 # Réseaux de transport
 Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
-La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
+La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans la [section suivante](#configuration-des-carrefours). 
 
 Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Le format et ces éléments sont décrits sur le [wiki](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
 
-Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
+## Format des liens et carrefours
+Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html), à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
 Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce guide, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
-* de quatre noeuds (fichier `hello.nod.xml`):
+* de quatre carrefours ("noeuds") (fichier `hello.nod.xml`):
 ```xml
 <nodes>
   <node id="1" x="-250.0" y="0.0" />
@@ -70,6 +71,48 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
 
+Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). 
+
+TODO traduire
+
+Les attributs possibles d'un carrefour sont décrits dans le tableau suivant.
+| Attribute Name  | Value Type                                | Description                  |
+| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **id**          | id (string)                                                                                                                                                                                                               | The name of the node                                                                                                                               |
+| **x**           | float                                                                                                                                                                                                                     | The x-position of the node on the plane in meters                                                                                                  |
+| **y**           | float                                                                                                                                                                                                                     | The y-position of the node on the plane in meters                                                                                                  |
+| z               | float                                                                                                                                                                                                                     | The z-position of the node on the plane in meters                                                                                                  |
+| type            | enum ( "priority", "traffic_light", "right_before_left", "unregulated", "priority_stop", "traffic_light_unregulated", "allway_stop", "rail_signal", "zipper", "traffic_light_right_on_red", "rail_crossing") | An optional type for the node                                                                                                                      |
+| tlType          | enum ( "static", "actuated")                                                                                                                                                                                              | An optional type for the traffic light algorithm                                                                                                   |
+| tl              | id (string)                                                                                                                                                                                                               | An optional id for the traffic light program. Nodes with the same tl-value will be joined into a single program                                    |
+| radius          | positive float;                                                                                                                                                                                                           | optional turning radius (for all corners) for that node in meters *(default 1.5)*                                                                  |
+| shape           | List of positions; each position is encoded in x,y or x,y,z in meters (do not separate the numbers with a space\!).                                                                                                       | A custom shape for that node. If less than two positions are given, netconvert will reset that node to use a computed shape.                       |
+| keepClear       | bool                                                                                                                                                                                                                      | Whether the [junction-blocking-heuristic](../Simulation/Intersections.md#junction_blocking) should be activated at this node *(default true)* |
+| rightOfWay      | string                                                                                                                                                                                                                    | Set algorithm for computing [\#Right-of-way](#right-of-way). Allowed values are *default* and *edgePriority*                            |
+| controlledInner | list of edge ids                                                                                                                                                                                                          | Edges which shall be controlled by a joined TLS despite being incoming as well as outgoing to the jointly controlled nodes                         |
+
+Les attributs possibles d'un lien sont décrits dans le tableau suivant.
+
+| Attribute Name | Value Type                                        | Description                                        |
+| -------------- | ------------------------------------- | -------------------------------------------------------------- |
+| **id**         | id (string)                           | The id of the edge (must be unique)                            |
+| from           | referenced node id                    | The name of a node within the nodes-file the edge shall start at    |
+| to             | referenced node id                    | The name of a node within the nodes-file the edge shall end at      |
+| type           | referenced type id                    | The name of a type within the [SUMO edge type file](../SUMO_edge_type_file.md)  |
+| numLanes       | int                                   | The number of lanes of the edge; must be an integer value                       |
+| speed          | float                                 | The maximum speed allowed on the edge in m/s; must be a floating point number (see also "Using Edges' maximum Speed Definitions in km/h")  |
+| priority       | int                                   | The priority of the edge. Used for [\#Right-of-way](#right-of-way)-computation            |
+| length         | float                                 | The length of the edge in meter                                                     |
+| shape          | List of positions; each position is encoded in x,y or x,y,z in meters (do not separate the numbers with a space\!). | If the shape is given it should start and end with the positions of the from-node and to-node. Alternatively it can also start and end with the position where the edge leaves or enters the junction shape. This gives some control over the final junction shape. When using the option **--plain.extend-edge-shape** it is sufficient to supply inner geometry points and extend the shape with the starting and ending node positions automatically |
+| spreadType     | enum ( "right", "center", "roadCenter")                                                                                          | The description of how to compute lane geometry from edge geometry. See [SpreadType](#spreadtype)  |
+| allow          | list of vehicle classes               | List of permitted vehicle classes (see [access permissions](#road_access_permissions_allow_disallow))       |
+| disallow       | list of vehicle classes               | List of forbidden vehicle classes (see [access permissions](#road_access_permissions_allow_disallow))       |
+| width          | float                                 | lane width for all lanes of this edge in meters (used for visualization)                                    |
+| name           | string                                | street name (need not be unique, used for visualization)                                                    |
+| endOffset      | float \>= 0                           | Move the stop line back from the intersection by the given amount (effectively shortening the edge and locally enlarging the intersection)  |
+| sidewalkWidth  | float \>= 0                           | Adds a sidewalk with the given width (defaults to -1 which adds nothing).                              |
+
+
 ## Importer un réseau d'OpenStreetMap
 Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
@@ -83,6 +126,8 @@ Le fichier obtenu `.osm` est peut soit être importé directement par netedit, s
 La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
+
+Les [https://sumo.dlr.de/docs/SUMO_edge_type_file.html](types de route) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégorie ou classes de route. 
 
 D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 
@@ -104,7 +149,7 @@ Il faut aussi noter que netedit permet depuis peu de créer la demande de dépla
 
 # Configuration des carrefours
 Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet "carrefour" est disponible dans le [répertoire sumo](sumo). Il est constitué 
-* de cinq noeuds (fichier `carrefour.nod.xml`):
+* de cinq carrefours ("noeuds") (fichier `carrefour.nod.xml`):
 ```xml
 <nodes>
   <node id="center" x="0.0" y="0.0" />
@@ -129,7 +174,7 @@ Pour cette section, on crée un petit carrefour à quatre branches, avec une voi
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
-Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "saute" le centre du carrefour lorsqu'ils le traversent. 
+Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "saute" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. 
 
 Il existe trois niveaux de contrôle à un carrefour: 
 * les règles de la route (par défaut);
@@ -137,6 +182,8 @@ Il existe trois niveaux de contrôle à un carrefour:
 * les feux de circulation.
 
 
+
+priorité en fonction de débit
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 
@@ -411,7 +458,7 @@ Les classes abstraites de véhicule existantes ont des valeurs par défaut pour 
 ## Modèles de circulation
 Le comportement des usagers dans SUMO repose sur trois modèles principaux: un [modèle de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), un [modèle de changement de voie](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#lane-changing_models) et un [modèle pour les carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#junction_model_parameters). Il existe différents types de modèles pour les deux premiers, définis respectivement par les attributs "carFollowModel" et "laneChangeModel" dans un type de véhicule. 
 
-Le modèle utilisé par défaut dans SUMO est le [modèle de Stefan Krauss](https://sumo.dlr.de/pdf/KraussDiss.pdf). C'est un modèle à distance de sécurité, soit un modèle dans lequel chaque véhicule cherche à atteindre sa vitesse désirée, tout en gardant un espace suffisant au véhicule meneur de sorte à éviter une collision si le conducteur meneur freine. Le modèle dépend d'au moins cinq paramètres (définis dans un type de véhicule), notés "accel", "decel", "minGap", "sigma" et "tau". 
+Le modèle utilisé par défaut dans SUMO est le [modèle de Stefan Krauss](https://sumo.dlr.de/pdf/KraussDiss.pdf). C'est un modèle à distance de sécurité, soit un modèle dans lequel chaque véhicule cherche à atteindre sa vitesse désirée, tout en gardant un espace suffisant par rapport au véhicule meneur de sorte à éviter une collision si le conducteur meneur freine. Le modèle dépend d'au moins cinq paramètres (définis dans un type de véhicule), notés "accel", "decel", "minGap", "sigma" et "tau". 
 
 # Simulation
 Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html) sont un fichier réseau et un fichier de demande de déplacement. Pour notre exemple ["hello"](sumo/), une simulation peut être exécutée avec la commande ```$ sumo -n hello.net.xml -r hello.rou.xml``` (ou en remplaçant sumo par sumo-gui pour l'interface graphique de simulation montrant l'animation des véhicules). Il est préférable d'utiliser un fichier de configuration `.sumocfg` qui permet de spécifier d'autres paramètres: 
@@ -514,5 +561,5 @@ Les types de route utilisés dans OSM avec leurs descriptions sont disponibles s
 
 Les types de routes sont les suivants dans la région de Montréal: Highway.motorway, 
 Highway.primary, Highway.secondary, Highway.tertiary, Highway.residential, Highway.service, Highway.pedestrian, Highway.footway, Railway.rail, Highway.cycleway, Railway.subway. On rencontre moins souvent des Highway.track, Highway.path, Highway.steps, Highway.primary.link, Highway.secondary.link, Highway.motorway.link, Highway.unclassified. 
-## Autre sujets
-Les type files permettent de faire des modifications en groupe d'attributs de plusieurs éléments. <!-- voir tuto ayoub Une autre méthode basées sur des fichiers type.xml permet de réaliser des modifications de grandes envergures (vitesse des tronçons par exemple), sans passer par NetEdit. -->
+<!-- ## Autres sujets
+Les type files permettent de faire des modifications en groupe d'attributs de plusieurs éléments. voir tuto ayoub Une autre méthode basées sur des fichiers type.xml permet de réaliser des modifications de grandes envergures (vitesse des tronçons par exemple), sans passer par NetEdit. - mentionné dans le réseau -->

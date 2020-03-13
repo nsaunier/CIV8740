@@ -107,7 +107,8 @@ Les attributs possibles d'un lien sont décrits dans le tableau suivant.
 | name           | string                                | street name (need not be unique, used for visualization)                                                    |
 | endOffset      | float \>= 0                           | Move the stop line back from the intersection by the given amount (effectively shortening the edge and locally enlarging the intersection)  |
 | sidewalkWidth  | float \>= 0                           | Adds a sidewalk with the given width (defaults to -1 which adds nothing).                              |
-Les attributs possibles d'une connection sont décrits dans le tableau suivant:
+
+Les attributs possibles d'une connection sont décrits dans le tableau suivant.
 
 | Attribute Name | Value Type                             | Default | Description      |
 | -------------- | -------------------------------------- | ------- | ----------------------------------------------------------------------- |
@@ -218,7 +219,45 @@ Dans le cas d'un [carrefour giratoire](https://sumo.dlr.de/docs/Networks/PlainXM
 <!-- requests (responses, foes) and internal junctions are not for manual manipulation -->
 
 ## Carrefours à feux
+La façon recommandée de créer un [carrefour contrôlé par des feux de circulation et son plan de feu](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html) est d'utiliser netedit. Il faut changer le type de carrefour ou choisir le mode d'édition des feux de circulation, cliquer sur le carrefour et créer un plan de feu. On crée ainsi un [plan de feu par défaut](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#automatically_generated_tls-programs) avec les caractéristiques suivante: cycle de 90 s par défaut, partage égal du temps de vert entre les phases, suivi par une phase jaune, les virages à gauche permis si la limite de vitesse est inférieure à 70 km/h, une phase protégée pour les virages à gauche si une voie réservée existe et un décalage de 0. Alternativement, il est possible de choisir un plan de feux où chaque approche a sa phase l'une après l'autre (option `--tls.layout incoming`, la valeur par défaut étant "opposites"). Si le carrefour a plus d'approches, des phases seront ajoutées. 
 
+Le plan de feu est représenté par un élément "tlLogic" qui peut être enregistré dans un fichier réseau `net.xml` ou dans un fichier additionnel. Il a les attributs décrits dans le tableau suivant. 
+
+| Attribut | Type de valeur                            | Description      |
+| -------------- | ------------------------------------- | ---------------- |
+| **id**         | id (string)                           | The id of the traffic light. This must be an existing traffic light id in the .net.xml file. Typically the id for a traffic light is identical with the junction id. The name may be obtained by right-clicking the red/green bars in front of a controlled intersection. |
+| **type**       | enum (static, actuated, delay_based) | The type of the traffic light (fixed phase durations, phase prolongation based on time gaps between vehicles (actuated), or on accumulated time loss of queued vehicles (delay_based) )                                                                                  |
+| **programID**  | id (string)                           | The id of the traffic light program; This must be a new program name for the traffic light id. Please note that "off" is reserved, see below.                                                                                                                             |
+| **offset**     | int                                   | The initial time offset of the program |
+
+Chaque phase a les attributs décrits dans le tableau suivant. 
+
+
+Each phase is defined using the following attributes:
+
+| Attribut | Type de valeur             | Description                |
+| -------------- | --------------------- | -------------------------- |
+| **duration**   | time (int)            | The duration of the phase                                                                                                                                    |
+| **state**      | list of signal states | The traffic light states for this phase, see below                                                                                                           |
+| minDur         | time (int)            | The minimum duration of the phase when using type **actuated**. Optional, defaults to duration.                                                              |
+| maxDur         | time (int)            | The maximum duration of the phase when using type **actuated**. Optional, defaults to duration.                                                              |
+| name           | string                | An optional description for the phase. This can be used to establish the correspondence between SUMO-phase-indexing and traffic engineering phase names.     |
+| next           | list of phase indices (int ...)           | The next phase in the cycle after the current. This is useful when adding extra transition phases to a traffic light plan which are not part of every cycle. Traffic lights of type 'actuated' can make use of a list of indices for selecting among alternative successor phases. |
+
+Seuls les attributs "duration" et "state" sont requis pour un plan de feu à temps fixe, les autres paramètres servant pour les feux semi-adaptatifs. Dans SUMO, chaque changement d'état (par exemple passage au jaune) d'un feu correspond à une nouvelle phase pour le carrefour, à la différence des définitions en circulation. Les phases se succède dans le temps, l'attribut "state" indiquant l'état du feu pour chaque connection entre toutes les voies arrivant et partant du carrefour. Il y a autant de caractères dans l'attribut "state" que de connections dans le carrefour, commençant par l'approche à "midi" (sur un quadrant de montre) avec les virages à droite, les mouvements tout droit et les virages à gauche. Les états des feux sont représentés par un caractère défini dans le tableau suivant:
+
+| Character | GUI Color                                                  | Description          |
+| --------- | ---------------------------------------------------------- | -------------------- |
+| r         | <span style="color:#FF0000; background:#FF0000">FOO</span> | 'red light' for a signal - vehicles must stop     |
+| y         | <span style="color:#FFFF00; background:#FFFF00">FOO</span> | 'amber (yellow) light' for a signal - vehicles will start to decelerate if far away from the junction, otherwise they pass    |
+| g         | <span style="color:#00B300; background:#00B300">FOO</span> | 'green light' for a signal, no priority - vehicles may pass the junction if no vehicle uses a higher priorised foe stream, otherwise they decelerate for letting it pass. They always decelerate on approach until they are within the configured [visibility distance](../Networks/PlainXML.md#explicitly_setting_which_edge_lane_is_connected_to_which) |
+| G         | <span style="color:#00FF00; background:#00FF00">FOO</span> | 'green light' for a signal, priority - vehicles may pass the junction                                                                                                                                                                                                                                                                                                                                 |
+| s         | <span style="color:#800080; background:#800080">FOO</span> | 'green right-turn arrow' requires stopping - vehicles may pass the junction if no vehicle uses a higher priorised foe stream. They always stop before passing. This is only generated for junction type *traffic_light_right_on_red*.                                                                                                                                                             |
+| u         | <span style="color:#FF8000; background:#FF8000">FOO</span> | 'red+yellow light' for a signal, may be used to indicate upcoming green phase but vehicles may not drive yet (shown as orange in the gui)                                                                                                                                                                                                                                                             |
+| o         | <span style="color:#804000; background:#804000">FOO</span> | 'off - blinking' signal is switched off, blinking light indicates vehicles have to yield                                                                                                                                                                                                                                                                                                              |
+| O         | <span style="color:#00FFFF; background:#00FFFF">FOO</span> | 'off - no signal' signal is switched off, vehicles have the right of way|
+
+Les [feux semi-adaptatifs](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#actuated_traffic_lights) peuvent aussi être représentés en ajoutant des capteurs sur les approches. 
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 

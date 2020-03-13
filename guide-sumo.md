@@ -69,13 +69,9 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 </edges>
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
+```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml```
 
-Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). 
-
-TODO traduire
-
-Les attributs possibles d'un carrefour sont décrits dans le tableau suivant.
+Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour sont décrits dans le tableau suivant. % TODO traduire
 | Attribute Name  | Value Type                                | Description                  |
 | --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | **id**          | id (string)                                                                                                                                                                                                               | The name of the node                                                                                                                               |

@@ -181,46 +181,21 @@ Il existe trois niveaux de contrôle à un carrefour:
 * l'attribution explicite de la priorité par un panneau de cédez le passage ou d'arrêt;
 * les feux de circulation.
 
-Les types de carrefours sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
+Les types de carrefours (attribut "type" d'un élément node ou junction) sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
+* `priority`: les véhicules sur un lien à basse priorité doivent attendre jusqu'à ce que les véhicules sur un lien à priorité élevée aient passé le carrefour;
+* `traffic_light`: le carrefour est contrôlé par des feux de circulation (les règles de priorité sont utilisées pour éviter les collisions si des liens en conflit sont vert en même temps);
+* `right_before_left`: les véhicules laissent passer ceux qui viennent à leur droite;
+* `unregulated`: le carrefour n'a pas de contrôle, les véhicules passent sans freiner, la détection de collision dans le carrefour ne fonctionne pas et des collisions peuvent se produire en dehors du carrefour;
+* `traffic_light_unregulated`: le carrefour est contrôlé par des feux de circulation sans autre règle, ce qui peut causer des collisisons dans le carrefour si des plans de feux non-sécuritaires sont utilisés (les collisions dans le carrefour ne sont pas détectées);
+* `priority_stop`: ce type fonctionne comme un carrefour de type `priority` où les véhicules arrivant sur la route secondaire doivent s'arrêter avant de passer;
+* `allway_stop`: un carrefour de ce type est contrôlé par un [arrêt toute direction](https://en.wikipedia.org/wiki/All-way_stop);
+* `rail_signal`: ce carrefour est contrôlé par un [feu de chemin de fer](https://sumo.dlr.de/docs/Simulation/Rail_signals.html) (seulement utile pour des chemins de fer);
+* `zipper`: ce carrefour connecte les liens où le nombre de voie diminue et la circulation doit converger comme une "fermeture éclar" ([zipper-style (late merging)](https://en.wikipedia.org/wiki/Merge_%28traffic%29));
+* `rail_crossing`: ce type de carrefour représente un passage à niveau permettant aux trains de passer dans s'arrêter grâce à des feux de circulation quand le train approche;
+* `traffic_light_right_on_red`: le carrefour est contrôlé par des feux de circulation comme pour le carrefour de type `traffic_light`, en autorisant en plus le virage à droite au feu rouge (les véhicules doivent s'arrêter, puis peuvent tourner dans n'importe quelle phase si le mouvement est sécuritaire) (
+  [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
 
-
-- `priority`: Vehicles on a low-priority
-  edge have to wait until vehicles on a high-priority edge have passed
-  the junction.
-- `traffic_light`: The junction is
-  controlled by a traffic light (priority rules are used to avoid
-  collisions if conflicting links have green light at the same time).
-- `right_before_left`: Vehicles will let
-  vehicles coming from their right side pass.
-- `unregulated`: The junction is completely
-  unregulated - all vehicles may pass without braking; Collision
-  detection on the intersection is disabled but collisions beyond the
-  intersection will detected and are likely to occur.
-- `traffic_light_unregulated`: The
-  junction is controlled by a traffic light without any further rules.
-  This may cause collision if unsafe signal plans are used. Note, that
-  collisions within the intersection will never be detected.
-- `priority_stop`: This works like a
-  *priority*-junction but vehicles on minor links alway have to stop
-  before passing
-- `allway_stop`: This junction works like
-  an [*All-way stop*](https://en.wikipedia.org/wiki/All-way_stop)
-- `rail_signal`: This junction is
-  controlled by a [rail signal](../Simulation/Rail_signals.md).
-  This type of junction/control is only useful for rails.
-- `zipper`: This junction connects edges
-  where the number of lanes decreases and traffic needs to merge
-  [zipper-style (late merging)](https://en.wikipedia.org/wiki/Merge_%28traffic%29).
-- `rail_crossing`: This junction models a
-  rail road crossing. It will allow trains to pass unimpeded and will
-  restrict vehicles via traffic signals when a train is approaching..
-- `traffic_light_right_on_red`: The
-  junction is controlled by a traffic light as for type
-  *traffic_light*. Additionally, right-turning vehicles may drive in
-  any phase whenever it is safe to do so (after stopping once). This
-  behavior is known as
-  [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red).
-
+Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). 
 
 priorité en fonction de débit
 

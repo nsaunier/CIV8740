@@ -520,7 +520,7 @@ Une façon alternative de définir la distribution des speedFactor est d'utilise
   <flow id="flow2" type="type2" from="1to2" to="2to4" begin="0" departSpeed="desired" vehsPerHour="500"/>
 </routes>
 ```
-On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
+On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type) (la vitesse désirée est égale au produit du speedFactor par la limite de vitesse du lien). 
 
 Les classes abstraites de véhicule existantes ont des valeurs par défaut pour l'attribut speedDev (écart-type du speedFactor):
 * passenger (default vClass): 0.1

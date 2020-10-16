@@ -232,9 +232,6 @@ Le plan de feu est représenté par un élément "tlLogic" qui peut être enregi
 
 Chaque phase a les attributs décrits dans le tableau suivant. 
 
-
-Each phase is defined using the following attributes:
-
 | Attribut | Type de valeur             | Description                |
 | -------------- | --------------------- | -------------------------- |
 | **duration**   | time (int)            | The duration of the phase                                                                                                                                    |
@@ -248,14 +245,16 @@ Seuls les attributs "duration" et "state" sont requis pour un plan de feu à tem
 
 | Character | GUI Color                                                  | Description          |
 | --------- | ---------------------------------------------------------- | -------------------- |
-| r         | <span style="color:#FF0000; background:#FF0000">FOO</span> | 'red light' for a signal - vehicles must stop     |
-| y         | <span style="color:#FFFF00; background:#FFFF00">FOO</span> | 'amber (yellow) light' for a signal - vehicles will start to decelerate if far away from the junction, otherwise they pass    |
-| g         | <span style="color:#00B300; background:#00B300">FOO</span> | 'green light' for a signal, no priority - vehicles may pass the junction if no vehicle uses a higher priorised foe stream, otherwise they decelerate for letting it pass. They always decelerate on approach until they are within the configured [visibility distance](../Networks/PlainXML.md#explicitly_setting_which_edge_lane_is_connected_to_which) |
-| G         | <span style="color:#00FF00; background:#00FF00">FOO</span> | 'green light' for a signal, priority - vehicles may pass the junction                                                                                                                                                                                                                                                                                                                                 |
-| s         | <span style="color:#800080; background:#800080">FOO</span> | 'green right-turn arrow' requires stopping - vehicles may pass the junction if no vehicle uses a higher priorised foe stream. They always stop before passing. This is only generated for junction type *traffic_light_right_on_red*.                                                                                                                                                             |
-| u         | <span style="color:#FF8000; background:#FF8000">FOO</span> | 'red+yellow light' for a signal, may be used to indicate upcoming green phase but vehicles may not drive yet (shown as orange in the gui)                                                                                                                                                                                                                                                             |
-| o         | <span style="color:#804000; background:#804000">FOO</span> | 'off - blinking' signal is switched off, blinking light indicates vehicles have to yield                                                                                                                                                                                                                                                                                                              |
-| O         | <span style="color:#00FFFF; background:#00FFFF">FOO</span> | 'off - no signal' signal is switched off, vehicles have the right of way|
+| r         | rouge | 'red light' for a signal - vehicles must stop     |
+| y         | jaune | 'amber (yellow) light' for a signal - vehicles will start to decelerate if far away from the junction, otherwise they pass    |
+| g         | vert | 'green light' for a signal, no priority - vehicles may pass the junction if no vehicle uses a higher priorised foe stream, otherwise they decelerate for letting it pass. They always decelerate on approach until they are within the configured [visibility distance](../Networks/PlainXML.md#explicitly_setting_which_edge_lane_is_connected_to_which) |
+| G         | vert foncé | 'green light' for a signal, priority - vehicles may pass the junction                                                                                                                                                                                                                                                                                                                                 |
+| s         | mauve | 'green right-turn arrow' requires stopping - vehicles may pass the junction if no vehicle uses a higher priorised foe stream. They always stop before passing. This is only generated for junction type *traffic_light_right_on_red*.                                                                                                                                                             |
+| u         | orange foncé | 'red+yellow light' for a signal, may be used to indicate upcoming green phase but vehicles may not drive yet (shown as orange in the gui)                                                                                                                                                                                                                                                             |
+| o         | marrond | 'off - blinking' signal is switched off, blinking light indicates vehicles have to yield                                                                                                                                                                                                                                                                                                              |
+| O         | cyan | 'off - no signal' signal is switched off, vehicles have the right of way|
+
+TODO ajouter un exemple
 
 Les phases peuvent être visualisées dans netedit en sélectionnant les états, et dans sumo-gui par un clic droit sur une ligne de feu et en sélectionnant "show phases". Le plan de feu est indiqué dans chaque connection par l'attribut "tl". Il est possible de regrouper les connections en leur donnant le même indice dans le vecteur d'état avec l'attribut "linkIndex" (voir exemple dans le [répertoire sumo](sumo)). 
 

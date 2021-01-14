@@ -20,6 +20,16 @@ La plupart des fichiers sont des fichiers textes suivant le format "Extensible M
 
 La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles}(https://sumo.dlr.de/docs/Tutorials.html).
 
+
+# Installation de l'outil de simulation
+
+SUMO a crée un dossier spécifique pour l'[installation](https://sumo.dlr.de/docs/Installing.html) du logiciel via différent sytème d'exploitation. Cette partie est juste un aide pour faciliter la bonne installation du logiciel.
+
+## Sous Windows
+
+## Sous MacOs
+
+
 # Liste des outils
 De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront
 * [netedit](https://sumo.dlr.de/docs/NETEDIT): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 

@@ -31,21 +31,29 @@ SUMO a crée un dossier spécifique pour l'[installation](https://sumo.dlr.de/do
 
 1. Pour pouvoir excuter convenable les programmes du *SUMO Commande Line*, il faut configurer convenable le *PATH* et le *SUMO_HOME*. Pour se faire il faut se diriger vers le panneau de configuration *Modifier les variables d'environnement système* (*Edit the system environment variables* en anglais), puis se dériger vers *Variables d'envrionnement...* :
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/65184943/104637391-ba7dd000-5672-11eb-8ec5-ede70d47f124.png" width="400" height="500" />
 
-PHOTO COMMANDE
-
-PHOTO VARIABLE
+<img src="https://user-images.githubusercontent.com/65184943/104637389-ba7dd000-5672-11eb-937d-834fb77c0f79.png" width="400" height="500" />
+</p>
 
 2. Dans la bannière *Variables utilisateur pour [Nom de l'utilisateur]*.Vous avez dans un premier temps la variable *Path*. Selectionez la, et clicker sur *Modifier* (*Edit*). Arrivant à cette étape, clicker sur *Nouveau* (*New*) et ajouter le chemin fichier *bin* qui ce trouve dans le repertoire SUMO que vous avez créer lors de l'installation du logiciel. Géneralement c'est *C:\Program Files\sumo-1.8.0\bin* ou *C:\Program Files\SUMO\bin*. Si vous ne trouver pas ce fichier, vous pouvez vous dirigez sur le chemin automatiquement génerer sur le *SUMO Commande Line*
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/65184943/104637392-ba7dd000-5672-11eb-913d-d6ffa35caff2.png" width="400" height="500" />
 
-Photo Path
+<img src="https://user-images.githubusercontent.com/65184943/104637385-b9e53980-5672-11eb-849c-3e9c57d8d4c0.png" width="400" height="400" />
+</p>
 
-Photo Path-1 
 
 3. Si il n'est pas present, dans la bannière *Variables utilisateur pour [Nom de l'utilisateur]* clicker sur *Nouvelle* (*New*). Dans le Nom de la variable, inserez *SUMO_HOME* et dans la valeur de la variable le chemin du dossier de SUMO. Géneralement c'est *C:\Program Files\sumo-1.8.0* ou *C:\Program Files\SUMO*. et clicker sur OK
 
-Photo SUMO
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/65184943/104637388-b9e53980-5672-11eb-8982-d837d4e9efb6.png" width="600" height="200" />
+</p>
+
+
 
 
 

@@ -3,6 +3,7 @@ Guide pour le logiciel SUMO
 
 **Table des matières**
 1. [Introduction](#introduction)
+&: [Installation](#installation)
 1. [Liste des outils](#liste-des-outils)
 1. [Réseaux de transport](#réseaux-de-transport)
 1. [Configuration des carrefours](#configuration-des-carrefours)
@@ -21,44 +22,8 @@ La plupart des fichiers sont des fichiers textes suivant le format "Extensible M
 La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles](https://sumo.dlr.de/docs/Tutorials.html).
 
 
-# Installation de l'outil de simulation
-
-SUMO a crée un dossier spécifique pour l'[installation](https://sumo.dlr.de/docs/Installing.html) du logiciel via différent sytème d'exploitation. Cette partie est juste un aide pour faciliter la bonne installation du logiciel.
-
-## Sous Windows
-
-### Configuration du chemin
-
-1. Pour pouvoir excuter convenable les programmes du *SUMO Commande Line*, il faut configurer convenable le *PATH* et le *SUMO_HOME*. Pour se faire il faut se diriger vers le panneau de configuration *Modifier les variables d'environnement système* (*Edit the system environment variables* en anglais), puis se dériger vers *Variables d'envrionnement...* :
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/65184943/104637391-ba7dd000-5672-11eb-8ec5-ede70d47f124.png" width="400" height="500" />
-
-<img src="https://user-images.githubusercontent.com/65184943/104637389-ba7dd000-5672-11eb-937d-834fb77c0f79.png" width="400" height="500" />
-</p>
-
-2. Dans la bannière *Variables utilisateur pour [Nom de l'utilisateur]*.Vous avez dans un premier temps la variable *Path*. Selectionez la, et clicker sur *Modifier* (*Edit*). Arrivant à cette étape, clicker sur *Nouveau* (*New*) et ajouter le chemin fichier *bin* qui ce trouve dans le repertoire SUMO que vous avez créer lors de l'installation du logiciel. Géneralement c'est *C:\Program Files\sumo-1.8.0\bin* ou *C:\Program Files\SUMO\bin*. Si vous ne trouver pas ce fichier, vous pouvez vous dirigez sur le chemin automatiquement génerer sur le *SUMO Commande Line*
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/65184943/104637392-ba7dd000-5672-11eb-913d-d6ffa35caff2.png" width="400" height="500" />
-
-<img src="https://user-images.githubusercontent.com/65184943/104637385-b9e53980-5672-11eb-849c-3e9c57d8d4c0.png" width="400" height="400" />
-</p>
-
-
-3. Si il n'est pas present, dans la bannière *Variables utilisateur pour [Nom de l'utilisateur]* clicker sur *Nouvelle* (*New*). Dans le Nom de la variable, inserez *SUMO_HOME* et dans la valeur de la variable le chemin du dossier de SUMO. Géneralement c'est *C:\Program Files\sumo-1.8.0* ou *C:\Program Files\SUMO*. et clicker sur OK
-
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/65184943/104637388-b9e53980-5672-11eb-8982-d837d4e9efb6.png" width="600" height="200" />
-</p>
-
-
-
-
-
-
-## Sous MacOs
+# Installation du logiciel
+La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing.html) SUMO, y compris les différents outils logiciels. Ils sont installés dans un nouveau répertoire qui dépend de votre choix et du sytème d'exploitation. Plusieurs autres [outils](https://sumo.dlr.de/docs/Tools.html) en ligne de commande dépendent de la bonne configuration de les variables d'environnement `Path` et `SUMO_HOME` pour pouvoir les utiliser simplement. La [documentation explique](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html#sumo_home) comment configurer ces variables. 
 
 
 # Liste des outils
@@ -182,7 +147,7 @@ La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remo
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
 
-Les [https://sumo.dlr.de/docs/SUMO_edge_type_file.html](types de route) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégorie ou classes de route. 
+Les [types de route](https://sumo.dlr.de/docs/SUMO_edge_type_file.html) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégorie ou classes de route. 
 
 D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 

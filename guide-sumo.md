@@ -3,7 +3,7 @@ Guide pour le logiciel SUMO
 
 **Table des matières**
 1. [Introduction](#introduction)
-&: [Installation](#installation)
+1. [Installation](#installation)
 1. [Liste des outils](#liste-des-outils)
 1. [Réseaux de transport](#réseaux-de-transport)
 1. [Configuration des carrefours](#configuration-des-carrefours)
@@ -22,7 +22,7 @@ La plupart des fichiers sont des fichiers textes suivant le format "Extensible M
 La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles](https://sumo.dlr.de/docs/Tutorials.html).
 
 
-# Installation du logiciel
+# Installation
 La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing.html) SUMO, y compris les différents outils logiciels. Ils sont installés dans un nouveau répertoire qui dépend de votre choix et du sytème d'exploitation. Plusieurs autres [outils](https://sumo.dlr.de/docs/Tools.html) en ligne de commande dépendent de la bonne configuration de les variables d'environnement `Path` et `SUMO_HOME` pour pouvoir les utiliser simplement. La [documentation explique](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html#sumo_home) comment configurer ces variables. 
 
 
@@ -217,8 +217,8 @@ Les types de carrefours (attribut "type" d'un élément node ou junction) sont l
   [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
 
 Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). La priorité sera calculée à chaque carrefour selon son type. Pour les types `priority` et `priority_stop`, elle dépend des valeur des attributs "priority" des liens entrants (approches) et sortants (sorties), de la vitesse et du nombre de voies. La priorité peut aussi être modifiée via des [prohibitions de connections](https://sumo.dlr.de/docs/Networks/PlainXML.html#setting_connection_priorities) et l'attribut "pass" de connection (les véhicules sur cette connection ne s'arrêtent pas). Les deux méthodes pour déterminer la priorité d'un carrefour dépendent de l'attribut "rightOfWay" du carrefour:
-* rightOfWay="default": les liens sont classés en fonction de leur priorité (attribut "priority"), limite de vitesse (attribut "speed") et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
-* rightOfWay="edgePriority": seul l'attribut "priority" des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
+* `rightOfWay="default"`: les liens sont classés en fonction de leur priorité (attribut "priority"), limite de vitesse (attribut "speed") et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
+* `rightOfWay="edgePriority"`: seul l'attribut "priority" des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
 
 Dans le cas d'un [carrefour giratoire](https://sumo.dlr.de/docs/Networks/PlainXML.html#roundabouts), les liens dans le carrefour auront toujours la priorité. Dans le cas d'une restriction du nombre de voies, la priorité est la même dans le cas d'un carrefour de type `zipper`; sinon, la voie de gauche a priorité sur la voie de droite.
 
@@ -290,7 +290,7 @@ De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence
 <routes>
   <route id="route0" edges="1to2 2to3"/>
   <vehicle id="0" route="route0" depart="0" color="red">
-  <vehicle id="1" route="route1" depart="0" color="blue"/>
+  <vehicle id="1" route="route0" depart="0" color="blue"/>
 </routes>
 ```
 Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 

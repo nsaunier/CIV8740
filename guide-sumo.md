@@ -19,7 +19,7 @@ Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://www.eclipse.org
 
 La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language). Assurez-vous d'avoir un bon éditeur texte pour éditer ces fichiers directement, par exemple [Notepad++](https://notepad-plus-plus.org/) sur Windows, [Atom](https://atom.io/) ou [emacs](https://www.gnu.org/software/emacs/) sur toutes les plateformes. Il est **très important** d'avoir des [compétences informatiques minimales](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html) de manipulation des fichiers textes, du format XML et de l'utilisation d'outils en ligne de commande pour utiliser SUMO.
 
-La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles](https://sumo.dlr.de/docs/Tutorials.html).
+La documentation de référence de SUMO est en anglais et est disponible [en ligne](https://sumo.dlr.de/docs/), ainsi qu'un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles](https://sumo.dlr.de/docs/Tutorials.html).
 
 
 # Installation
@@ -51,7 +51,7 @@ Il existe différentes façons de créer ou importer des réseaux de transport d
 
 La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans la [section suivante](#configuration-des-carrefours). 
 
-Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Ces éléments et leur format sont décrits sur le [wiki](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
+Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Ces éléments et leur format sont décrits dans la [documentation](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
 
 ## Attributs des liens et carrefours
 Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html), à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
@@ -143,7 +143,7 @@ Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'in
 
 Le fichier obtenu `.osm` peut être soit importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles dans plusieurs onglets lors de l'importation par netedit. 
 
-La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
+La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites dans la documentation de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
 
@@ -457,7 +457,7 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 | maxSpeedLat       | float                             | 1.0                                                                 | Vitesse latérale maximale dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
 | actionStepLength  | float                             | valeur globale par défaut (égale au pas de simulation, configurable via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite). |
 
-Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées sur le [wiki](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
+Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées dans la [documentation](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
 
 L'exemple suivant définit deux types de véhicules:
 ```xml
@@ -591,7 +591,7 @@ Il est particulièrement important de comprendre [quels phénomènes](https://su
 Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Des exemples de scripts Linux [`replicate.sh`](sumo/replicate.sh) et Windows [`replicate.bat`](sumo/replicate.bat) sont fournis pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas des scripts `replicate.*`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
 
 # Collecte de données
-Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
+Les nombreuses méthodes pour extraire des données d'une simulation sont décrites dans la [documentation](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
 Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel" `.add.xml`. Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou spécifié dans le fichier de configuration `.sumocfg`:
 ```xml

@@ -77,7 +77,8 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml```
 
-Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour sont décrits dans le tableau suivant. % TODO traduire
+Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour sont décrits dans le tableau suivant. 
+
 | Attribute Name  | Value Type                                | Description                  |
 | --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | **id**          | id (string)                                                                                                                                                                                                               | The name of the node                                                                                                                               |
@@ -138,7 +139,9 @@ Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://ww
 
 ### Téléchargement d'OpenStreetMap et importation simple
 La méthode consiste à naviguer sur le site d'[OpenStreetMap](https://www.openstreetmap.org/), trouver la zone dont on désire importer les données et à les exporter en cliquant sur le bouton tel que montré dans l'image ci-dessous. 
+
 ![Export OSM](images/osm-export.png)
+
 Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```
 
 Le fichier obtenu `.osm` peut être soit importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles dans plusieurs onglets lors de l'importation par netedit. 

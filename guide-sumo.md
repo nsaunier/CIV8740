@@ -585,7 +585,7 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 </viewsettings>
 ```
 
-Il faut noter que le [temps de perception et réaction, appelé pas de temps les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction à une valeur plus grande (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). 
+Il faut noter que le [temps de perception et réaction, appelé pas de temps pour les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). 
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
 * distributions d'itinéraires et de types de véhicules,
@@ -595,7 +595,7 @@ Il est particulièrement important de comprendre [quels phénomènes](https://su
 * distributions des TIV,
 * distributions d'attributs des flux, déplacements et véhicules. 
 
-Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Des exemples de scripts Linux [`replicate.sh`](sumo/replicate.sh) et Windows [`replicate.bat`](sumo/replicate.bat) sont fournis pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas des scripts `replicate.*`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
+Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Des exemples de scripts Linux/MacOS [`replicate.sh`](sumo/replicate.sh) et Windows [`replicate.bat`](sumo/replicate.bat) sont fournis pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas des scripts `replicate.*`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
 
 # Collecte de données
 Les nombreuses méthodes pour extraire des données d'une simulation sont décrites dans la [documentation](https://sumo.dlr.de/docs/Simulation/Output.html). 

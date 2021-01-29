@@ -320,11 +320,13 @@ Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (le
 | arrivalPosLat   | float(m)/string ("left", "right", "center")                                   | Position latérale sur la voie de départ à la sortie du véhicule (soir [modèles de positionnement dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html)) (par défault le véhicule ne se préoccupe pas de sa position latérale à l'arrivée) |
 
 Vous pouvez trouver plus de détails sur les attributs de dépat et d'arrivée ("depart*" et "arrival*") de chaque véhicule dans la [documentation de SUMO](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#a_vehicles_depart_and_arrival_parameter). En particulier, il est utile d'expliquer les valeurs possibles pour la vitesse du véhicule lors de son insertion (selon maxSpeed = MIN(speedLimit * speedFactor, vTypeMaxSpeed)):
+
 * ≥0: la simulation essaie d'insérer le véhicule à la vitesse donnée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
 * "random": une vitesse est tirée aléatoirement entre 0 et maxSpeed et peut être adaptée pour assurer une distance sécuritaire au véhicule meneur.
 * "max": maxSpeed est utilisée et peut être adaptée pour assurer une distance sécuritaire au véhicule meneur.
 * "desired": maxSpeed est utilisée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
 * "speedLimit": La limite de vitesse de la voie est utilisée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
+
 Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. Tout type de véhicule (défini ci-dessous) ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
 
 ## Définition de flux de véhicules

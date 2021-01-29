@@ -170,7 +170,7 @@ Il est possible de générer des réseaux géométriques avec l'outil [netgenera
 ## Créer et modifier un réseau
 Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit](https://sumo.dlr.de/docs/NETEDIT.html). La page de l'outil inclut un guide d'utilisation avec des vues de l'interface. Le tutoriel ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html) comprend aussi des explications pas à pas pour utiliser netedit. netedit a plusieurs modes et les actions effectuées à la souris dépendent du mode sélectionné: "inspect", "delete", "select", "move", etc. Un aspect intéressant du mode "inspect" est qu'il permet de voir les attributs des éléments d'un réseau, mais aussi d'éditer ces attributs: il est par exemple possible de modifier les coordonnées de noeuds ou le nombre de voies d'un lien directement de cette façon. 
 
-Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue ci-dessous. 
+Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue [ci-dessous](#demande-de-déplacements). 
 
 # Configuration des carrefours
 Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet "carrefour" est disponible dans le [répertoire sumo](sumo). Il est constitué 

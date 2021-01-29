@@ -23,11 +23,11 @@ La documentation de référence de SUMO est en anglais et est disponible [en lig
 
 
 # Installation
-La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing.html) SUMO, y compris les différents outils logiciels. Ils sont installés dans un nouveau répertoire qui dépend de votre choix et du sytème d'exploitation. Plusieurs autres [outils](https://sumo.dlr.de/docs/Tools.html) en ligne de commande dépendent de la bonne configuration de les variables d'environnement `Path` et `SUMO_HOME` pour pouvoir les utiliser simplement. La [documentation explique](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html#sumo_home) comment configurer ces variables. 
+La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing.html) SUMO, y compris les différents outils logiciels. Ils sont installés dans un nouveau répertoire qui dépend de votre choix et du sytème d'exploitation. Plusieurs autres [outils](https://sumo.dlr.de/docs/Tools.html) en ligne de commande dépendent de la bonne configuration de les variables d'environnement `PATH` et `SUMO_HOME` pour pouvoir les utiliser simplement. La [documentation explique](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html#sumo_home) comment configurer ces variables. 
 
 
 # Liste des outils
-De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront
+De nombreux outils ([liste complète](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront:
 * [netedit](https://sumo.dlr.de/docs/NETEDIT): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
 * [netconvert](https://sumo.dlr.de/docs/NETCONVERT): outil en ligne de commande de conversion des éléments de réseau au format SUMO
 * [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html): outil en ligne de commande de génération de réseaux abstraits
@@ -43,7 +43,7 @@ Le processus général pour construire un scénario SUMO est décrit dans un [tu
 Un scénario nécessite au moins les fichiers suivants: 
 * un fichier de configuration de SUMO, avec extension `.sumocfg`;
 * un réseau routier, avec extension `.net.xml`;
-* un fichier de demande de déplacement, incluant des itinéraires, avec extension `.rou.xml`.
+* un fichier de demande de déplacements, incluant des itinéraires, avec extension `.rou.xml`.
 Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simulation avec les outils sumo ou sumo-gui, en leur indiquant directement d'utiliser les fichiers réseau et demande, ou en utilisant un fichier de configuration qui fait référence à ces deux fichiers et inclue d'autres paramètres de simulation. Cela est présenté en détail dans la section [Simulation](#simulation).
 
 # Réseaux de transport

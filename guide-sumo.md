@@ -298,7 +298,7 @@ De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence
   <vehicle id="1" route="route0" depart="0" color="blue"/>
 </routes>
 ```
-Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 
+Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 
 
 Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (les éléments en gras sont requis): 
 

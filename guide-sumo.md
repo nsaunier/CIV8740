@@ -163,9 +163,9 @@ Après génération du scénario, il est automatiquement ouvert dans sumo-gui. I
 
 ## Créer un réseau géométrique
 Il est possible de générer des réseaux géométriques avec l'outil [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html) en ligne de commande,  en forme 
-* de toile d'araignée: ```$ netgenerate -s --spider.arm-number 10 -o network.net.xml```;
-* de grille: ```$ netgenerate -g --grid.number 10 -o network.net.xml```;
-* de réseau aléatoire: ```$ netgenerate -r --rand.iterations 2000 -o network.net.xml```. 
+* de toile d'araignée: ```$ netgenerate -s --spider.arm-number 10 -o network.net.xml```
+* de grille: ```$ netgenerate -g --grid.number 10 -o network.net.xml```
+* de réseau aléatoire: ```$ netgenerate -r --rand.iterations 2000 -o network.net.xml```
 
 ## Créer et modifier un réseau
 Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit](https://sumo.dlr.de/docs/NETEDIT.html). La page de l'outil inclut un guide d'utilisation avec des vues de l'interface. Le tutoriel ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html) comprend aussi des explications pas à pas pour utiliser netedit. netedit a plusieurs modes et les actions effectuées à la souris dépendent du mode sélectionné: "inspect", "delete", "select", "move", etc. Un aspect intéressant du mode "inspect" est qu'il permet de voir les attributs des éléments d'un réseau, mais aussi d'éditer ces attributs: il est par exemple possible de modifier les coordonnées de noeuds ou le nombre de voies d'un lien directement de cette façon. 

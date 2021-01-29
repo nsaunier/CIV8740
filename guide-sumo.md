@@ -416,7 +416,7 @@ Il est aussi possible d'utiliser des distributions d'itinéraires avec des proba
   <flow id="flow0" route="routedist1" begin="0" vehsPerHour="1000"/>
 </routes>
 ```
-L'exemple est équivalent au précédent en terme de proportion des véhicules suivant les deux itinéraires. Il n'est pas nécessaire que la somme des probabilités soit égale à 1, les probabilités sont proportionnelles aux nombres données. 
+L'exemple est équivalent au précédent en terme de proportion des véhicules suivant les deux itinéraires. Il n'est pas nécessaire que la somme des probabilités soit égale à 1, les probabilités sont proportionnelles aux nombres choisis. 
 
 ## Définition de types de véhicules
 Un type de véhicule (élément "vtype") définit une catégorie de véhicule avec des attributs communs. L'exemple suivant montre la définition du "type1" de véhicule avec les paramètres standards utilisés dans le modèle de Stefan Krauss:

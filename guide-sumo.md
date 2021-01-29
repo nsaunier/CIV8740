@@ -150,13 +150,15 @@ La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remo
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
 
-Les [types de route](https://sumo.dlr.de/docs/SUMO_edge_type_file.html) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégorie ou classes de route. 
+Les [types de route](https://sumo.dlr.de/docs/SUMO_edge_type_file.html) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégories ou classes de route. 
 
 D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 
 ### Script intégré d'importation
 Le script [`osmWebWizard.py`](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html) situé dans le répertoire `tools` permet d'importer des données d'OpenStreetMap et de générer une demande de déplacement via une interface Internet. 
+
 ![Export OSM](images/osm-web-wizard.png)
+
 Après génération du scénario, il est automatiquement ouvert dans sumo-gui. Il est généralement nécessaire de retoucher le réseau avec netedit. Tous les fichiers sont sauvés dans un répertoire au format du jour et de l'heure du type `yyyy-mm-dd-hh-mm-ss`. 
 
 ## Créer un réseau géométrique

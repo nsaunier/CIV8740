@@ -173,7 +173,7 @@ Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit
 Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue [ci-dessous](#demande-de-déplacements). 
 
 # Configuration des carrefours
-Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet "carrefour" est disponible dans le [répertoire sumo](sumo). Il est constitué 
+Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet `carrefour` est disponible dans le [répertoire sumo](sumo). Il est constitué 
 * de cinq carrefours ("noeuds") (fichier `carrefour.nod.xml`):
 ```xml
 <nodes>
@@ -197,9 +197,9 @@ Pour cette section, on crée un petit carrefour à quatre branches, avec une voi
     <edge from="south" id="insouth" to="center" />
 </edges>
 ```
-Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
-Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "saute" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. 
+Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert: ```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
+
+Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "sautent" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. 
 
 ## Types de carrefours
 Il existe trois niveaux de contrôle à un carrefour: 
@@ -207,7 +207,7 @@ Il existe trois niveaux de contrôle à un carrefour:
 * l'attribution explicite de la priorité par un panneau de cédez le passage ou d'arrêt;
 * les feux de circulation.
 
-Les types de carrefours (attribut "type" d'un élément node ou junction) sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
+Les types de carrefours (attribut `type` d'un élément node ou junction) sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
 * `priority`: les véhicules sur un lien à basse priorité doivent attendre jusqu'à ce que les véhicules sur un lien à priorité élevée aient passé le carrefour;
 * `traffic_light`: le carrefour est contrôlé par des feux de circulation (les règles de priorité sont utilisées pour éviter les collisions si des liens en conflit sont vert en même temps);
 * `right_before_left`: les véhicules laissent passer ceux qui viennent à leur droite;
@@ -221,18 +221,18 @@ Les types de carrefours (attribut "type" d'un élément node ou junction) sont l
 * `traffic_light_right_on_red`: le carrefour est contrôlé par des feux de circulation comme pour le carrefour de type `traffic_light`, en autorisant en plus le virage à droite au feu rouge (les véhicules doivent s'arrêter, puis peuvent tourner dans n'importe quelle phase si le mouvement est sécuritaire) (
   [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
 
-Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). La priorité sera calculée à chaque carrefour selon son type. Pour les types `priority` et `priority_stop`, elle dépend des valeur des attributs "priority" des liens entrants (approches) et sortants (sorties), de la vitesse et du nombre de voies. La priorité peut aussi être modifiée via des [prohibitions de connections](https://sumo.dlr.de/docs/Networks/PlainXML.html#setting_connection_priorities) et l'attribut "pass" de connection (les véhicules sur cette connection ne s'arrêtent pas). Les deux méthodes pour déterminer la priorité d'un carrefour dépendent de l'attribut "rightOfWay" du carrefour:
-* `rightOfWay="default"`: les liens sont classés en fonction de leur priorité (attribut "priority"), limite de vitesse (attribut "speed") et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
-* `rightOfWay="edgePriority"`: seul l'attribut "priority" des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
+Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). La priorité sera calculée à chaque carrefour selon son type. Pour les types `priority` et `priority_stop`, elle dépend des valeur des attributs "priority" des liens entrants (approches) et sortants (sorties), de la vitesse et du nombre de voies. La priorité peut aussi être modifiée via des [prohibitions de connections](https://sumo.dlr.de/docs/Networks/PlainXML.html#setting_connection_priorities) et l'attribut "pass" de connection (les véhicules sur cette connection ne s'arrêtent pas). Les deux méthodes pour déterminer la priorité d'un carrefour dépendent de l'attribut `rightOfWay` du carrefour:
+* `rightOfWay="default"`: les liens sont classés en fonction de leur priorité (attribut `priority`), limite de vitesse (attribut "speed") et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
+* `rightOfWay="edgePriority"`: seul l'attribut `priority` des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
 
 Dans le cas d'un [carrefour giratoire](https://sumo.dlr.de/docs/Networks/PlainXML.html#roundabouts), les liens dans le carrefour auront toujours la priorité. Dans le cas d'une restriction du nombre de voies, la priorité est la même dans le cas d'un carrefour de type `zipper`; sinon, la voie de gauche a priorité sur la voie de droite.
 
 <!-- requests (responses, foes) and internal junctions are not for manual manipulation -->
 
 ## Carrefours à feux
-La façon recommandée de créer un [carrefour contrôlé par des feux de circulation et son plan de feu](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html) est d'utiliser netedit. Il faut changer le type de carrefour ou choisir le mode d'édition des feux de circulation, cliquer sur le carrefour et créer un plan de feu. On crée ainsi un [plan de feu par défaut](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#automatically_generated_tls-programs) avec les caractéristiques suivante: cycle de 90 s par défaut, partage égal du temps de vert entre les phases, suivi par une phase jaune, les virages à gauche permis si la limite de vitesse est inférieure à 70 km/h, une phase protégée pour les virages à gauche si une voie réservée existe et un décalage de 0. Alternativement, il est possible de choisir un plan de feux où chaque approche a sa phase l'une après l'autre (option `--tls.layout incoming`, la valeur par défaut étant "opposites"). Si le carrefour a plus d'approches, des phases seront ajoutées. 
+La façon recommandée de créer un [carrefour contrôlé par des feux de circulation et son plan de feu](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html) est d'utiliser netedit. Il faut changer le type de carrefour ou choisir le mode d'édition des feux de circulation, cliquer sur le carrefour et créer un plan de feu. On crée ainsi un [plan de feu par défaut](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#automatically_generated_tls-programs) avec les caractéristiques suivante: cycle de 90 s par défaut, partage égal du temps de vert entre les phases, suivi par une phase jaune, les virages à gauche permis si la limite de vitesse est inférieure à 70 km/h, une phase protégée pour les virages à gauche si une voie réservée existe et un décalage de 0. Alternativement, il est possible de choisir un plan de feux où chaque approche a sa phase l'une après l'autre (option `--tls.layout incoming`, la valeur par défaut étant `opposites`). Si le carrefour a plus d'approches, des phases seront ajoutées. 
 
-Le plan de feu est représenté par un élément "tlLogic" qui peut être enregistré dans un fichier réseau `net.xml` ou dans un fichier additionnel. Il a les attributs décrits dans le tableau suivant. 
+Le plan de feu est représenté par un élément `tlLogic` qui peut être enregistré dans un fichier réseau `net.xml` ou dans un fichier additionnel. Il a les attributs décrits dans le tableau suivant. 
 
 | Attribut | Type de valeur                            | Description      |
 | -------------- | ------------------------------------- | ---------------- |
@@ -252,7 +252,7 @@ Chaque phase a les attributs décrits dans le tableau suivant.
 | name           | string                | An optional description for the phase. This can be used to establish the correspondence between SUMO-phase-indexing and traffic engineering phase names.     |
 | next           | list of phase indices (int ...)           | The next phase in the cycle after the current. This is useful when adding extra transition phases to a traffic light plan which are not part of every cycle. Traffic lights of type 'actuated' can make use of a list of indices for selecting among alternative successor phases. |
 
-Seuls les attributs "duration" et "state" sont requis pour un plan de feu à temps fixe, les autres paramètres servant pour les feux semi-adaptatifs. Dans SUMO, chaque changement d'état (par exemple passage au jaune) d'un feu correspond à une nouvelle phase pour le carrefour, à la différence des définitions en circulation. Les phases se succède dans le temps, l'attribut "state" indiquant l'état du feu pour chaque connection entre toutes les voies arrivant et partant du carrefour. Il y a autant de caractères dans l'attribut "state", constituant un vecteur d'état, que de connections dans le carrefour, commençant par l'approche à "midi" (sur un quadrant de montre) avec les virages à droite, les mouvements tout droit et les virages à gauche (les id des connections sont visibles dans sumo-gui avec l'option "show link tls index"). Les états des feux sont représentés par un caractère défini dans le tableau suivant:
+Seuls les attributs `duration` et `state` sont requis pour un plan de feu à temps fixe, les autres paramètres servant pour les feux semi-adaptatifs. Dans SUMO, chaque changement d'état (par exemple passage au jaune) d'un feu correspond à une nouvelle phase pour le carrefour, à la différence des définitions en circulation. Les phases se succèdent dans le temps, l'attribut `state` indiquant l'état du feu pour chaque connection entre toutes les voies arrivant et partant du carrefour. Il y a autant de caractères dans l'attribut `state`, constituant un vecteur d'état, que de connections dans le carrefour, commençant par l'approche à `midi` (sur un quadrant de montre) avec les virages à droite, les mouvements tout droit et les virages à gauche (les id des connections sont visibles dans sumo-gui avec l'option "show link tls index"). Les états des feux sont représentés par un caractère défini dans le tableau suivant:
 
 | Character | GUI Color                                                  | Description          |
 | --------- | ---------------------------------------------------------- | -------------------- |

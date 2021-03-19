@@ -77,7 +77,7 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
 ```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml```
 
-Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour sont décrits dans le tableau suivant. 
+Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour défini ainsi sont décrits dans le tableau suivant. 
 
 | Attribute Name  | Value Type                                | Description                  |
 | --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -94,7 +94,7 @@ Les attributs des éléments du réseau sont définis dans la page sur le [forma
 | rightOfWay      | string                                                                                                                                                                                                                    | Set algorithm for computing [\#Right-of-way](#right-of-way). Allowed values are *default* and *edgePriority*                            |
 | controlledInner | list of edge ids                                                                                                                                                                                                          | Edges which shall be controlled by a joined TLS despite being incoming as well as outgoing to the jointly controlled nodes                         |
 
-Les attributs possibles d'un lien sont décrits dans le tableau suivant.
+Les attributs possibles d'un lien défini ainsi sont décrits dans le tableau suivant.
 
 | Attribute Name | Value Type                                        | Description                                        |
 | -------------- | ------------------------------------- | -------------------------------------------------------------- |
@@ -115,7 +115,7 @@ Les attributs possibles d'un lien sont décrits dans le tableau suivant.
 | endOffset      | float \>= 0                           | Move the stop line back from the intersection by the given amount (effectively shortening the edge and locally enlarging the intersection)  |
 | sidewalkWidth  | float \>= 0                           | Adds a sidewalk with the given width (defaults to -1 which adds nothing).                              |
 
-Les attributs possibles d'une connection sont décrits dans le tableau suivant.
+Les attributs possibles d'une connection défini ainsi sont décrits dans le tableau suivant.
 
 | Attribute Name | Value Type                             | Default | Description      |
 | -------------- | -------------------------------------- | ------- | ----------------------------------------------------------------------- |
@@ -133,6 +133,7 @@ Les attributs possibles d'une connection sont décrits dans le tableau suivant.
 | allow     | list of vehicle classes    |    | set custom permissions independent of from-lane and to-lane permissions. |
 | disallow  | list of vehicle classes    |    | set custom permissions independent of from-lane and to-lane permissions. |
 
+Les éléments des fichiers des réseaux de transport générés par netconvert ou netedit sont les mêmes (liens, carrefours et connections), mais ont certains attributs qui diffèrent (voir définition du [format `net.xml`](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html)). S'y ajoutent des éléments comme les [`request`](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html#requests) décrivant les priorités et conflits entre connections. 
 
 ## Importer un réseau d'OpenStreetMap
 Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
@@ -199,7 +200,7 @@ Pour cette section, on crée un petit carrefour à quatre branches, avec une voi
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert: ```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
 
-Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "sautent" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. 
+Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "sautent" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. Dans le cas contraire, des liens et carrefours "internes" sont automatiquement créés par SUMO pour le déplacement des véhicules à l'intérieur d'un carrefour. 
 
 ## Types de carrefours
 Il existe trois niveaux de contrôle à un carrefour: 
@@ -218,16 +219,13 @@ Les types de carrefours (attribut `type` d'un élément node ou junction) sont l
 * `rail_signal`: ce carrefour est contrôlé par un [feu de chemin de fer](https://sumo.dlr.de/docs/Simulation/Rail_signals.html) (seulement utile pour des chemins de fer);
 * `zipper`: ce carrefour connecte les liens où le nombre de voie diminue et la circulation doit converger comme une "fermeture éclar" ([zipper-style (late merging)](https://en.wikipedia.org/wiki/Merge_%28traffic%29));
 * `rail_crossing`: ce type de carrefour représente un passage à niveau permettant aux trains de passer dans s'arrêter grâce à des feux de circulation quand le train approche;
-* `traffic_light_right_on_red`: le carrefour est contrôlé par des feux de circulation comme pour le carrefour de type `traffic_light`, en autorisant en plus le virage à droite au feu rouge (les véhicules doivent s'arrêter, puis peuvent tourner dans n'importe quelle phase si le mouvement est sécuritaire) (
-  [right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
+* `traffic_light_right_on_red`: le carrefour est contrôlé par des feux de circulation comme pour le carrefour de type `traffic_light`, en autorisant en plus le virage à droite au feu rouge (les véhicules doivent s'arrêter, puis peuvent tourner dans n'importe quelle phase si le mouvement est sécuritaire) ([right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
 
 Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). La priorité sera calculée à chaque carrefour selon son type. Pour les types `priority` et `priority_stop`, elle dépend des valeur des attributs `priority` des liens entrants (approches) et sortants (sorties), de la vitesse et du nombre de voies. La priorité peut aussi être modifiée via des [prohibitions de connections](https://sumo.dlr.de/docs/Networks/PlainXML.html#setting_connection_priorities) et l'attribut `pass` de connection (les véhicules sur cette connection ne s'arrêtent pas). Les deux méthodes pour déterminer la priorité d'un carrefour dépendent de l'attribut `rightOfWay` du carrefour:
 * `rightOfWay="default"`: les liens sont classés en fonction de leur priorité (attribut `priority`), limite de vitesse (attribut `speed`) et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
 * `rightOfWay="edgePriority"`: seul l'attribut `priority` des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
 
 Dans le cas d'un [carrefour giratoire](https://sumo.dlr.de/docs/Networks/PlainXML.html#roundabouts), les liens dans le carrefour auront toujours la priorité. Dans le cas d'une restriction du nombre de voies, la priorité est la même dans le cas d'un carrefour de type `zipper`; sinon, la voie de gauche a priorité sur la voie de droite.
-
-<!-- requests (responses, foes) and internal junctions are not for manual manipulation -->
 
 ## Carrefours à feux
 La façon recommandée de créer un [carrefour contrôlé par des feux de circulation et son plan de feu](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html) est d'utiliser netedit. Il faut changer le type de carrefour ou choisir le mode d'édition des feux de circulation, cliquer sur le carrefour et créer un plan de feu. On crée ainsi un [plan de feu par défaut](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#automatically_generated_tls-programs) avec les caractéristiques suivante: cycle de 90 s par défaut, partage égal du temps de vert entre les phases, suivi par une phase jaune, les virages à gauche permis si la limite de vitesse est inférieure à 70 km/h, une phase protégée pour les virages à gauche si une voie réservée existe et un décalage de 0. Alternativement, il est possible de choisir un plan de feux où chaque approche a sa phase l'une après l'autre (option `--tls.layout incoming`, la valeur par défaut étant `opposites`). Si le carrefour a plus d'approches, des phases seront ajoutées. 

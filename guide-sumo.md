@@ -539,7 +539,7 @@ Les classes abstraites de véhicule existantes ont des valeurs par défaut pour 
 * truck, trailer, coach, delivery, taxi: 0.05
 * tram, rail_urban, rail, rail_electric, rail_fast: 0
 * emergency: 0
-* everything else: 0.1
+* tous les autres: 0.1
 
 ## Modèles de circulation
 Le comportement des usagers dans SUMO repose sur trois modèles principaux: un [modèle de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), un [modèle de changement de voie](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#lane-changing_models) et un [modèle pour les carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#junction_model_parameters). Il existe différents types de modèles pour les deux premiers, définis respectivement par les attributs "carFollowModel" et "laneChangeModel" dans un type de véhicule. 

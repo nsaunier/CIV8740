@@ -28,12 +28,12 @@ La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing
 
 # Liste des outils
 De nombreux outils ([liste complète](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront:
-* [netedit](https://sumo.dlr.de/docs/NETEDIT): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
-* [netconvert](https://sumo.dlr.de/docs/NETCONVERT): outil en ligne de commande de conversion des éléments de réseau au format SUMO
-* [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html): outil en ligne de commande de génération de réseaux abstraits
+* [netedit](https://sumo.dlr.de/docs/Netedit/index.html): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
+* [netconvert](https://sumo.dlr.de/docs/netconvert.html): outil en ligne de commande de conversion des éléments de réseau au format SUMO
+* [netgenerate](https://sumo.dlr.de/docs/netgenerate.html): outil en ligne de commande de génération de réseaux abstraits
 * plusieurs outils d'affectation de la demande au réseau comme duarouter, jtrrouter, etc.
-* [sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html): interface graphique de simulation
-* [sumo](https://sumo.dlr.de/docs/SUMO.html): outil en ligne de commande de simulation
+* [sumo-gui](https://sumo.dlr.de/docs/sumo-gui.html): interface graphique de simulation
+* [sumo](https://sumo.dlr.de/docs/sumo.html): outil en ligne de commande de simulation
 * plusieurs outils comme des scripts Python pour faciliter la création de fichier ou leur conversion, disponibles dans le répertoire `tools` du dossier `Sumo` (répertoire d'installation sur Windows, `/usr/share/sumo/` sur Linux). 
 
 Le processus général pour construire un scénario SUMO est décrit dans un [tutoriel](https://sumo.dlr.de/docs/Tutorials/ScenarioGuide.html). Les deux tutoriels suivant montrent pas à pas comment construire un petit scénario SUMO:
@@ -75,7 +75,8 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 </edges>
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml```
+```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml
+```
 
 Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour défini ainsi sont décrits dans le tableau suivant. 
 
@@ -143,7 +144,7 @@ La méthode consiste à naviguer sur le site d'[OpenStreetMap](https://www.opens
 
 ![Export OSM](images/osm-export.png)
 
-Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```
+Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```.
 
 Le fichier obtenu `.osm` peut être soit importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles dans plusieurs onglets lors de l'importation par netedit. 
 
@@ -574,7 +575,7 @@ Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulat
   </gui_only>
 </configuration>
 ```
-Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1 s), la graine d'initialisation ("seed") pour les générateurs de nombres aléatoires et une référence à un [fichier de configuration de l'interface de sumo-gui](http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files) (qui peut permettre [d'afficher une image en arrière plan](https://sumo.dlr.de/docs/SUMO-GUI.html#using_decals_within_sumo-gui) pour tracer le réseau dans netedit): 
+Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1 s), la graine d'initialisation ("seed") pour les générateurs de nombres aléatoires et une référence à un [fichier de configuration de l'interface de sumo-gui](https://sumo.dlr.de/docs/sumo-gui.html#configuration_files) (qui peut permettre [d'afficher une image en arrière plan](https://sumo.dlr.de/docs/sumo-gui.html#showing_background_images) pour tracer le réseau dans netedit): 
 ```xml
 <viewsettings>
     <viewport y="0" x="250" zoom="100"/>
@@ -583,7 +584,7 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 </viewsettings>
 ```
 
-Il faut noter que le [le pas de temps pour les actions du conducteur ("actionStepLength")](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour ce pas de temps des actions du conducteur (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). Ce pas de temps représente partiellement le temps de perception et réaction du conducteur car les actions du conducteur se feront tout de même en fonction de l'état de la simulation au pas de temps précédent, même si les actions sont mises à jour moins fréquemment (voir [documentation](https://sumo.dlr.de/docs/Car-Following-Models.html#actionsteplength)). Il y a un risque de collision si ce pas de temps est [supérieur à tau](https://sumo.dlr.de/docs/Car-Following-Models.html#tau). 
+Il faut noter que le [le pas de temps pour les actions du conducteur ("actionStepLength")](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_action_step_length) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour ce pas de temps des actions du conducteur (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). Ce pas de temps représente partiellement le temps de perception et réaction du conducteur car les actions du conducteur se feront tout de même en fonction de l'état de la simulation au pas de temps précédent, même si les actions sont mises à jour moins fréquemment (voir [documentation](https://sumo.dlr.de/docs/Car-Following-Models.html#actionsteplength)). Il y a un risque de collision si ce pas de temps est [supérieur à tau](https://sumo.dlr.de/docs/Car-Following-Models.html#tau). 
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
 * distributions d'itinéraires et de types de véhicules,

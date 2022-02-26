@@ -511,8 +511,8 @@ Il est aussi possible d'utiliser les classes abstraites de véhicule:
 ```xml
 <routes>
   <vTypeDistribution id="typedist1">
-    <vType id="type1" vclass="passenger" color="blue" probability="2"/>
-    <vType id="type2" vclass="truck" length="10" guiShape="delivery" color="red" probability="1"/>
+    <vType id="type1" vClass="passenger" color="blue" probability="2"/>
+    <vType id="type2" vClass="truck" length="10" guiShape="delivery" color="red" probability="1"/>
   </vTypeDistribution>
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>

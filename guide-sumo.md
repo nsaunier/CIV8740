@@ -3,6 +3,7 @@ Guide pour le logiciel SUMO
 
 **Table des matières**
 1. [Introduction](#introduction)
+1. [Installation](#installation)
 1. [Liste des outils](#liste-des-outils)
 1. [Réseaux de transport](#réseaux-de-transport)
 1. [Configuration des carrefours](#configuration-des-carrefours)
@@ -14,20 +15,25 @@ Guide pour le logiciel SUMO
 Ce guide est en développement actif dans le cadre du cours de Circulation CIV8740. 
 
 # Introduction
-Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://sumo.dlr.de) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce guide se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
+Le logiciel [SUMO, pour "Simulation of Urban MObility",](https://www.eclipse.org/sumo/) est un logiciel de simulation microscopique de la circulation dont le code est sous license libre ("open source"). Il permet de représenter les réseaux de transport terrestre, en particulier la circulation routière. Il est développé par l'[agence aérospatiale allemande DLR](https://www.dlr.de). Ce guide se concentrera sur les déplacements des véhicules motorisés et cyclistes, mais SUMO peut aussi représenter les déplacements piétons et le transport en commun. 
 
 La plupart des fichiers sont des fichiers textes suivant le format "Extensible Markup Language" (XML), soit "langage de balisage extensible", qui est un métalangage informatique de balisage générique (voir https://fr.wikipedia.org/wiki/Extensible_Markup_Language). Assurez-vous d'avoir un bon éditeur texte pour éditer ces fichiers directement, par exemple [Notepad++](https://notepad-plus-plus.org/) sur Windows, [Atom](https://atom.io/) ou [emacs](https://www.gnu.org/software/emacs/) sur toutes les plateformes. Il est **très important** d'avoir des [compétences informatiques minimales](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html) de manipulation des fichiers textes, du format XML et de l'utilisation d'outils en ligne de commande pour utiliser SUMO.
 
-La documentation de référence de SUMO est en anglais et est disponible en ligne sur le [wiki du projet](https://sumo.dlr.de/docs/), avec un [guide utilisateur](https://sumo.dlr.de/docs/SUMO_User_Documentation.html) et un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles}(https://sumo.dlr.de/docs/Tutorials.html).
+La documentation de référence de SUMO est en anglais et est disponible [en ligne](https://sumo.dlr.de/docs/), ainsi qu'un [glossaire](https://sumo.dlr.de/docs/Other/Glossary.html). Plusieurs tutoriels en anglais sont aussi [disponibles](https://sumo.dlr.de/docs/Tutorials.html).
+
+
+# Installation
+La documentation décrit comment [installer](https://sumo.dlr.de/docs/Installing.html) SUMO, y compris les différents outils logiciels. Ils sont installés dans un nouveau répertoire qui dépend de votre choix et du sytème d'exploitation. Plusieurs autres [outils](https://sumo.dlr.de/docs/Tools.html) en ligne de commande dépendent de la bonne configuration de les variables d'environnement `PATH` et `SUMO_HOME` pour pouvoir les utiliser simplement. La [documentation explique](https://sumo.dlr.de/docs/Basics/Basic_Computer_Skills.html#sumo_home) comment configurer ces variables. 
+
 
 # Liste des outils
-De nombreux outils ([liste](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront
-* [netedit](https://sumo.dlr.de/docs/NETEDIT): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
-* [netconvert](https://sumo.dlr.de/docs/NETCONVERT): outil en ligne de commande de conversion des éléments de réseau au format SUMO
-* [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html): outil en ligne de commande de génération de réseaux abstraits
+De nombreux outils ([liste complète](https://sumo.dlr.de/docs/Sumo_at_a_Glance.html#included_applications)) sont disponibles dans SUMO, parmi lesquels les plus utilisés seront:
+* [netedit](https://sumo.dlr.de/docs/Netedit/index.html): outil graphique d'édition du réseau, de la demande et d'autres attributs de la simulation 
+* [netconvert](https://sumo.dlr.de/docs/netconvert.html): outil en ligne de commande de conversion des éléments de réseau au format SUMO
+* [netgenerate](https://sumo.dlr.de/docs/netgenerate.html): outil en ligne de commande de génération de réseaux abstraits
 * plusieurs outils d'affectation de la demande au réseau comme duarouter, jtrrouter, etc.
-* [sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html): interface graphique de simulation
-* [sumo](https://sumo.dlr.de/docs/SUMO.html): outil en ligne de commande de simulation
+* [sumo-gui](https://sumo.dlr.de/docs/sumo-gui.html): interface graphique de simulation
+* [sumo](https://sumo.dlr.de/docs/sumo.html): outil en ligne de commande de simulation
 * plusieurs outils comme des scripts Python pour faciliter la création de fichier ou leur conversion, disponibles dans le répertoire `tools` du dossier `Sumo` (répertoire d'installation sur Windows, `/usr/share/sumo/` sur Linux). 
 
 Le processus général pour construire un scénario SUMO est décrit dans un [tutoriel](https://sumo.dlr.de/docs/Tutorials/ScenarioGuide.html). Les deux tutoriels suivant montrent pas à pas comment construire un petit scénario SUMO:
@@ -37,20 +43,21 @@ Le processus général pour construire un scénario SUMO est décrit dans un [tu
 Un scénario nécessite au moins les fichiers suivants: 
 * un fichier de configuration de SUMO, avec extension `.sumocfg`;
 * un réseau routier, avec extension `.net.xml`;
-* un fichier de demande de déplacement, incluant des itinéraires, avec extension `.rou.xml`.
+* un fichier de demande de déplacements, incluant des itinéraires, avec extension `.rou.xml`.
 Tous ces fichiers sont au format texte XML. Il est possible d'exécuter une simulation avec les outils sumo ou sumo-gui, en leur indiquant directement d'utiliser les fichiers réseau et demande, ou en utilisant un fichier de configuration qui fait référence à ces deux fichiers et inclue d'autres paramètres de simulation. Cela est présenté en détail dans la section [Simulation](#simulation).
 
 # Réseaux de transport
 Il existe différentes façons de créer ou importer des réseaux de transport dans SUMO. Une des forces est la facilité d'importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
-La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans une autre [section](#configuration-des-carrefours). 
+La configuration des carrefours (mouvement permis, priorités et types de contrôle) sera abordée dans la [section suivante](#configuration-des-carrefours). 
 
-Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Le format et ces éléments sont décrits sur le [wiki](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
+Un réseau SUMO est constitué de liens ("edge"), une ou plusieurs voies ("lane") par lien, de carrefours ("junction") et de connections ("connection") entre liens. Ces éléments et leur format sont décrits dans la [documentation](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html).
 
-Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en descriptions XML natives, à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
+## Attributs des liens et carrefours
+Le format de réseau de transport de SUMO n'est pas fait pour être édité manuellement. Pour éditer les fichiers du réseau, la procédure recommandée consiste à utiliser [netconvert](https://sumo.dlr.de/docs/NETCONVERT.html) pour convertir le réseau en [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html), à éditer ces fichiers, puis à utiliser de nouveau netconvert pour reconstruire le réseau ensuite. 
 
 Un exemple est la construction du réseau jouet "hello" utilisé comme exemple dans ce guide, disponible dans le [répertoire sumo](sumo). Ce réseau est constitué 
-* de quatre noeuds (fichier `hello.nod.xml`):
+* de quatre carrefours ("noeuds") (fichier `hello.nod.xml`):
 ```xml
 <nodes>
   <node id="1" x="-250.0" y="0.0" />
@@ -68,43 +75,108 @@ Un exemple est la construction du réseau jouet "hello" utilisé comme exemple d
 </edges>
 ```
 Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml --no-internal-links```
+```$ netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml
+```
+
+Les attributs des éléments du réseau sont définis dans la page sur le [format XML simple](https://sumo.dlr.de/docs/Networks/PlainXML.html). Les attributs possibles d'un carrefour défini ainsi sont décrits dans le tableau suivant. 
+
+| Attribute Name  | Value Type                                | Description                  |
+| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **id**          | id (string)                                                                                                                                                                                                               | The name of the node                                                                                                                               |
+| **x**           | float                                                                                                                                                                                                                     | The x-position of the node on the plane in meters                                                                                                  |
+| **y**           | float                                                                                                                                                                                                                     | The y-position of the node on the plane in meters                                                                                                  |
+| z               | float                                                                                                                                                                                                                     | The z-position of the node on the plane in meters                                                                                                  |
+| type            | enum ( "priority", "traffic_light", "right_before_left", "unregulated", "priority_stop", "traffic_light_unregulated", "allway_stop", "rail_signal", "zipper", "traffic_light_right_on_red", "rail_crossing") | An optional type for the node                                                                                                                      |
+| tlType          | enum ( "static", "actuated")                                                                                                                                                                                              | An optional type for the traffic light algorithm                                                                                                   |
+| tl              | id (string)                                                                                                                                                                                                               | An optional id for the traffic light program. Nodes with the same tl-value will be joined into a single program                                    |
+| radius          | positive float;                                                                                                                                                                                                           | optional turning radius (for all corners) for that node in meters *(default 1.5)*                                                                  |
+| shape           | List of positions; each position is encoded in x,y or x,y,z in meters (do not separate the numbers with a space\!).                                                                                                       | A custom shape for that node. If less than two positions are given, netconvert will reset that node to use a computed shape.                       |
+| keepClear       | bool                                                                                                                                                                                                                      | Whether the [junction-blocking-heuristic](../Simulation/Intersections.md#junction_blocking) should be activated at this node *(default true)* |
+| rightOfWay      | string                                                                                                                                                                                                                    | Set algorithm for computing [\#Right-of-way](#right-of-way). Allowed values are *default* and *edgePriority*                            |
+| controlledInner | list of edge ids                                                                                                                                                                                                          | Edges which shall be controlled by a joined TLS despite being incoming as well as outgoing to the jointly controlled nodes                         |
+
+Les attributs possibles d'un lien défini ainsi sont décrits dans le tableau suivant.
+
+| Attribute Name | Value Type                                        | Description                                        |
+| -------------- | ------------------------------------- | -------------------------------------------------------------- |
+| **id**         | id (string)                           | The id of the edge (must be unique)                            |
+| from           | referenced node id                    | The name of a node within the nodes-file the edge shall start at    |
+| to             | referenced node id                    | The name of a node within the nodes-file the edge shall end at      |
+| type           | referenced type id                    | The name of a type within the [SUMO edge type file](../SUMO_edge_type_file.md)  |
+| numLanes       | int                                   | The number of lanes of the edge; must be an integer value                       |
+| speed          | float                                 | The maximum speed allowed on the edge in m/s; must be a floating point number (see also "Using Edges' maximum Speed Definitions in km/h")  |
+| priority       | int                                   | The priority of the edge. Used for [\#Right-of-way](#right-of-way)-computation            |
+| length         | float                                 | The length of the edge in meter                                                     |
+| shape          | List of positions; each position is encoded in x,y or x,y,z in meters (do not separate the numbers with a space\!). | If the shape is given it should start and end with the positions of the from-node and to-node. Alternatively it can also start and end with the position where the edge leaves or enters the junction shape. This gives some control over the final junction shape. When using the option **--plain.extend-edge-shape** it is sufficient to supply inner geometry points and extend the shape with the starting and ending node positions automatically |
+| spreadType     | enum ( "right", "center", "roadCenter")                                                                                          | The description of how to compute lane geometry from edge geometry. See [SpreadType](#spreadtype)  |
+| allow          | list of vehicle classes               | List of permitted vehicle classes (see [access permissions](#road_access_permissions_allow_disallow))       |
+| disallow       | list of vehicle classes               | List of forbidden vehicle classes (see [access permissions](#road_access_permissions_allow_disallow))       |
+| width          | float                                 | lane width for all lanes of this edge in meters (used for visualization)                                    |
+| name           | string                                | street name (need not be unique, used for visualization)                                                    |
+| endOffset      | float \>= 0                           | Move the stop line back from the intersection by the given amount (effectively shortening the edge and locally enlarging the intersection)  |
+| sidewalkWidth  | float \>= 0                           | Adds a sidewalk with the given width (defaults to -1 which adds nothing).                              |
+
+Les attributs possibles d'une connection défini ainsi sont décrits dans le tableau suivant.
+
+| Attribute Name | Value Type                             | Default | Description      |
+| -------------- | -------------------------------------- | ------- | ----------------------------------------------------------------------- |
+| **from**       | referenced edge id                                                                                                  |         | The name of the edge the vehicles leave                                                                                                                                                                                                                                                                                                                                      |
+| to             | referenced edge id                                                                                                  |         | The name of the edge the vehicles may reach when leaving "from"                                                                                                                                                                                                                                                                                                              |
+| fromLane       | *<INT\>*                                                                                                             |         | the lane index of the incoming lane (numbers starting with 0)                                                                                                                                                                                                                                                                                                                |
+| toLane         | *<INT\>*                                                                                                             |         | the lane index of the outgoing lane (numbers starting with 0)                                                                                                                                                                                                                                                                                                                |
+| pass           | bool                                                                                                                | false   | if set, vehicles which pass this (lane-2-lane) connection) will not wait                                                                                                                                                                                                                                                                                                     |
+| keepClear      | bool                                                                                                                | true    | if set to *false*, vehicles which pass this (lane-2-lane) connection) will not worry about [blocking the intersection](../Simulation/Intersections.md#junction_blocking).                                                                                                                                                                                               |
+| contPos        | float                                                                                                               | \-1     | if set to 0, no [internal junction](../Networks/SUMO_Road_Networks.md#internal_junctions) will be built for this connection. If set to a positive value, an internal junction will be built at this position (in m) from the start of the internal lane for this connection.                                                                                            |
+| visibility     | float                                                                                                               | 4.5     | specifies the distance to the connection \[in m.\] below which an approaching vehicle has full sight of any other approaching vehicles on the connection's foe lanes (i.e. vehicle can accelerate if none are present). Note, that a too low visibility (<=0.1m.) will prevent vehicles from crossing a minor link. For major links the attribute has no effect, currently. |
+| speed          | float                                                                                                               | \-1     | specifies the maximum speed while moving across the intersection using this connection (in m/s). By default the mean speed of the edge before and after the connection is used. With the default value, the speed is set to the average of the incoming and outgoing lane or to a radius based limit if option **--junctions.limit-turn-speed** is set.                                                      |
+| shape          | List of positions; each position is encoded in x,y or x,y,z in meters (do not separate the numbers with a space\!). |         | specifies a custom shape for the internal lane(s) for this connection. By default an interpolated cubic spline is used.                                                                                                                                                                                                                                                      |
+| uncontrolled   | bool  | false   | if set to *true*, This connection will not be TLS-controlled despite its node being controlled. |
+| allow     | list of vehicle classes    |    | set custom permissions independent of from-lane and to-lane permissions. |
+| disallow  | list of vehicle classes    |    | set custom permissions independent of from-lane and to-lane permissions. |
+
+Les éléments des fichiers des réseaux de transport générés par netconvert ou netedit sont les mêmes (liens, carrefours et connections), mais ont certains attributs qui diffèrent (voir définition du [format `net.xml`](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html)). S'y ajoutent des éléments comme les [`request`](https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html#requests) décrivant les priorités et conflits entre connections. 
 
 ## Importer un réseau d'OpenStreetMap
 Il existe deux méthodes pour importer des données d'[OpenStreetMap](https://www.openstreetmap.org/). 
 
 ### Téléchargement d'OpenStreetMap et importation simple
 La méthode consiste à naviguer sur le site d'[OpenStreetMap](https://www.openstreetmap.org/), trouver la zone dont on désire importer les données et à les exporter en cliquant sur le bouton tel que montré dans l'image ci-dessous. 
+
 ![Export OSM](images/osm-export.png)
-Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```
 
-Le fichier obtenu `.osm` est peut soit être importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles dans plusieurs onglets lors de l'importation par netedit. 
+Si vous connaissez déjà les coordonnées (latitude, longitude) de la zone d'intérêt, il est possible d'y accéder directement via le navigateur avec une adresse du type https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691, ou via l'outil `wget` en ligne de commande: ```$ wget -O map.osm "https://overpass-api.de/api/map?bbox=-73.7754,45.5628,-73.7653,45.5691"```.
 
-La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites sur le wiki de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
+Le fichier obtenu `.osm` peut être soit importé directement par netedit, soit converti en fichier réseau SUMO `.net.xml` avec l'utilitaire en ligne de commande netconvert. Les options de netconvert discutées ci-dessous sont disponibles dans plusieurs onglets lors de l'importation par netedit. 
+
+La commande netconvert est la suivante: ```$ netconvert --geometry.remove --remove-edges.isolated --junctions.join --osm map.osm -o map.net.xml```. Les options `--geometry.remove` et `--junctions.join` ont pour effets respectifs de simplifier la géométrie du réseau sans changer sa topologie et de consolider les carrefours proches, par exemple d'une route séparée en deux par une médiane dans OSM, ce qui donnerait deux carrefours rapprochés (l'option --junctions.join-dist contrôle le seuil de distance pour fusionner deux carrefours). L'option `--remove.edges.isolated` permet d'éliminer les tronçons isolés. D'autres options sont décrites dans la documentation de SUMO ([options recommandées](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#Recommended_NETCONVERT_Options)). Il est aussi possible d'utiliser des [typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) lorsque des données comme les limites de vitesse sont manquantes. 
 
 Lors de la conversion d'un fichier `.osm` en réseau SUMO, il est possible de ne garder qu'un seul type de route avec la commande ```$ netconvert --osm-files map.osm  --keep-edges.by-type highway.motorway,highway.primary,highway.secondary,highway.tertiary,highway.trunk,highway.primary_link,highway.secondary_link,highway.tertiary_link,highway.motorway_link,highway.residential -o map.net.xml``` ou de sélectionner les routes selon les types d'usagers qui y circulent avec la commande ```$ netconvert --osm-files map.osm --remove-edges.by-vclass pedestrian,bicycle,delivery -o map.net.xml``` (les pistes cyclables et autres routes reservées aux piétons et à la livraison sont supprimés).
+
+Les [types de route](https://sumo.dlr.de/docs/SUMO_edge_type_file.html) permettent de gérer des attributs communs à un ensemble de lien, et correspondent souvant dans la réalité à des catégories ou classes de route. 
 
 D'autres commandes permettent de deviner le bon sens de circulation au niveau des ronds points avec `--roudabouts.guess` ou de les bretelles d'entrée et de sortie d'autoroutes si elles manquent avec `--guess.ramps`. 
 
 ### Script intégré d'importation
 Le script [`osmWebWizard.py`](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html) situé dans le répertoire `tools` permet d'importer des données d'OpenStreetMap et de générer une demande de déplacement via une interface Internet. 
+
 ![Export OSM](images/osm-web-wizard.png)
+
 Après génération du scénario, il est automatiquement ouvert dans sumo-gui. Il est généralement nécessaire de retoucher le réseau avec netedit. Tous les fichiers sont sauvés dans un répertoire au format du jour et de l'heure du type `yyyy-mm-dd-hh-mm-ss`. 
 
 ## Créer un réseau géométrique
 Il est possible de générer des réseaux géométriques avec l'outil [netgenerate](https://sumo.dlr.de/docs/NETGENERATE.html) en ligne de commande,  en forme 
-* de toile d'araignée: ```$ netgenerate -s --spider.arm-number 10 -o network.net.xml```;
-* de grille: ```$ netgenerate -g --grid.number 10 -o network.net.xml```;
-* de réseau aléatoire: ```$ netgenerate -r --rand.iterations 2000 -o network.net.xml```. 
+* de toile d'araignée: ```$ netgenerate -s --spider.arm-number 10 -o network.net.xml```
+* de grille: ```$ netgenerate -g --grid.number 10 -o network.net.xml```
+* de réseau aléatoire: ```$ netgenerate -r --rand.iterations 2000 -o network.net.xml```
 
 ## Créer et modifier un réseau
 Un réseau peut être créé à partir de rien et modifié avec l'outil [netedit](https://sumo.dlr.de/docs/NETEDIT.html). La page de l'outil inclut un guide d'utilisation avec des vues de l'interface. Le tutoriel ["Quick start"](https://sumo.dlr.de/docs/Tutorials/quick_start.html) comprend aussi des explications pas à pas pour utiliser netedit. netedit a plusieurs modes et les actions effectuées à la souris dépendent du mode sélectionné: "inspect", "delete", "select", "move", etc. Un aspect intéressant du mode "inspect" est qu'il permet de voir les attributs des éléments d'un réseau, mais aussi d'éditer ces attributs: il est par exemple possible de modifier les coordonnées de noeuds ou le nombre de voies d'un lien directement de cette façon. 
 
-Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue ci-dessous. 
+Il faut aussi noter que netedit permet depuis peu de créer la demande de déplacement vue [ci-dessous](#demande-de-déplacements). 
 
 # Configuration des carrefours
-Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet "carrefour" est disponible dans le [répertoire sumo](sumo). Il est constitué 
-* de cinq noeuds (fichier `carrefour.nod.xml`):
+Pour cette section, on crée un petit carrefour à quatre branches, avec une voie dans chaque direction, sans mouvement interdit hormis les demi-tours. Le réseau jouet `carrefour` est disponible dans le [répertoire sumo](sumo). Il est constitué 
+* de cinq carrefours ("noeuds") (fichier `carrefour.nod.xml`):
 ```xml
 <nodes>
   <node id="center" x="0.0" y="0.0" />
@@ -127,15 +199,76 @@ Pour cette section, on crée un petit carrefour à quatre branches, avec une voi
     <edge from="south" id="insouth" to="center" />
 </edges>
 ```
-Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert:
-```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-internal-links --no-turnarounds true```
+Ces deux fichiers sont ensuite combinés dans un fichier réseau avec netconvert: ```$ netconvert --node-files=carrefour.nod.xml --edge-files=carrefour.edg.xml --output-file=carrefour.net.xml --no-turnarounds true```
 
+Ajouter l'option ` --no-internal-links` simplifie le réseau pour de grands réseaux, mais fait que les véhicules "sautent" le centre du carrefour lorsqu'ils le traversent. Dans ce cas, la distance parcourue, et donc le temps de parcours, sont réduits de façon irréaliste et d'[autres phénomènes](https://sumo.dlr.de/docs/Simulation/Intersections.html), comme l'attente des véhicules dans le carrefour, ne peuvent être reproduits. Dans le cas contraire, des liens et carrefours "internes" sont automatiquement créés par SUMO pour le déplacement des véhicules à l'intérieur d'un carrefour. 
+
+## Types de carrefours
 Il existe trois niveaux de contrôle à un carrefour: 
 * les règles de la route (par défaut);
 * l'attribution explicite de la priorité par un panneau de cédez le passage ou d'arrêt;
 * les feux de circulation.
 
+Les types de carrefours (attribut `type` d'un élément node ou junction) sont les suivants (s'il n'est pas précisé dans le fichier des carrefours `nod.xml`, il sera deviné par netconvert):
+* `priority`: les véhicules sur un lien à basse priorité doivent attendre jusqu'à ce que les véhicules sur un lien à priorité élevée aient passé le carrefour;
+* `traffic_light`: le carrefour est contrôlé par des feux de circulation (les règles de priorité sont utilisées pour éviter les collisions si des liens en conflit sont vert en même temps);
+* `right_before_left`: les véhicules laissent passer ceux qui viennent à leur droite;
+* `unregulated`: le carrefour n'a pas de contrôle, les véhicules passent sans freiner, la détection de collision dans le carrefour ne fonctionne pas et des collisions peuvent se produire en dehors du carrefour;
+* `traffic_light_unregulated`: le carrefour est contrôlé par des feux de circulation sans autre règle, ce qui peut causer des collisisons dans le carrefour si des plans de feux non-sécuritaires sont utilisés (les collisions dans le carrefour ne sont pas détectées);
+* `priority_stop`: ce type fonctionne comme un carrefour de type `priority` où les véhicules arrivant sur la route secondaire doivent s'arrêter avant de passer;
+* `allway_stop`: un carrefour de ce type est contrôlé par un [arrêt toute direction](https://en.wikipedia.org/wiki/All-way_stop);
+* `rail_signal`: ce carrefour est contrôlé par un [feu de chemin de fer](https://sumo.dlr.de/docs/Simulation/Rail_signals.html) (seulement utile pour des chemins de fer);
+* `zipper`: ce carrefour connecte les liens où le nombre de voie diminue et la circulation doit converger comme une "fermeture éclar" ([zipper-style (late merging)](https://en.wikipedia.org/wiki/Merge_%28traffic%29));
+* `rail_crossing`: ce type de carrefour représente un passage à niveau permettant aux trains de passer dans s'arrêter grâce à des feux de circulation quand le train approche;
+* `traffic_light_right_on_red`: le carrefour est contrôlé par des feux de circulation comme pour le carrefour de type `traffic_light`, en autorisant en plus le virage à droite au feu rouge (les véhicules doivent s'arrêter, puis peuvent tourner dans n'importe quelle phase si le mouvement est sécuritaire) ([right-turn-on-red](https://en.wikipedia.org/wiki/Right_turn_on_red)).
 
+Les priorités de chaque approche sont représentées par la [couleur de la ligne d'arrêt dans sumo-gui](https://sumo.dlr.de/docs/SUMO-GUI.html#right_of_way). La priorité sera calculée à chaque carrefour selon son type. Pour les types `priority` et `priority_stop`, elle dépend des valeur des attributs `priority` des liens entrants (approches) et sortants (sorties), de la vitesse et du nombre de voies. La priorité peut aussi être modifiée via des [prohibitions de connections](https://sumo.dlr.de/docs/Networks/PlainXML.html#setting_connection_priorities) et l'attribut `pass` de connection (les véhicules sur cette connection ne s'arrêtent pas). Les deux méthodes pour déterminer la priorité d'un carrefour dépendent de l'attribut `rightOfWay` du carrefour:
+* `rightOfWay="default"`: les liens sont classés en fonction de leur priorité (attribut `priority`), limite de vitesse (attribut `speed`) et nombre de voies (attribut "laneNumber"). Les deux premiers liens entrants ont la priorité et les autres liens sont secondaires;
+* `rightOfWay="edgePriority"`: seul l'attribut `priority` des liens est considéré; en cas d'égalité, les types de mouvements (virages) sont aussi considérés.
+
+Dans le cas d'un [carrefour giratoire](https://sumo.dlr.de/docs/Networks/PlainXML.html#roundabouts), les liens dans le carrefour auront toujours la priorité. Dans le cas d'une restriction du nombre de voies, la priorité est la même dans le cas d'un carrefour de type `zipper`; sinon, la voie de gauche a priorité sur la voie de droite.
+
+## Carrefours à feux
+La façon recommandée de créer un [carrefour contrôlé par des feux de circulation et son plan de feu](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html) est d'utiliser netedit. Il faut changer le type de carrefour ou choisir le mode d'édition des feux de circulation, cliquer sur le carrefour et créer un plan de feu. On crée ainsi un [plan de feu par défaut](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#automatically_generated_tls-programs) avec les caractéristiques suivante: cycle de 90 s par défaut, partage égal du temps de vert entre les phases, suivi par une phase jaune, les virages à gauche permis si la limite de vitesse est inférieure à 70 km/h, une phase protégée pour les virages à gauche si une voie réservée existe et un décalage de 0. Alternativement, il est possible de choisir un plan de feux où chaque approche a sa phase l'une après l'autre (option `--tls.layout incoming`, la valeur par défaut étant `opposites`). Si le carrefour a plus d'approches, des phases seront ajoutées. 
+
+Le plan de feu est représenté par un élément `tlLogic` qui peut être enregistré dans un fichier réseau `net.xml` ou dans un fichier additionnel (le [dernier plan de feu chargé](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#defining_new_tls-programs) est utilisé s'il y en a plusieurs). Il a les attributs décrits dans le tableau suivant. 
+
+| Attribut | Type de valeur                            | Description      |
+| -------------- | ------------------------------------- | ---------------- |
+| **id**         | id (string)                           | The id of the traffic light. This must be an existing traffic light id in the .net.xml file. Typically the id for a traffic light is identical with the junction id. The name may be obtained by right-clicking the red/green bars in front of a controlled intersection. |
+| **type**       | enum (static, actuated, delay_based) | The type of the traffic light (fixed phase durations, phase prolongation based on time gaps between vehicles (actuated), or on accumulated time loss of queued vehicles (delay_based) )                                                                                  |
+| **programID**  | id (string)                           | The id of the traffic light program; This must be a new program name for the traffic light id. Please note that "off" is reserved, see below.                                                                                                                             |
+| **offset**     | int                                   | The initial time offset of the program |
+
+Chaque phase a les attributs décrits dans le tableau suivant. 
+
+| Attribut | Type de valeur             | Description                |
+| -------------- | --------------------- | -------------------------- |
+| **duration**   | time (int)            | The duration of the phase                                                                                                                                    |
+| **state**      | list of signal states | The traffic light states for this phase, see below                                                                                                           |
+| minDur         | time (int)            | The minimum duration of the phase when using type **actuated**. Optional, defaults to duration.                                                              |
+| maxDur         | time (int)            | The maximum duration of the phase when using type **actuated**. Optional, defaults to duration.                                                              |
+| name           | string                | An optional description for the phase. This can be used to establish the correspondence between SUMO-phase-indexing and traffic engineering phase names.     |
+| next           | list of phase indices (int ...)           | The next phase in the cycle after the current. This is useful when adding extra transition phases to a traffic light plan which are not part of every cycle. Traffic lights of type 'actuated' can make use of a list of indices for selecting among alternative successor phases. |
+
+Seuls les attributs `duration` et `state` sont requis pour un plan de feu à temps fixe, les autres paramètres servant pour les feux semi-adaptatifs. Dans SUMO, chaque changement d'état (par exemple passage au jaune) d'un feu correspond à une nouvelle phase pour le carrefour, à la différence des définitions en circulation. Les phases se succèdent dans le temps, l'attribut `state` indiquant l'état du feu pour chaque connection entre toutes les voies arrivant et partant du carrefour. Il y a autant de caractères dans l'attribut `state`, constituant un vecteur d'état, que de connections dans le carrefour, commençant par l'approche à `midi` (sur un quadrant de montre) avec les virages à droite, les mouvements tout droit et les virages à gauche (les id des connections sont visibles dans sumo-gui avec l'option "show link tls index"). Les états des feux sont représentés par un caractère défini dans le tableau suivant:
+
+| Character | GUI Color                                                  | Description          |
+| --------- | ---------------------------------------------------------- | -------------------- |
+| r         | rouge | 'red light' for a signal - vehicles must stop     |
+| y         | jaune | 'amber (yellow) light' for a signal - vehicles will start to decelerate if far away from the junction, otherwise they pass    |
+| g         | vert | 'green light' for a signal, no priority - vehicles may pass the junction if no vehicle uses a higher priorised foe stream, otherwise they decelerate for letting it pass. They always decelerate on approach until they are within the configured [visibility distance](../Networks/PlainXML.md#explicitly_setting_which_edge_lane_is_connected_to_which) |
+| G         | vert foncé | 'green light' for a signal, priority - vehicles may pass the junction                                                                                                                                                                                                                                                                                                                                 |
+| s         | mauve | 'green right-turn arrow' requires stopping - vehicles may pass the junction if no vehicle uses a higher priorised foe stream. They always stop before passing. This is only generated for junction type *traffic_light_right_on_red*.                                                                                                                                                             |
+| u         | orange foncé | 'red+yellow light' for a signal, may be used to indicate upcoming green phase but vehicles may not drive yet (shown as orange in the gui)                                                                                                                                                                                                                                                             |
+| o         | marrond | 'off - blinking' signal is switched off, blinking light indicates vehicles have to yield                                                                                                                                                                                                                                                                                                              |
+| O         | cyan | 'off - no signal' signal is switched off, vehicles have the right of way|
+
+TODO ajouter un exemple
+
+Les phases peuvent être visualisées dans netedit en sélectionnant les états, et dans sumo-gui par un clic droit sur une ligne de feu et en sélectionnant "show phases". Le plan de feu est indiqué dans chaque connection par l'attribut `tl`. Il est possible de regrouper les connections en leur donnant le même indice dans le vecteur d'état avec l'attribut `linkIndex`, ce qui peut être obtenu dans netedit en sélectionnant le carrefour dans le mode d'édition des feux de circulation et en cliquant sur "Group Signals" (voir exemple dans le [répertoire sumo](sumo)). 
+
+Les [feux semi-adaptatifs](https://sumo.dlr.de/docs/Simulation/Traffic_Lights.html#actuated_traffic_lights) peuvent aussi être représentés en ajoutant des capteurs sur les approches. 
 
 # Demande de déplacements
 Dans SUMO, un véhicule est défini par trois éléments: 
@@ -164,7 +297,7 @@ De cette façon, SUMO construira un véhicule rouge d'identifiant 0 qui commence
   <vehicle id="1" route="route0" depart="0" color="blue"/>
 </routes>
 ```
-Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est pas autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 
+Les itinéraires doivent comprendre au mois un lien et être connectés. La simulation produira une erreur si un lien ne suit pas le précédent ou si le véhicule n'est autorisé sur aucune de ses voies (il est possible d'ignorer ces erreurs avec l'options "--ignore-route-errors" auquel cas le véhicule s'arrête sur le dernier lien autorisé, puis est supprimé (téléporté)). Un itinéraire n'a que trois attributs, soit son identifiant, la liste de liens, et, optionnellement comme les véhicules, un attribut "color". 
 
 Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (les éléments en gras sont requis): 
 
@@ -186,11 +319,13 @@ Les attributs possibles d'un véhicule sont décrits dans le tableau suivant (le
 | arrivalPosLat   | float(m)/string ("left", "right", "center")                                   | Position latérale sur la voie de départ à la sortie du véhicule (soir [modèles de positionnement dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html)) (par défault le véhicule ne se préoccupe pas de sa position latérale à l'arrivée) |
 
 Vous pouvez trouver plus de détails sur les attributs de dépat et d'arrivée ("depart*" et "arrival*") de chaque véhicule dans la [documentation de SUMO](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#a_vehicles_depart_and_arrival_parameter). En particulier, il est utile d'expliquer les valeurs possibles pour la vitesse du véhicule lors de son insertion (selon maxSpeed = MIN(speedLimit * speedFactor, vTypeMaxSpeed)):
+
 * ≥0: la simulation essaie d'insérer le véhicule à la vitesse donnée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
 * "random": une vitesse est tirée aléatoirement entre 0 et maxSpeed et peut être adaptée pour assurer une distance sécuritaire au véhicule meneur.
 * "max": maxSpeed est utilisée et peut être adaptée pour assurer une distance sécuritaire au véhicule meneur.
 * "desired": maxSpeed est utilisée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
 * "speedLimit": La limite de vitesse de la voie est utilisée. Si la vitesse n'est pas sécuritaire, l'instant de départ est retardé.
+
 Il existe d'[autres attributs](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#vehicles_and_routes) qu'il n'est pas nécessaire de connaître dans un premier temps. Tout type de véhicule (défini ci-dessous) ou d'itinéraire doit avoir été défini avant d'être utilisé, par exemple pour l'assigner à un véhicule. 
 
 ## Définition de flux de véhicules
@@ -280,7 +415,7 @@ Il est aussi possible d'utiliser des distributions d'itinéraires avec des proba
   <flow id="flow0" route="routedist1" begin="0" vehsPerHour="1000"/>
 </routes>
 ```
-L'exemple est équivalent au précédent en terme de proportion des véhicules suivant les deux itinéraires. Il n'est pas nécessaire que la somme des probabilités soit égale à 1, les probabilités sont proportionnelles aux nombres données. 
+L'exemple est équivalent au précédent en terme de proportion des véhicules suivant les deux itinéraires. Il n'est pas nécessaire que la somme des probabilités soit égale à 1, les probabilités sont proportionnelles aux nombres choisis. 
 
 ## Définition de types de véhicules
 Un type de véhicule (élément "vtype") définit une catégorie de véhicule avec des attributs communs. L'exemple suivant montre la définition du "type1" de véhicule avec les paramètres standards utilisés dans le modèle de Stefan Krauss:
@@ -326,9 +461,9 @@ Ces paramètres définissent des caractéristiques physiques comme sa couleur, l
 | latAlignment      | string                            | center                                                            | Positionnement latéral préféré dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) ("left", "right", "center", "compact", "nice", "arbitrary") |
 | minGapLat         | float                             | 0.6                                                                 | Créneau minimal désiré dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
 | maxSpeedLat       | float                             | 1.0                                                                 | Vitesse latérale maximale dans le [modèle dans la voie](https://sumo.dlr.de/docs/Simulation/SublaneModel.html) |
-| actionStepLength  | float                             | valeur globale par défaut (égale au pas de simulation, configurable via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite). |
+| actionStepLength  | float                             | valeur globale par défaut (égale au pas de simulation, configurable pour tous les types de véhicules via `--default.action-step-length`) | Durée de l'intervalle pendant lequel le véhicule effectue sa logique de décision (accélération et changement de voie). La valeur donnée est ajustée à la valeur la plus proche qui est un multiple positif du pas de simulation (si possible plus petite)|
 
-Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées sur le [wiki](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
+Si aucun type de véhicule n'est défini, un type de véhicule par défaut sera utilisé ("DEFAULT_VEHTYPE" dans sumo-gui). Les informations sur les modèles de poursuite disponibles dans sumo sont présentées dans la [documentation](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models).
 
 L'exemple suivant définit deux types de véhicules:
 ```xml
@@ -376,8 +511,8 @@ Il est aussi possible d'utiliser les classes abstraites de véhicule:
 ```xml
 <routes>
   <vTypeDistribution id="typedist1">
-    <vType id="type1" vclass="passenger" color="blue" probability="2"/>
-    <vType id="type2" vclass="truck" length="10" guiShape="delivery" color="red" probability="1"/>
+    <vType id="type1" vClass="passenger" color="blue" probability="2"/>
+    <vType id="type2" vClass="truck" length="10" guiShape="delivery" color="red" probability="1"/>
   </vTypeDistribution>
   <flow id="flow0" type="typedist1" from="1to2" to="2to3" begin="0" vehsPerHour="1500"/>
 </routes>
@@ -396,7 +531,7 @@ Une façon alternative de définir la distribution des speedFactor est d'utilise
   <flow id="flow2" type="type2" from="1to2" to="2to4" begin="0" departSpeed="desired" vehsPerHour="500"/>
 </routes>
 ```
-On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type). 
+On peut noter l'usage de la vitesse désirée ("desired") lors de l'insertion du véhicule qui dépend de speedFactor (tiré lors de la simulation pour chaque véhicule dans la distribution de son type) (la vitesse désirée est égale au produit du speedFactor par la limite de vitesse du lien). 
 
 Les classes abstraites de véhicule existantes ont des valeurs par défaut pour l'attribut speedDev (écart-type du speedFactor):
 * passenger (default vClass): 0.1
@@ -405,12 +540,12 @@ Les classes abstraites de véhicule existantes ont des valeurs par défaut pour 
 * truck, trailer, coach, delivery, taxi: 0.05
 * tram, rail_urban, rail, rail_electric, rail_fast: 0
 * emergency: 0
-* everything else: 0.1
+* tous les autres: 0.1
 
 ## Modèles de circulation
 Le comportement des usagers dans SUMO repose sur trois modèles principaux: un [modèle de poursuite](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#car-following_models), un [modèle de changement de voie](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#lane-changing_models) et un [modèle pour les carrefours](https://sumo.dlr.de/docs/Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#junction_model_parameters). Il existe différents types de modèles pour les deux premiers, définis respectivement par les attributs "carFollowModel" et "laneChangeModel" dans un type de véhicule. 
 
-Le modèle utilisé par défaut dans SUMO est le [modèle de Stefan Krauss](https://sumo.dlr.de/pdf/KraussDiss.pdf). C'est un modèle à distance de sécurité, soit un modèle dans lequel chaque véhicule cherche à atteindre sa vitesse désirée, tout en gardant un espace suffisant au véhicule meneur de sorte à éviter une collision si le conducteur meneur freine. Le modèle dépend d'au moins cinq paramètres (définis dans un type de véhicule), notés "accel", "decel", "minGap", "sigma" et "tau". 
+Le modèle utilisé par défaut dans SUMO est le [modèle de Stefan Krauss](https://sumo.dlr.de/pdf/KraussDiss.pdf). C'est un modèle à distance de sécurité, soit un modèle dans lequel chaque véhicule cherche à atteindre sa vitesse désirée, tout en gardant un espace suffisant par rapport au véhicule meneur de sorte à éviter une collision si le conducteur meneur freine. Le modèle dépend d'au moins cinq paramètres (définis dans un type de véhicule), notés "accel", "decel", "minGap", "sigma" et "tau". 
 
 # Simulation
 Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html) sont un fichier réseau et un fichier de demande de déplacement. Pour notre exemple ["hello"](sumo/), une simulation peut être exécutée avec la commande ```$ sumo -n hello.net.xml -r hello.rou.xml``` (ou en remplaçant sumo par sumo-gui pour l'interface graphique de simulation montrant l'animation des véhicules). Il est préférable d'utiliser un fichier de configuration `.sumocfg` qui permet de spécifier d'autres paramètres: 
@@ -440,7 +575,7 @@ Les [éléments nécessaires à une simulation](https://sumo.dlr.de/docs/Simulat
   </gui_only>
 </configuration>
 ```
-Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1 s), la graine d'initialisation ("seed") pour les générateurs de nombres aléatoires et une référence à un [fichier de configuration de l'interface de sumo-gui](http://sumo.sourceforge.net/userdoc/SUMO-GUI.html#configuration_files) (qui peut permettre [d'afficher une image en arrière plan](https://sumo.dlr.de/docs/SUMO-GUI.html#using_decals_within_sumo-gui) pour tracer le réseau dans netedit): 
+Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1 s), la graine d'initialisation ("seed") pour les générateurs de nombres aléatoires et une référence à un [fichier de configuration de l'interface de sumo-gui](https://sumo.dlr.de/docs/sumo-gui.html#configuration_files) (qui peut permettre [d'afficher une image en arrière plan](https://sumo.dlr.de/docs/sumo-gui.html#showing_background_images) pour tracer le réseau dans netedit): 
 ```xml
 <viewsettings>
     <viewport y="0" x="250" zoom="100"/>
@@ -449,7 +584,7 @@ Ce fichier indique la durée de simulation (de 0 à 600 s), le pas de temps (0.1
 </viewsettings>
 ```
 
-Il faut noter que le [temps de perception et réaction, appelé pas de temps les actions du conducteur ("actionStepLength"),](#d%C3%A9finition-de-types-de-v%C3%A9hicules) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour le temps de perception et réaction à une valeur plus grande (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). 
+Il faut noter que le [le pas de temps pour les actions du conducteur ("actionStepLength")](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_action_step_length) est égal au pas de temps de simulation, qui vaut 1 s par défaut. Si ce dernier est fixé à une valeur plus faible, il est fortement recommandé de fixer une valeur plus grande pour ce pas de temps des actions du conducteur (auquel cas la méthode d'intégration utilisée pour mettre à jour les vitesses et positions des véhicules [change](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html#defining_the_integration_method)). Ce pas de temps représente partiellement le temps de perception et réaction du conducteur car les actions du conducteur se feront tout de même en fonction de l'état de la simulation au pas de temps précédent, même si les actions sont mises à jour moins fréquemment (voir [documentation](https://sumo.dlr.de/docs/Car-Following-Models.html#actionsteplength)). Il y a un risque de collision si ce pas de temps est [supérieur à tau](https://sumo.dlr.de/docs/Car-Following-Models.html#tau). 
 
 Il est particulièrement important de comprendre [quels phénomènes](https://sumo.dlr.de/docs/Simulation/Randomness.html) sont décrits par des distributions de nombres aléatoires, dont la valeur dépend de la graine choisie:
 * distributions d'itinéraires et de types de véhicules,
@@ -459,17 +594,17 @@ Il est particulièrement important de comprendre [quels phénomènes](https://su
 * distributions des TIV,
 * distributions d'attributs des flux, déplacements et véhicules. 
 
-Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Des exemples de scripts Linux [`replicate.sh`](sumo/replicate.sh) et Windows [`replicate.bat`](sumo/replicate.bat) sont fournis pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas des scripts `replicate.*`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
+Il est alors indispensables d'exécuter une simulation plusieurs fois (faire plusieurs réplications de la simulation) avec des graines différentes. Cela peut être fait avec l'outil sumo en ligne de commande: ```$sumo --seed 42 -c hello.sumocfg```. Des exemples de scripts Linux/MacOS [`replicate.sh`](sumo/replicate.sh) et Windows [`replicate.bat`](sumo/replicate.bat) sont fournis pour effectuer plusieurs simulation avec des graines différentes. On peut noter l'utilisation de l'option en ligne de commande `--output-prefix` qui renomme tous les fichiers de sortie de SUMO avec un préfixe (dans le cas des scripts `replicate.*`: `seedxx-` pour chaque réplication où `xx` est le numéro de la graine utilisée). 
 
 # Collecte de données
-Les nombreuses méthodes pour extraire des données d'une simulation sont décrites sur le [wiki](https://sumo.dlr.de/docs/Simulation/Output.html). 
+Les nombreuses méthodes pour extraire des données d'une simulation sont décrites dans la [documentation](https://sumo.dlr.de/docs/Simulation/Output.html). 
 
 Il faut placer des détecteurs ou déclarer les éléments du réseau pour lesquels extraire des données dans un fichier "additionnel" `.add.xml`. Ce fichier peut être soit chargé en ligne de commande avec l'option `-a` ou spécifié dans le fichier de configuration `.sumocfg`:
 ```xml
   <additional-files value = "hello.add.xml"/>
 ```
 
-Les fichiers des données sont sauvés au format XML qui peut être lu dans un éditeur texte, mais ne sont pas très faciles à manipuler (quelques [outils](https://sumo.dlr.de/docs/Tools/Visualization.html#plot_tripinfo_distributionspy) existent pour la visualisation). Il existe un outil en ligne de commande (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format CSV (pour ouvrir dans un chiffrier). Les commandes ```$ python "C:\Program Files (x86)\Eclipse\Sumo\tools\xml\xml2csv.py" .\lanedata.xml``` (Windows) et ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` (Linux) (à ajuster selon le chemin d'installation du script) génèrent le fichier CSV `induction1.csv` qui contient toutes les données du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
+Les fichiers des données sont sauvés au format XML qui peut être lu dans un éditeur texte, mais ne sont pas très faciles à manipuler (quelques [outils](https://sumo.dlr.de/docs/Tools/Visualization.html#plot_tripinfo_distributionspy) existent pour la visualisation). Il existe un outil en ligne de commande (script Python [xml2csv.py](https://sumo.dlr.de/docs/Tools/Xml.html#xml2csvpy)) pour la conversion des fichiers de résultats au format XML en fichiers au format CSV (pour ouvrir dans un chiffrier). Les commandes ```$ python "C:\Program Files (x86)\Eclipse\Sumo\tools\xml\xml2csv.py" .\lanedata.xml``` (Windows), ```$ /usr/local/share/sumo/tools/xml/xml2csv.py induction1.xml``` (MacOS) et ```$ /usr/share/sumo/tools/xml/xml2csv.py induction1.xml``` (Linux) (à ajuster selon le chemin d'installation du script) génèrent le fichier CSV `induction1.csv` qui contient toutes les données du fichier XML (le nom du fichier peut être choisi avec l'option `-o`). 
 
 ## Réseau
 Il est possible de collecter des données pour tout le réseau de plusieurs façons: 
@@ -513,5 +648,5 @@ Les types de route utilisés dans OSM avec leurs descriptions sont disponibles s
 
 Les types de routes sont les suivants dans la région de Montréal: Highway.motorway, 
 Highway.primary, Highway.secondary, Highway.tertiary, Highway.residential, Highway.service, Highway.pedestrian, Highway.footway, Railway.rail, Highway.cycleway, Railway.subway. On rencontre moins souvent des Highway.track, Highway.path, Highway.steps, Highway.primary.link, Highway.secondary.link, Highway.motorway.link, Highway.unclassified. 
-## Autre sujets
-Les type files permettent de faire des modifications en groupe d'attributs de plusieurs éléments. <!-- voir tuto ayoub Une autre méthode basées sur des fichiers type.xml permet de réaliser des modifications de grandes envergures (vitesse des tronçons par exemple), sans passer par NetEdit. -->
+<!-- ## Autres sujets
+Les type files permettent de faire des modifications en groupe d'attributs de plusieurs éléments. voir tuto ayoub Une autre méthode basées sur des fichiers type.xml permet de réaliser des modifications de grandes envergures (vitesse des tronçons par exemple), sans passer par NetEdit. - mentionné dans le réseau -->
